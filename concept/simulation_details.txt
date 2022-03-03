@@ -4,7 +4,7 @@ Time goes by in 15 minutes increments.
 A day lasts 96 steps.
 
 Agents stay in their home cell until the visiting hour of an activity is reached. They then go to the cell of that activity and only return back to their home cell once the visit time is over. Agents render themselves transparent to travel from cell to cell in order not to make it seem like they are visiting all cells they go over.
-<TODO - condition for agents to test and heal themselves>
+<TODO - condition for agents to go test and heal themselves>
 
 
 
@@ -18,17 +18,41 @@ Cell types:
 
 
 
+Constants:
+ - Virus R-nought = 2.79
+ - Number of initially infected agents = 1
+ - Number steps per day = 96
+ - Percentage of children in population = 23.7%
+ - Percentage of seniors in population = 15.3%
+ - Percentage of schools = 0.48%
+ - Percentage of households with 1, 2, 3, 4 & 5+ occupants: [36.7%; 32.6%; 13.6%; 11.4%; 5.7%]
+ - School days = array 1 - 5
+ - School starting time = 8.5
+ - School ending time = 16.0
+<TODO - Percentage essential activities in adults>
+ - Percentage of non-essential activities in children = 34%
+<TODO - Percentage non-essential activities in adults>
+ - Percentage of additional non-essential activities in adults = 40.36%
+ - Percentage of non-essential activities in seniors = 46%
+ - Number of screening centers = 1
+ - Number of vaccination centers = 1
+<TODO - transmission probability in children, adults & seniors>
+
+
+
 Globale variables:
  - Week number (integer)
  - Day (integer : 1 - 7)
  - Hour (float : 0.0 - 23.75)
+ - Population size (integer)
+ - List of agents
 
 
 
 Agents' common properties:
  - Home cell (integer)
- - Non-essential activity list (array with three lines of integers: activity number, visit starting hour, visit time limit)
- - Essential activity list (tableau à trois lignes d'entiers: activity number, visit starting hour, visit time limit)
+ - Essential activity list (array with columns representing each day of the week and three lines of integers: activity number, visit starting hour, visit time limit)
+ - Non-essential activity list (array with columns representing each day of the week and three lines of integers: activity number, visit starting hour, visit time limit)
  - Health state (enumerator: susceptible, sick, vaccined, healed, deceased)
  - Contact case (number of days; integer: 0 - +infinity)
  - Incubation (number of days; integer: 0 - 14)
@@ -49,7 +73,7 @@ Child agent caracteristics:
 Adult agent caracteristics:
 <TODO>
 
-Old agent caracteristics:
+Senior agent caracteristics:
  - Mainly at risk
  - Information access mainly through news channels
 
@@ -65,7 +89,7 @@ Child agent graphic aspect caracteristics:
 Adult agent graphic aspect caracteristics:
  - Circle shape
 
-Old agent graphic aspect caracteristics:
+Senior agent graphic aspect caracteristics:
  - Square shape
 
 
@@ -75,7 +99,15 @@ Actions can be based on agent type.
 Actions can be based on at-risk agent property.
 <TODO - consequence of actions on agent properties>
  - Announce the existence of the virus
- - Wearing a mask
+ - Face mask
+   [by category, by location/job or total]
+   +>Recommendation
+   +>Obligation
+ - Hand sanitiser
+   [by category, by location/job or total]
+   +>Recommendation
+   +>Obligation
+ - Social distancing
    [by category, by location/job or total]
    +>Recommendation
    +>Obligation
@@ -117,11 +149,20 @@ Events:
  - Emergence of misinformation
 
 
+
+Graphs:
+ - Population health state across time
+ - Number of actions taken across time
+ - Node graph of houselhold members with their health state
+<TODO>
+
+
 ---------- ---------- ---------- ---------- ----------
 
 
 TODO - To discuss:
- - Hospital cell (essential activity)
+ - Virus mutation
+ - Hospital cell (essential activity; agent in intensive care unit (ICU))
  - Financial class agent property (action: financial aid)
  - Transparent moving agent
  - Outside world cell (actions: closing and opening borders)
@@ -138,21 +179,21 @@ General initialisation:
  - Creation of the grid
  - Number of steps initialised to 0
  - Time initialised to Monday (1), week 0, schedule 0.0
- - Creation of agents on home cells (minimum 1 adult or old person per cell)
-   - Initialisation of old agents
-   - Initialisation of adult agents (fills all remaining empty cells)
+ - Creation of agents on home cells (minimum 1 adult or senior agent per cell)
    - Initialisation of child agents
+   - Initialisation of adult agents
+   - Initialisation of senior agents
 
 Agent initialisation:
  - Home cell = random
- - Non-essential activity list = random
  - Essential activity list = random
+ - Non-essential activity list = random (prevent overlap with essential activities)
  - Health state = susceptible
  - Contact case = false
  - Incubation = 0
  - Symptomatic = false
  - TAMBBB levels = random
- - At-risk = random (child: low %; adult: average %; old: high %)
+ - At-risk = random (child: low %; adult: average %; senior: high %)
  - Mask compliance = false
 
 
@@ -160,10 +201,16 @@ Agent initialisation:
 
 
 References :
- - "Population par sexe et groupe d'âges" (child: 23.7%; adult: 48.2%; old: 15.3%)
+ - "Population par sexe et groupe d'âges" (children: 23.7%; adults: 48.2%; seniors: 15.3%)
    https://www.insee.fr/fr/statistiques/2381474#figure1_radio2
  - "Heures travaillées selon le statut, la catégorie socioprofessionnelle et le sexe" (35h - 40h per day)
    https://www.insee.fr/fr/statistiques/2491136#figure1_radio1
- - "Taux d'adhésion aux associations selon différentes caractéristiques"
+ - "Taux d'adhésion aux associations selon différentes caractéristiques" (children: 34%; adults: 40.36%; seniors: 46%)
    https://www.insee.fr/fr/statistiques/2406371#figure1_radio2
+ - The reproductive number of COVID-19 is higher compared to SARS coronavirus (R-nought median = 2.79)
+   https://academic.oup.com/jtm/article/27/2/taaa021/5735319
+ - "Les chiffres clés du système éducatif" (mean percentage of schools for 100 students = 0.48%)
+   https://www.education.gouv.fr/les-chiffres-cles-du-systeme-educatif-6515
+ - "Taille des ménages" (1 occupant: 36.7%; 2 occupants: 32.6%; 3 occupants: 13.6%; 4 occupants: 11.4%; 5+ occupants: 5.7%)
+   https://www.insee.fr/fr/statistiques/2381486#figure1_radio2
 
