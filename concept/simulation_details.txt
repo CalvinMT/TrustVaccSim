@@ -57,12 +57,16 @@ Agents' common properties:
  - Contact case (number of days; integer: 0 - +infinity)
  - Incubation (number of days; integer: 0 - 14)
  - Symptomatic (boolean)
+ - Level of altruism (constant float: 0.0 - 1.0)
  - Level of trust (float: 0.0 - 1.0)
- - Level of altruism (float: 0.0 - 1.0)
  - Level of morale (float: 0.0 - 1.0)
  - Level of virus existence belief (float: 0.0 - 1.0)
  - Level of virus transmission belief (float: 0.0 - 1.0)
  - Level of virus lethality belief (float: 0.0 - 1.0)
+ - Level of immunity belief (float: 0.0 - 1.0)
+ - Level of vaccines general belief (float: 0.0 - 1.0)
+ - Level of vaccine efficiency belief (float: 0.0 - 1.0)
+ - Level of vaccine safety belief (float: 0.0 - 1.0)
  - At-risk (boolean)
  - Mask compliance (boolean)
 
@@ -213,4 +217,6 @@ References :
    https://www.education.gouv.fr/les-chiffres-cles-du-systeme-educatif-6515
  - "Taille des ménages" (1 occupant: 36.7%; 2 occupants: 32.6%; 3 occupants: 13.6%; 4 occupants: 11.4%; 5+ occupants: 5.7%)
    https://www.insee.fr/fr/statistiques/2381486#figure1_radio2
+ - Vaccine hesitancy in the era of COVID-19
+   https://www.sciencedirect.com/science/article/pii/S0033350621000834
 
