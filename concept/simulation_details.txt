@@ -89,7 +89,7 @@ Globale variables:
 
 
 
-Agents' common properties:
+Agent's common properties:
  - Home cell (integer)
  - Essential activity list (array with columns representing each day of the week and three lines of integers: activity number, visit starting hour, visit time limit)
  - Non-essential activity list (array with columns representing each day of the week and three lines of integers: activity number, visit starting hour, visit time limit)
@@ -99,7 +99,7 @@ Agents' common properties:
  - Symptomatic (boolean)
  - Level of altruism (constant float: 0.0 - 1.0)
  - Level of trust (float: 0.0 - 1.0)
- - Level of morale (float: 0.0 - 1.0)
+ - Level of sanity (float: 0.0 - 1.0)
  - Level of virus existence belief (float: 0.0 - 1.0)
  - Level of virus transmission belief (float: 0.0 - 1.0)
  - Level of virus lethality belief (float: 0.0 - 1.0)
@@ -107,6 +107,7 @@ Agents' common properties:
  - Level of vaccines general belief (float: 0.0 - 1.0)
  - Level of vaccine efficiency belief (float: 0.0 - 1.0)
  - Level of vaccine safety belief (float: 0.0 - 1.0)
+ - Level of vaccine comprehension (float: 0.0 - 1.0)
  - At-risk (boolean)
  - Mask compliance (boolean)
 
@@ -123,7 +124,7 @@ Senior agent caracteristics:
 
 
 
-Agents' common graphic aspect properties:
+Agent's common graphic aspect properties:
  - Colour according to health state
  - Pattern if mask not worn
  - Transparent when moving to another cell
