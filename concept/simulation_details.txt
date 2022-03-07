@@ -1,4 +1,4 @@
-The simulation take place on a grid.
+The simulation takes place on a grid.
 
 Time goes by in 15 minutes increments.
 A day lasts 96 steps.
@@ -47,6 +47,46 @@ Globale variables:
  - Population size (integer)
  - List of agents
 
+ - Face mask state (enumerator: not assessed, recommended, mandatory)
+ - Face mask strategy (enumerator: by category, by location, total)
+ - Face mask age group list
+ - Face mask location list
+
+ - Hand sanitiser state (enumerator: not assessed, recommended, mandatory)
+ - Hand sanitiser strategy (enumerator: by category, by location, total)
+ - Hand sanitiser age group list
+ - Hand sanitiser location list
+
+ - Social distancing state (enumerator: not assessed, recommended, mandatory)
+ - Social distancing strategy (enumerator: by category, by location, total)
+ - Social distancing age group list
+ - Social distancing location list
+
+ - Quarantine state (boolean)
+ - Quarantine duration (integer: -1 - +infinity)
+
+ - Curfew state (boolean)
+ - Curfew duration (integer: -1 - +infinity)
+ - Curfew starting time (float: 0.0 - 23.75)
+ - Curfew time limit (float: 0.0 - 23.75)
+
+ - Confinement state (boolean)
+ - Confinement duration (integer: -1 - +infinity)
+ - Confinement exemption state (boolean)
+ - Confinement exemption time period (integer: 0 - 24)
+ - Confinement exception strategy (enumerator: by category, by location, total)
+ - Confinement exception age group list
+ - Confinement exception location list
+
+ - School closure state (boolean)
+ - Non-essential activity closure state (boolean)
+ - Essential activity closure state (boolean)
+
+ - Screening state (boolean)
+ - Sanitary pass state (boolean)
+ - Vaccination state (boolean)
+ - Vaccination pass state (boolean)
+
 
 
 Agents' common properties:
@@ -86,6 +126,7 @@ Senior agent caracteristics:
 Agents' common graphic aspect properties:
  - Colour according to health state
  - Pattern if mask not worn
+ - Transparent when moving to another cell
 
 Child agent graphic aspect caracteristics:
  - Triangle shape
@@ -120,10 +161,10 @@ Actions can be based on at-risk agent property.
  - Confinement (number of days or indefinite)
    - Exemption (number of hours per day)
      [by category, by location/job or total]
- - Closure of schools (number of days or indefinite)
- - Closing of places of non-essential activities (number of days or indefinite)
-   - Closing of places of essential activities (number of days or indefinite)
- - Opening of screaning center
+   - School closures (number of days or indefinite)
+   - Closing of non-essential activities (number of days or indefinite)
+     - Closing of essential activities (number of days or indefinite)
+ - Opening of screening center
    [by category, by location/job or total]
    +>Recommendation
    +>Obligation (valid number of days)
@@ -168,7 +209,6 @@ TODO - To discuss:
  - Virus mutation
  - Hospital cell (essential activity; agent in intensive care unit (ICU))
  - Financial class agent property (action: financial aid)
- - Transparent moving agent
  - Outside world cell (actions: closing and opening borders)
  - Other regions cell (actions: prohibition and authorisation of interregional travel)
  - Stop public transport action (number of days or indefinite)
@@ -217,6 +257,8 @@ References :
    https://www.education.gouv.fr/les-chiffres-cles-du-systeme-educatif-6515
  - "Taille des ménages" (1 occupant: 36.7%; 2 occupants: 32.6%; 3 occupants: 13.6%; 4 occupants: 11.4%; 5+ occupants: 5.7%)
    https://www.insee.fr/fr/statistiques/2381486#figure1_radio2
- - Vaccine hesitancy in the era of COVID-19
+ - Vaccine hesitancy in the era of COVID-19 (reasons to refuse vaccine)
    https://www.sciencedirect.com/science/article/pii/S0033350621000834
+ - COVID-19 in a Correctional Facility Employee Following Multiple Brief Exposures to Persons with COVID-19 — Vermont, July–August 2020 (15 minutes)
+   https://www.cdc.gov/mmwr/volumes/69/wr/mm6943e1.htm?s_cid=mm6943e1_w
 
