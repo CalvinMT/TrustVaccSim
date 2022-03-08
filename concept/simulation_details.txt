@@ -29,14 +29,14 @@ Constants:
  - School days = array 1 - 5
  - School starting time = 8.5
  - School ending time = 16.0
-<TODO - Percentage essential activities in adults>
+ - Percentage essential activities in adults = 62.2%
  - Percentage of non-essential activities in children = 34%
-<TODO - Percentage non-essential activities in adults>
+ - Percentage non-essential activities in adults = 37.8%
  - Percentage of additional non-essential activities in adults = 40.36%
  - Percentage of non-essential activities in seniors = 46%
  - Number of screening centers = 1
  - Number of vaccination centers = 1
-<TODO - transmission probability in children, adults & seniors>
+<TODO - symptoms susceptability probability in children, adults & seniors>
 
 
 
@@ -93,6 +93,7 @@ Agent's common properties:
  - Home cell (integer)
  - Essential activity list (array with columns representing each day of the week and three lines of integers: activity number, visit starting hour, visit time limit)
  - Non-essential activity list (array with columns representing each day of the week and three lines of integers: activity number, visit starting hour, visit time limit)
+ - Current visit time (float: 0.0 - +infinity)
  - Health state (enumerator: susceptible, sick, vaccined, healed, deceased)
  - Contact case (number of days; integer: 0 - +infinity)
  - Incubation (number of days; integer: 0 - 14)
@@ -144,7 +145,7 @@ Possible actions:
 Actions can be based on agent type.
 Actions can be based on at-risk agent property.
 <TODO - consequence of actions on agent properties>
- - Announce the existence of the virus
+ - Announce the existence of the virus in the territory
  - Face mask
    [by category, by location/job or total]
    +>Recommendation
@@ -212,6 +213,7 @@ TODO - To discuss:
  - Financial class agent property (action: financial aid)
  - Outside world cell (actions: closing and opening borders)
  - Other regions cell (actions: prohibition and authorisation of interregional travel)
+ - Action starting date (action effective immediatly, in 1 day, in 2 days, ...)
  - Stop public transport action (number of days or indefinite)
  - Prohibit public events action (number of days or indefinite)
  - Restriction of private gatherings action (number of days or indefinite)
@@ -262,4 +264,10 @@ References :
    https://www.sciencedirect.com/science/article/pii/S0033350621000834
  - COVID-19 in a Correctional Facility Employee Following Multiple Brief Exposures to Persons with COVID-19 — Vermont, July–August 2020 (15 minutes)
    https://www.cdc.gov/mmwr/volumes/69/wr/mm6943e1.htm?s_cid=mm6943e1_w
+ + "Tableaux de l'économie française - Emploi par activité" (shop activities detailed: 12.7% (essential: 11%; non-essential: 1.7%); essential activities: 2.5 + 13.3 + 4.6 + 9.1 + 7.1 + 7.2 + 7.4 + 11 = 62.2%; non-essential activities: 6.7 + 5.3 + 3.9 + 3 + 10 + 5.7 + 1.4 + 1.7 + 0.1 = 37.8% (added missing 0.1%))
+   https://www.insee.fr/fr/statistiques/4277675?sommaire=4318291
+ + "Mesures renforcées : la liste des commerces autorisés à ouvrir"
+   https://www.gouvernement.fr/actualite/mesures-renforcees-la-liste-des-commerces-autorises-a-ouvrir
+ + "Tableaux de l'économie française - Commerce" (essential shops: (18.5 + 6.5 + 64.8 + 1 + 7.3 + 1.6 = 99.7% & 56.5 + 10.5 + 7.3 = 74.3%) = 87%; non-essential shops: (0.3% & 0.7 + 14.4 + 3 + 7.6 = 25.7%) = 13%)
+   https://www.insee.fr/fr/statistiques/4277886?sommaire=4318291
 
