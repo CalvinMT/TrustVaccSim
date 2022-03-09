@@ -1,0 +1,65 @@
+The simulation starts at the begining of the pandemic.
+The goal of the simulation and its layout are explained to the player.
+Player presses on "Start".
+
+Week 0
+Different information on the new virus from news channels and social media report it to be in France, which has caused some deaths.
+Player chooses to make face masks mandatory without discrimination.
+
+Week 1
+Confirmed cases and death cases are still rising.
+Player decides to make hand sanitisers mandatory for all in all public and work places aswell as for social distancing.
+
+Week 2
+Some false claims on sanitary mandatories are reported by social media.
+Confirmed cases and death cases rise even more.
+Player ignores fake information, decides to put everyone in confinement and to close schools and all work places besides those deemed essential.
+Trust decreases.
+Sanity decreases.
+
+Week 3
+Confirmed and death cases continue to rise.
+Player does not make any changes.
+Trust decreases.
+Sanity decreases.
+
+Week 4
+Confirmed and death cases start to slow down.
+Player announces deconfinement in the coming weeks.
+Sanity decreases less.
+
+Week 5
+Confirmed and death cases slowed down significantly.
+Player deconfines everyone but elders and keeps closed places closed (no school and no non-essential activity). In addition, installs a tight curfew.
+Trust increases a bit.
+Sanity decreases a bit.
+
+Week 6
+Confirmed and death cases slowed down.
+Player does not make any changes.
+Trust decreases a bit.
+Sanity decreases a bit.
+
+Week 7
+Information reports of a vaccine ready for next week.
+Confirmed and death cases slowed down.
+Player does not make any changes.
+Trust decreases a bit.
+Sanity decreases.
+
+Week 8
+Social media spreads false information on the vaccine.
+Confirmed and death cases slowed down.
+Player decides to takkle false claims, deconfines everyone, opens schools (but not non-essential activities) and makes vaccination mandatory with a vaccination pass for everyone except children.
+Trust decreases not so much.
+Sanity decreases slightly.
+
+Week 9
+News channel misinformes the public on the vaccine.
+Confirmed cases start to slightly rise.
+Player engages on the misinformation, ends curfew and opens non-essential work places.
+
+Week 10
+Confirmed cases are on the rise and death cases start to slightly rise.
+<TODO>
+
