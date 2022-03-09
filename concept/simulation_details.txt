@@ -250,7 +250,7 @@ Agent initialisation:
 References :
  - "Population par sexe et groupe d'âges" (children: 23.7%; adults: 48.2%; seniors: 15.3%)
    https://www.insee.fr/fr/statistiques/2381474#figure1_radio2
- - "Heures travaillées selon le statut, la catégorie socioprofessionnelle et le sexe" (35h - 40h per day)
+ - "Heures travaillées selon le statut, la catégorie socioprofessionnelle et le sexe" (35h - 40h per week)
    https://www.insee.fr/fr/statistiques/2491136#figure1_radio1
  - "Taux d'adhésion aux associations selon différentes caractéristiques" (children: 34%; adults: 40.36%; seniors: 46%)
    https://www.insee.fr/fr/statistiques/2406371#figure1_radio2
