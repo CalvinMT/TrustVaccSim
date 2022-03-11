@@ -1,0 +1,14 @@
+Simplistic step-by-step
+
+1. Vaccine efficiency
+
+The simulation of question 17 "Dépistons ! Oui mais qui, quand et comment ?" from the website CoVprehension.org has been chosen as basis for the following simulations. Its agents have five possible health states: susceptible, incubating, asymptomatic, symptomatic and recovered. For the first following simplistic simulation, agents will keep three of those health states: susceptible, infected (i.e. symptomatic) and recovered. Agents will have an additional parameter showing their vaccinated state. Either they are vaccinated, or they're not. Suscpetible agents can get vaccinated and infected. Infected agents can infect susceptible agents and recover from their infection over time, becoming recovered agents. The recovered state is a final state, thus giving full immunity to agents against the virus. The vaccinated parameter plays a role in the probability for agents to get infected and their recovery form their infection. In other words, vaccinated agents have less chance to get infected by other agents and recover faster from their infected state.
+
+1.1 Static
+
+Given a fixed percentage of vaccinated agents in a population, how does it affect the spread of the virus in that population?
+
+1.2 Dynamic
+
+Given a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
+
