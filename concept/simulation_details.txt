@@ -94,7 +94,7 @@ Agent's common properties:
  - Essential activity list (array with columns representing each day of the week and three lines of integers: activity number, visit starting hour, visit time limit)
  - Non-essential activity list (array with columns representing each day of the week and three lines of integers: activity number, visit starting hour, visit time limit)
  - Current visit time (float: 0.0 - +infinity)
- - Health state (enumerator: susceptible, sick, vaccined, healed, deceased)
+ - Health state (enumerator: susceptible, sick, vaccinated, healed, deceased)
  - Contact case (number of days; integer: 0 - +infinity)
  - Incubation (number of days; integer: 0 - 14)
  - Symptomatic (boolean)
