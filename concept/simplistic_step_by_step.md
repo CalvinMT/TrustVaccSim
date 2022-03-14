@@ -1,10 +1,10 @@
 # Simplistic step-by-step
 
-The simulation of [question 17: "Dépistons ! Oui mais qui, quand et comment ?"](https://covprehension.org/2020/05/12/q17.html) from the website [CoVprehension.org](https://covprehension.org/) has been chosen as basis for the following simulations. Its agents have five possible health states of which only three will be kept: susceptible, infected (i.e. symptomatic) and recovered.
+The simulation of [question 17: "Dépistons ! Oui mais qui, quand et comment ?"](https://covprehension.org/2020/05/12/q17.html) from the website [CoVprehension.org](https://covprehension.org/) has been chosen as basis for the following simulations. Its agents have five possible health states of which three are kept and two are added: susceptible, infected (i.e. symptomatic), recovered, hospitalised and deceased. Suscpetible agents can get infected. Infected agents can infect susceptible agents, recover from their infection over time by becoming recovered agents or get hospitalised as the infection gets worse. Hospitalised agents can either become recovered agents or deceased agents. The deceased state is a final state, as well as for the recovered state for the first simulations, thus giving full immunity to agents against the virus.
 
 ## 1. Vaccine efficiency
 
-Agents are given an additional parameter showing their vaccinated state, which is different from a health state. Either they are vaccinated, or they're not. Suscpetible agents can get vaccinated and infected. Infected agents can infect susceptible agents and recover from their infection over time, becoming recovered agents. The recovered state is a final state, thus giving full immunity to agents against the virus. The vaccinated parameter plays a role in the probability for agents to get infected and in the time it takes them to recover from their infection. In other words, vaccinated agents have less chance to get infected by other agents and recover faster from their infected state.
+Agents are given an additional parameter showing their vaccinated state, which is different from a health state. Either they are vaccinated, or they're not. The vaccinated parameter plays a role in the probability for agents to get infected and in the time it takes them to recover from their infection. In other words, vaccinated agents have less chance to get infected by other agents and recover faster from their infected state.
 
 ### 1.1 Static
 
