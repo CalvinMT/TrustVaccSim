@@ -16,3 +16,11 @@ Given a rate at which to vaccinate a percentage of the population, how does it a
 
 Results of this simulation are viewed in a graph showing the number of infected agents and the number of vaccinated agents across time.
 
+2. Public trust
+
+<TODO>
+
+3. Decreasing immunity
+
+<TODO>
+
