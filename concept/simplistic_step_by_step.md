@@ -44,4 +44,6 @@ Results of this simulation are viewed in a graph showing the number of infected 
 
 ## 3. Decreasing immunity
 
+Immunity to deseases usually decrease over time. Implementing this in the simulation reasons into recovered state not being a final state anymore, thus no more giving agents full immunity to the virus. In other words, recovered agents will become susceptible to infections again.
+
 <TODO>
