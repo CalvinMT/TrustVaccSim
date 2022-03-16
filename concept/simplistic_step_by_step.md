@@ -52,13 +52,12 @@ The dynamic version of this simulation with contact influence gives the user the
 
 The dynamic version of this simulation with coherence influence requires the user to give an average initial trust level shared throughout the population, a radius of perception that all agents will carry and to choose the type of information to spread to the population at a rate shifted to half of the vaccination rate. Types of information are: real, positive, negative and opposite. Real information reflects exactly the state of the population. Positive information amplifies good news, while negative information amplifies bad news. And opposite information communicates the opposite of what is going on in the population. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents, the number of vaccinated agents and the average trust level of the population across time, along with moments of information broadcast.
 
-## 3. Decreasing natural immunity
+## 3. Limited natural immunity
 
 Immunity to diseases usually decrease over time. Implementing this in the simulation implies the recovered state not being a final state anymore, thus no longer giving agents full immunity to the virus. Simply put, recovered agents will become susceptible to infections again.
 
->Given an amount by which to decrease natural immunity, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
+The simulated vaccine now has an additional adjustable parameter controlling the threshold at which a vaccinated agent in the recovered state will get to the susceptible state.
 
-This simulation needs the user to specify an amount by which the natural immunity of recovered agents will decrease over time. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents and the number of vaccinated agents across time.
 ```mermaid
 flowchart LR
     S(S) --> I
@@ -70,18 +69,22 @@ flowchart LR
 ```
 _S: Susceptible; I: Infected; R: Recovered; H: Hospitalised; D: Deceased_
 
-## 4. Decreasing vaccine immunity
+>Given a natural immunity period, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
-Vaccine immunity also decreases over time and can be of a different level of effectiveness than natural immunity. Implementation of the decrease in vaccine immunity makes agents become more susceptible to becoming infected and hospitalised again.
+This simulation needs the user to specify a period during which agents will have a natural immunity against the virus. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents and the number of vaccinated agents across time.
 
->Given an initial peak of vaccine effectiveness, an amount by which it will decrease and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
+## 4. Limited vaccine immunity
 
-This simulation allows the user to give a peak effectiveness given to newly vaccinated agents and an amount by which this effectiveness will decrease over time for each agent. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents and the number of vaccinated agents across time.
+Vaccine immunity also decreases over time and can be of a different level of effectiveness than natural immunity. Implementation of the vaccine's immunity period makes agents lose their vaccinated parameter and makes them susceptible to becoming infected and hospitalised as a non-vaccinated agent.
+
+>Given a vaccine immunity period, a natural immunity period and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
+
+This simulation allows the user to give a period during which agents will have an artificial immunity against the virus. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents and the number of vaccinated agents across time.
 
 ## 5. Vaccine boosters
 
-Decreasing immunity is a health risk that makes vaccines ineffective in the long run. In order for agents to keep on protecting themselves from getting long infections and potentially hospitalised, vaccine boosters are added to the simulation. This makes possible for vaccinated susceptible agents and recovered agents to get vaccinated once their immunity is considered as being too low.
+Decreasing immunity is a health risk that makes vaccines ineffective in the long run. In order for agents to keep on protecting themselves from getting long infections and potentially hospitalised, vaccine boosters are added to the simulation. In the simulation, this makes it possible for susceptible agents previously immuned through vaccination or infection to get vaccinated and gain immunity again.
 
->Given a fixed immunity effectiveness threshold, an initial peak of vaccine effectiveness, an amount by which it will decrease, an amount by which to decrease natural immunity and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
+>Given a vaccine immunity period, a natural immunity period and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
-This simulation enables the user to give an immunity threshold under which agents will vaccinate themselves. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents and the number of vaccinated agents across time.
+Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents and the number of vaccinated agents across time.
