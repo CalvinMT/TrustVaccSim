@@ -1,6 +1,6 @@
 # Simplistic step-by-step
 
-The simulation of [question 17: "Dépistons ! Oui mais qui, quand et comment ?"](https://covprehension.org/2020/05/12/q17.html) from the website [CoVprehension.org](https://covprehension.org/) has been chosen as basis for the following simulations. Its agents have five possible health states of which three are kept and two are added: susceptible, infected (i.e. symptomatic), recovered, hospitalised and deceased. Susceptible agents can get infected. Infected agents can infect susceptible agents, recover from their infection over time by becoming recovered agents or get hospitalised as the infection gets worse. Hospitalised agents can either become recovered agents or deceased agents. The deceased state is a final state, as well as for the recovered state for the first simulations, thus giving full immunity to agents against the virus. The simulation ends once no more agents are in the infected or hospitalised state.
+The simulation of [question 17: "Dépistons ! Oui mais qui, quand et comment ?"](https://covprehension.org/2020/05/12/q17.html) from the website [CoVprehension.org](https://covprehension.org/) has been chosen as basis for the following simulations. Its agents have five possible health states of which three are kept and two are added: susceptible, infected (i.e. symptomatic), recovered, hospitalised and deceased. Susceptible agents can get infected. Infected agents can infect susceptible agents, recover from their infection over time by becoming recovered agents or get hospitalised as the infection gets worse. Hospitalised agents can either become recovered agents or deceased agents. The deceased state is a final state, as well as for the recovered state for the first simulations. The latter gives full immunity to agents against the virus. The simulation ends once no more agents are in the infected or hospitalised state.
 
 ## 1. Vaccine efficiency
 
@@ -44,7 +44,7 @@ The dynamic version of this simulation with coherence influence requires the use
 
 ## 3. Decreasing natural immunity
 
-Immunity to diseases usually decrease over time. Implementing this in the simulation reasons into the recovered state not being a final state anymore, thus no more giving agents full immunity to the virus. In other words, recovered agents will become susceptible to infections again.
+Immunity to diseases usually decrease over time. Implementing this in the simulation implies the recovered state not being a final state anymore, thus no longer giving agents full immunity to the virus. Simply put, recovered agents will become susceptible to infections again.
 
 >Given an amount by which to decrease natural immunity, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
