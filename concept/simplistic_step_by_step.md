@@ -1,6 +1,6 @@
 # Simplistic step-by-step
 
-The simulation of [question 17: "Dépistons ! Oui mais qui, quand et comment ?"](https://covprehension.org/2020/05/12/q17.html) from the website [CoVprehension.org](https://covprehension.org/) has been chosen as basis for the following simulations. Its agents have five possible health states of which three are kept and two are added: susceptible, infected (i.e. symptomatic), recovered, hospitalised and deceased. Susceptible agents can get infected. Infected agents can infect susceptible agents, recover from their infection over time by becoming recovered agents or get hospitalised as the infection gets worse. Hospitalised agents can either become recovered agents or deceased agents. The deceased state is a final state, as well as for the recovered state for the first simulations. The latter gives full immunity to agents against the virus. The simulation ends once no more agents are in the infected or hospitalised state.
+The simulation of [question 17: "Dépistons ! Oui mais qui, quand et comment ?"](https://covprehension.org/2020/05/12/q17.html) from the website [CoVprehension.org](https://covprehension.org/) has been chosen as basis for the following simulations. Its agents have five possible health states of which three are kept and two are added: susceptible, infected (i.e. symptomatic), recovered, hospitalised and deceased. Susceptible agents can get infected. Infected agents can infect susceptible agents, recover from their infection over time by becoming recovered agents or get hospitalised as the infection gets worse. Hospitalised agents can either become recovered agents or deceased agents. The deceased and hospitalised states are both considered as final states for the first simulations. The latter gives full immunity to agents against the virus. The simulation ends once no more agents are in the infected or hospitalised state.
 
 ```mermaid
 flowchart LR
@@ -14,15 +14,15 @@ _S: Susceptible; I: Infected; R: Recovered; H: Hospitalised; D: Deceased_
 
 ## 1. Vaccine efficiency
 
-Agents are given an additional parameter showing their vaccinated state, which is different from a health state. Either they are vaccinated, or they're not. The vaccinated parameter plays a role in the probability for agents to get infected, in the time it takes them to recover from their infection and influences the chances they have not to get hospitalised and die. In other words, a good vaccine makes vaccinated agents have fewer chances to get infected by other agents, makes them recover faster from their infected state and should prevent them from being hospitalised.
+Agents are given an additional parameter showing their vaccinated state, which is different from a health state. Either they are vaccinated, or they're not. The vaccinated parameter plays a role in the probability for agents to get infected, in the time it takes them to recover from their infection and by influencing the chances they have not to get hospitalised and die. In other words, a good vaccine makes vaccinated agents have fewer chances to get infected by other agents, it makes them recover faster from their infected state and it should prevent them from being hospitalised.
 
-The simulated vaccine has two adjustable parameters. One controlling the probability for a vaccinated agent to get infected and the other controlling the probability for a vaccinated agent to get hospitalised.
+The simulated vaccine has five adjustable parameters, all controlling the probability for a vaccinated agent of any state to get to the next state.
 
 ### 1.1 Static
 
 >Given a vaccine effectiveness and a fixed percentage of vaccinated agents in a population, how does it affect the spread of the virus in that population?
 
-The static version of this simulation requires the user to give a fixed percentage of vaccinated agents among the population before the start of the simulation. Results of this simulation are viewed in a graph showing the number of infected agents and the number of recovered agents across time.
+The static version of this simulation requires the user to give a fixed percentage of vaccinated agents among the population before the start of the simulation. Varying this percentage should, depending on the vaccine's effectiveness, expose a turning point at which a percentage of vaccinated agents is sufficient to totally limit the spread of the virus, thus enabling group immunity. Results of this simulation are viewed in a graph showing the number of infected agents and the number of recovered agents across time.
 
 ### 1.2 Dynamic
 
@@ -38,7 +38,7 @@ The following simulations add a normalised trust parameter to agents. This param
 
 >Given a fixed level of trust for all agents, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
-The static version of this simulation makes use of a given fixed level of trust that all agents will carry. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents and the number of vaccinated agents across time.
+The static version of this simulation makes use of a given fixed level of trust that all agents will carry. Varying the level of trust should demonstrate how trust has a crucial role in order to contain the spead of the virus through vaccination. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents and the number of vaccinated agents across time.
 
 ### 2.2 Dynamic - Contact influence
 
