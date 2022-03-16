@@ -38,7 +38,7 @@ The following simulations add a normalised trust parameter to agents. This param
 
 >Given a fixed level of trust for all agents, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
-The static version of this simulation makes use of a given fixed level of trust that all agents will carry. Varying the level of trust should demonstrate how trust has a crucial role in order to contain the spead of the virus through vaccination. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents and the number of vaccinated agents across time.
+The static version of this simulation makes use of a given fixed level of trust that all agents will carry. Varying the level of trust should demonstrate how trust has a crucial role in order to contain the spread of the virus through vaccination. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents and the number of vaccinated agents across time.
 
 ### 2.2 Dynamic - Contact influence
 
@@ -83,7 +83,7 @@ This simulation allows the user to give a period during which agents will have a
 
 ## 5. Vaccine boosters
 
-Decreasing immunity is a health risk that makes vaccines ineffective in the long run. In order for agents to keep on protecting themselves from getting long infections and potentially hospitalised, vaccine boosters are added to the simulation. In the simulation, this makes it possible for susceptible agents previously immuned through vaccination or infection to get vaccinated and gain immunity again.
+Decreasing immunity is a health risk that makes vaccines ineffective in the long run. In order for agents to keep on protecting themselves from getting long infections and potentially hospitalised, vaccine boosters are added to the simulation. In the simulation, this makes it possible for susceptible agents previously immunised through vaccination or infection to get vaccinated and gain immunity again.
 
 >Given a vaccine immunity period, a natural immunity period and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
