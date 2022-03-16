@@ -2,6 +2,16 @@
 
 The simulation of [question 17: "Dépistons ! Oui mais qui, quand et comment ?"](https://covprehension.org/2020/05/12/q17.html) from the website [CoVprehension.org](https://covprehension.org/) has been chosen as basis for the following simulations. Its agents have five possible health states of which three are kept and two are added: susceptible, infected (i.e. symptomatic), recovered, hospitalised and deceased. Susceptible agents can get infected. Infected agents can infect susceptible agents, recover from their infection over time by becoming recovered agents or get hospitalised as the infection gets worse. Hospitalised agents can either become recovered agents or deceased agents. The deceased state is a final state, as well as for the recovered state for the first simulations. The latter gives full immunity to agents against the virus. The simulation ends once no more agents are in the infected or hospitalised state.
 
+```mermaid
+flowchart LR
+    S(S) --> I
+    I(I) --> H
+    H(H) --> D(D)
+    H --> R(R)
+    I --> R
+```
+_S: Susceptible; I: Infected; R: Recovered; H: Hospitalised; D: Deceased_
+
 ## 1. Vaccine efficiency
 
 Agents are given an additional parameter showing their vaccinated state, which is different from a health state. Either they are vaccinated, or they're not. The vaccinated parameter plays a role in the probability for agents to get infected, in the time it takes them to recover from their infection and influences the chances they have not to get hospitalised and die. In other words, a good vaccine makes vaccinated agents have fewer chances to get infected by other agents, makes them recover faster from their infected state and should prevent them from being hospitalised.
@@ -49,6 +59,16 @@ Immunity to diseases usually decrease over time. Implementing this in the simula
 >Given an amount by which to decrease natural immunity, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
 This simulation needs the user to specify an amount by which the natural immunity of recovered agents will decrease over time. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents and the number of vaccinated agents across time.
+```mermaid
+flowchart LR
+    S(S) --> I
+    I(I) --> H
+    H(H) --> D(D)
+    H --> R
+    I --> R
+    R(R) ==> S
+```
+_S: Susceptible; I: Infected; R: Recovered; H: Hospitalised; D: Deceased_
 
 ## 4. Decreasing vaccine immunity
 
