@@ -46,11 +46,16 @@ The static version of this simulation makes use of a given fixed level of trust 
 
 The dynamic version of this simulation with contact influence gives the user the possibility to give an average initial trust level shared throughout the population. Agents in contact with each other will influence themselves into adjusting their trust level towards the one of their acquaintance. This adjustment depends on the degree of polarisation of their trust level. Two highly polarised agents with opposite trust levels coming into contact will barely influence themselves, while an agent with a highly polarised trust level will have more influence on an agent with a moderately polarised trust level. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents, the number of vaccinated agents and the average trust level of the population across time.
 
+![image 2-2](images/2-2.drawio.png)
+
 ### 2.3 Dynamic - Coherence influence
 
 >Given an average trust level shared amongst agents, an agent radius of perception, a type of spread information, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
 The dynamic version of this simulation with coherence influence requires the user to give an average initial trust level shared throughout the population, a radius of perception that all agents will carry and to choose the type of information to spread to the population at a rate shifted to half of the vaccination rate. Types of information are: real, positive, negative and opposite. Real information reflects exactly the state of the population. Positive information amplifies good news, while negative information amplifies bad news. And opposite information communicates the opposite of what is going on in the population. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents, the number of vaccinated agents and the average trust level of the population across time, along with moments of information broadcast.
+
+
+![image 2-3](images/2-3.drawio.png)
 
 ## 3. Limited natural immunity
 
