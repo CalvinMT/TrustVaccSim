@@ -16,12 +16,17 @@
 
 globals [ ;;global parameters
 
+  ; XXX - ajout enfants, adultes et personnes agées
+  ; XXX - nombre d'écoles
   walking-angle
   speed
   probability-car-travel
   population-size
   nb-house
 
+  ; XXX - pas besoin de Ex, ni de Ia
+  ; XXX - ajouter H et D pour "Hospitalised" et "Deceased"
+  ; XXX - pas besoin de V
   ;epidemic symbolic constants
   S ; Susceptible
   Ex ; Exposed - Infected and incubating, but already contagious.
@@ -30,11 +35,14 @@ globals [ ;;global parameters
   R ; Recovered
 	;V ; Vaccinated
 
+  ; XXX - pas besoin -
   delay-before-test
   incubation-duration
   nb-days-before-test-tagging-contacts
   proportion-equiped
+  ; XXX - ---------- -
   probability-respect-lockdown
+  ; XXX - pas besoin
   probability-success-test-infected
   ;probability-asymptomatic-infection
   R0-a-priori
@@ -44,6 +52,7 @@ globals [ ;;global parameters
   quarantine-time
   initial-spread
   probability-transmission
+  ; XXX - pas besoin
   probability-transmission-asymptomatic
   probability-hospitalized
   symptom-to-hospital-duration ; the average delay between the first onset of symptoms and hospitalisation if needed.
@@ -81,16 +90,19 @@ globals [ ;;global parameters
   total-contagious-lockeddown-symptom
   total-contagious-lockeddown-tracked
 
+  ; XXX - pas besoin de l'application de tracage -
   tracers-this-tick
   traced-this-tick
   REACTING? ; doing anything?
   TRACING? ; contact-TRACING?
   TESTING? ; secondary testing, primary infected is always tested
+  ; XXX - ---------- -
   FAMILY-LOCKDOWN?
   ;fixed-seed?
 	
   the-hospital
   the-graveyard
+  ; XXX - pas besoin de paramètres pour l'incubation
 	;initial-vaccinated-proportion
 	;efficacity-vaccine
 ]
@@ -118,10 +130,12 @@ citizens-own
   liste-contacts
   liste-contact-dates
   daily-contacts
+  ; XXX - pas besoin -
   equiped?
   detected?
   list-date-test
   nb-tests
+  ; XXX - ---------- -
   nb-lockdown
   contact-order ;0 not contacted, 1 contacted at first order, 2 contacted at second order
   nb-contacts-ticks
@@ -129,12 +143,16 @@ citizens-own
   difference
   potential-co-infected
   family-infection?
+  ; XXX - pas besoin -
   delayed-test
   to-be-tested
+  ; XXX - ---------- -
 	vaccinated?
   mobile?
+  ; XXX - remplacer par un état -
   hospitalized?
   dead?
+  ; XXX - ---------- -
   protectivity ; easier than a cleaner bollean protectivity? + tests all the time the altered infection probability would be needed
 ]
 
@@ -172,6 +190,7 @@ to setup-globals
   set probability-respect-lockdown Probabilité-de-respect-du-confinement
   set probability-success-test-infected Probabilité-que-le-test-soit-efficace
   set R0-a-priori R0-fixé
+  ; XXX - pourquoi 0 ? La valeur n'est jamais modifié
   set initial-R-proportion 0
   set size_population 2000
   set Nb_contagious_initialisation Nombre-de-cas-au-départ
@@ -183,6 +202,7 @@ to setup-globals
 	
   set walking-angle 50
   set speed 1
+  ; XXX - à justifier ?
   set probability-car-travel 0.2
 
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -405,7 +425,7 @@ to set-infected-initialisation-random
   ]
 end
 
-;; vacciné <=> recovered ?
+;; vacciné <=> recovered ? ; XXX - Non
 ;; quid si trop de Ex ? : population size --> nb-S ;  Fixed ?
 to set-vaccinated-initialisation-random
   ask n-of ((initial-vaccinated-proportion / 100 * nb-S)*(vaccine-efficacy / 100)) citizens with [not contagious?][
@@ -444,6 +464,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to go
+  ; XXX - Si plus aucun infecté, la simualtion s'arrête
   if not any? citizens with [contagious?] [stop]
 
   if (ticks mod nb-ticks-per-day) = 1[
@@ -453,13 +474,14 @@ to go
   move-citizens
   get-in-contact
 
+  ; XXX - pas besoin -
   if TRACING?[
 ;    set tracers-this-tick 0
 ;    set traced-this-tick 0
     if any? contacts-to-warn[
       warn-contacts 2
     ]
-  ]
+  ]-
   if REACTING?[
     ask citizens with [(epidemic-state = I) and (not detected?) and (lockdown? = 0) and (to-be-tested = false)] [
       set to-be-tested true
@@ -479,6 +501,7 @@ to go
     set contacts-to-warn contacts-to-warn-next
     set contacts-to-warn-next no-turtles
   ]
+  ; XXX - ---------- -
 
 
   update-epidemics
@@ -713,6 +736,7 @@ to hospitalize
   move-to the-hospital
 end
 
+; XXX - Ne vacciner que les S, pas les R
 to update-vaccinated
   ;On vaccine les S et les R
   ask n-of ((proportion-vaccinated-per-day / 100 * (nb-S + nb-R))*(vaccine-efficacy / 100)) citizens with [epidemic-state = S or epidemic-state = R][
