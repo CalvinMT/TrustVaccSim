@@ -1,3 +1,6 @@
+; adapted from Q17: Dépistons ! Oui mais qui, quand et comment ?
+; Calvin Massonnet
+
 ; adapted from Q3: simulateur central
 ; Carole et Helene
 
@@ -10,14 +13,20 @@
 globals [
   ;; GUI variables
   STRATEGY
-  number-daily-tests
-  daily-tests-per-10000 ;; for headless purposes
-  testing-threshold     ;; when to start a screening campaign
+  number-daily-vaccinations
+  number-initial-vaccinations
+  daily-vaccinations-per-10000 ;; for headless purposes
+  vaccination-threshold     ;; when to start a screening campaign
 
   population-size
   nb-infected-initialisation ;; initial number of sick agents
-  %unreported-infections ;; % of sick who have no symptoms at all
+  nb-vaccinated-initialisation ;; initial number of vaccinated agents
   probability-transmission ;; probability that an infected agent will infect a neighbour on same patch
+  probability-hospitalised ;; probability for an infected agent to get to a hospitalised state
+  probability-deceased ;; probability for an hospitalised agent to get to a deceased state
+  probability-transmission-vaccinated ;; probability that an infected agent will infect a vacinated neighbour on same patch
+  probability-hospitalised-vaccinated ;; probability for a vacinated infected agent to get to a hospitalised state
+  probability-deceased-vaccinated ;; probability for a vacinated hospitalised agent to get to a deceased state
 
   ;; movement
   infected-avoidance-distance
@@ -26,32 +35,18 @@ globals [
   infinity ;; default value for durations not in use
 
   ;; new globals pour dépistage
-  on-going-testing? ;; is there a testing campaign currently
-  nb-days-testing   ;; number of days elapsed since the beginning of the testing campaign
-;  nb-campaigns      ;; number of testing campaigns
-  TP-tests          ;; total nb of true positive tests
-  FP-tests          ;; total nb of false positive tests
-  TN-tests          ;; total nb of true negative tests
-  FN-tests          ;; total nb of false negative tests
-  TP-today
-  FP-today
-  TN-today
-  FN-today
-  list-tests        ;; remember %sick each day
-  list-estim
-  estim-today
-  window-size       ;; used for computing %sick over the last XXX days to smooth variations
-                    ;; over just today if = 1, over entire epidemic if too big, or over eg 7 days
+  on-going-vaccination? ;; is there a vaccination campaign currently
+  nb-days-vaccination   ;; number of days elapsed since the beginning of the vaccination campaign
+;  nb-campaigns      ;; number of vaccination campaigns
+  list-vaccinations        ;; remember %vaccinated each day
 
-  ; mean and variance for random-gamma determining incubation and infection durations
-  incubation-mean
-  incubation-variance
+  ; mean and variance for random-gamma determining infection durations
   infection-mean
   infection-variance
 
-  ; caracteristics of test (specificity / sensitivity)
-  sensitivity ;; 100 = high sensitivity (all sick are detected) / 0 = low sensitivity (sick are tested as negative)
-  specificity ;; 100 = high specificity (all non sick are detected) / 100 = low specificity (non sick are tested as positive)
+  ; mean and variance for random-gamma determining hospitalisation durations
+  hospitalisation-mean
+  hospitalisation-variance
 
   ;; metrics
   nb-new-infections
@@ -59,10 +54,11 @@ globals [
 
   ;; colors
   color-susceptible
-  color-incubating
-  color-asymptomatic
-  color-symptomatic
+  color-infected
+  color-hospitalised
   color-recovered
+  color-deceased
+  color-vaccinated
   transparency
 ]
 
@@ -73,18 +69,15 @@ globals [
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 turtles-own [
-  epidemic-state      ;; state of the agent among [Susceptible, Incubating, Asymptomatic, Symptomatic, Recovered]
+  epidemic-state      ;; state of the agent among [Susceptible, Infected, Hospitalised, Recovered, Deceased]
   infection-date      ;; ticks when got infected
-  incubation-duration ;; to trigger switch of epidemic-status (not probabilistic but after duration is over)
   infection-duration
-  infected?           ;; shortcut for incubating / symptomatic / asymptomatic
-  quarantined?        ;; quarantined agents are isolated and cannot infect neighbours
+  hospitalisation-date   ;; ticks when got hospitalised
+  hospitalisation-duration
+  infected?           ;; shortcut for Infected
 
-  ; demographics for specific tests
-  age
-  telework?   ;; influence the movements
-  tested?     ;; was already tested
-  positive?   ;; result of test (can be wrong)
+  ; demographics
+  vaccinated?     ;; was already vaccinated
 ]
 
 
@@ -107,9 +100,10 @@ end
 ;; setup the GUI variables as global variables
 ;; useful for headless mode and for translation of the interface
 to setup-GUI
-  set STRATEGY STRATEGIE-DE-TEST
-  set number-daily-tests nombre-tests-quotidiens
-  set testing-threshold seuil-debut-depistage
+  set STRATEGY STRATEGIE-DE-VACCINATION
+  set number-initial-vaccinations nombre-vaccinations-initial
+  set number-daily-vaccinations nombre-vaccinations-quotidiens
+  set vaccination-threshold seuil-debut-vaccination
 end
 
 
@@ -117,46 +111,47 @@ end
 to setup-globals
   set infinity 99999
   set population-size 2000
-;  set number-daily-tests daily-tests-per-10000 * population-size / 10000
+;  set number-daily-vaccinations daily-vaccinations-per-10000 * population-size / 10000
   set nb-infected-initialisation 1
+  set nb-vaccinated-initialisation number-initial-vaccinations
   set probability-transmission 0.03
-  set %unreported-infections 30
+  ; TODO - change to real value -
+  set probability-hospitalised 0.1
+  set probability-deceased 0.02
+  set probability-transmission-vaccinated 0.005
+  set probability-hospitalised-vaccinated 0.002
+  set probability-deceased-vaccinated 0.001
+  ; TODO - -------------------- -
 
-  ;; duration of incubation and infection (random-gamma init)
-  set incubation-mean 6
-  set incubation-variance 3
+  ;; duration of infection (random-gamma init)
   set infection-mean 21
   set infection-variance 1
+
+  ; TODO - change to real value
+  ;; duration of infection (random-gamma init)
+  set hospitalisation-mean 21
+  set hospitalisation-variance 1
 
   ;; movement
   set speed 1
   set infected-avoidance-distance 1
 
-  ;; tests counters
-  set on-going-testing? false
-  set nb-days-testing 0
+  ;; vaccinations counters
+  set on-going-vaccination? false
+  set nb-days-vaccination 0
 ;  set nb-campaigns 0
-  set TP-tests 0
-  set FP-tests 0
-  set TN-tests 0
-  set FN-tests 0
-  set list-tests []
-  set list-estim []
-  set window-size 7
-
-  ;; features of test: specificity/sensitivity
-  set sensitivity 90
-  set specificity 90
+  set list-vaccinations []
 
   ;; metrics
   set total-nb-infected 0
 
   ;; colors
   set color-susceptible [0 153 255]
-  set color-incubating [254 178 76]
-  set color-asymptomatic [153 153 153]
-  set color-symptomatic [255 0 0]
-  set color-recovered [0 0 0]
+  set color-infected [254 178 76]
+  set color-hospitalised [255 0 0]
+  set color-recovered [0 255 0]
+  set color-deceased [0 0 0]
+  set color-vaccinated [255 153 255]
   set transparency 145
 end
 
@@ -180,19 +175,13 @@ to setup-population
     set size 0.3
 
     get-susceptible
-    set quarantined? false
-    set tested? false
-    set positive? false
-
-    ;; setup age, telework at random ( TODO: use realistic stats? )
-    set age random 100
-    ifelse age < 20 or age > 65 or random 2 = 0
-    [ set telework? true ]   ; about 50% of people work from home + kids + retired
-    [ set telework? false ]  ; the rest has to work outside
+    set vaccinated? false
   ]
 
-  ; set some agents to be initially infected (incubation phase) to start the epidemics
-  ask n-of nb-infected-initialisation turtles with [not telework?] [ get-incubating ]
+  ; set some agents to be initially infected to start the epidemics
+  ask n-of nb-infected-initialisation turtles [ get-infected ]
+  ; set some agents to be initially vaccinated to start the epidemics
+  ask n-of nb-vaccinated-initialisation turtles [ get-vaccinated ]
 end
 
 
@@ -205,13 +194,12 @@ end
 ;; performed at each step
 to go
   ;; stop criterion
-  ;; virus-present? is a reporter testing whether there are still some infected people
   ifelse virus-present?
   [
     reset-counters
-    avoid-infected     ;; movement
+    move-alive
     virus-transmission
-    test-pop
+    vaccinate-pop
 
     ;; update new counters and monitors
     update-states
@@ -234,28 +222,9 @@ to move-randomly [my-speed]
   forward my-speed
 end
 
-;; move while avoiding infected agents (scenario 2 + this simulation)
-to avoid-infected
-  ;; people in telework do not move at all
-  ask turtles with [not telework? and not quarantined?] [
-    ;; movement speed based on infection status
-    ;; infected people move slower and randomly
-    ifelse epidemic-state = "Symptomatic"
-    [ move-randomly speed / 2 ]
-    ;; non-infected people avoid infected people
-    [
-      ;; closest infected neighbour in radius
-      let target min-one-of other turtles with [epidemic-state = "Symptomatic"] in-radius infected-avoidance-distance [distance myself]
-      ;; if there is someone infected around: avoid
-      ifelse is-agent? target
-      [
-        face target
-        right 180
-        forward speed
-      ]
-      ;; otherwise move randomly
-      [ move-randomly speed ]
-    ]
+to move-alive
+  ask turtles with [not (epidemic-state = "Deceased")] [
+    move-randomly speed
   ]
 end
 
@@ -267,60 +236,62 @@ end
 
 ;; virus transmission to susceptibles only
 to virus-transmission
-  ask turtles with [infected? and not quarantined?] [
+  ask turtles with [infected?] [
     ;; use a different transmission probability depending on agent's state
     let proba-trans (ifelse-value
-      epidemic-state = "Incubating" [ probability-transmission * (ticks - infection-date) / incubation-duration ]
+      vaccinated? [ probability-transmission-vaccinated ]
       [ probability-transmission ]
     )
 
     ;; my contacts are the other turtles on the same patch as me
     ask other turtles-here with [epidemic-state = "Susceptible"] [
-      ; also based on age of receiver of virus (older are more exposed)
-;      set proba-trans proba-trans * (1 + age / 300)  ; totally empirical multiplying factor
-
-      ;; each contact can be infecting
-      if random-float 1 < proba-trans [ get-incubating ]
+      ;; each contact can infect
+      ifelse vaccinated? [
+        ; TODO - probability to get infected if vaccinated
+        if random-float 1 < proba-trans [ get-infected ]
+      ]
+      [
+        if random-float 1 < proba-trans [ get-infected ]
+      ]
     ]
   ]
 end
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;; TESTING STRATEGIES ;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; VACCINTAION STRATEGIES ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to test-pop
+to vaccinate-pop
   (ifelse
-    ;; if not testing currently and proportion of infected above the threshold and there are people to test
-    not on-going-testing? and
-    (nb-to-prop nb-I population-size) > testing-threshold and
+    ;; if not vaccination currently and proportion of infected above the threshold and there are people to vaccinate
+    not on-going-vaccination? and
+    (nb-to-prop nb-I population-size) > vaccination-threshold and
     any? target-population [
-      ;; start a testing campaign
-      set on-going-testing? true
+      ;; start a vaccination campaign
+      set on-going-vaccination? true
 ;      set nb-campaigns nb-campaigns + 1
-      set nb-days-testing 0
-      ;; test the target population
-      ask up-to-n-of number-daily-tests target-population [ test-one ]
+      set nb-days-vaccination 0
+      ;; vaccinate the target population
+      ask up-to-n-of number-daily-vaccinations target-population [ vaccinate-one ]
     ]
 
-    ;; if testing is on-going
-    on-going-testing? [
+    ;; if vaccination is on-going
+    on-going-vaccination? [
 
-      ;; are there people to test?
+      ;; are there people to vaccinate?
       ifelse any? target-population
       ;; continue the campaign
       [
-        ask up-to-n-of number-daily-tests target-population [ test-one ]
-        set nb-days-testing nb-days-testing + 1
+        ask up-to-n-of number-daily-vaccinations target-population [ vaccinate-one ]
+        set nb-days-vaccination nb-days-vaccination + 1
       ]
       ;; stop the campaign
       [
-;        set on-going-testing? false
-;        ask turtles with [tested?] [
-;          set tested? false
-;          if not quarantined? [ set shape "circle" ]
+;        set on-going-vaccination? false
+;        ask turtles with [vaccinated?] [
+;          set vaccinated? false
 ;        ]
       ]
     ]
@@ -328,95 +299,25 @@ to test-pop
 end
 
 
-;; choose target population based on selected strategy: WHO exactly is tested
+;; choose target population based on selected strategy: WHO exactly is vaccinated
 to-report total-target-population
   (ifelse
-    ;; test randomly among the untested population
-    member? "1" STRATEGY [ report turtles ]
-    ;; test only people with symptoms: symptomatic infected state (+ TODO a random number of susceptible people with symptoms but just a flu)
-    member? "2" STRATEGY [ report turtles with [epidemic-state = "Symptomatic"] ]
-    ;; test only "at risk" / older people (some are still working, most are retired)
-    member? "3" STRATEGY [ report turtles with [age >= 60] ]
-    ;; test only people who work outside of home
-    member? "4" STRATEGY [ report turtles with [not telework?] ]
-    ;; test neighbours (same patch) of agents already tested positive
-    member? "5" STRATEGY [
-      ifelse not any? turtles with [tested?]
-      ;; if no one was tested yet test randomly
-      [ report turtles ]
-      ;; otherwise test the neighbours
-      [ report turtles with [any? other turtles-here with [positive?]] ]
-    ]
+    ;; vaccinate randomly among the unvaccinated population
+    member? "1.1" STRATEGY [ report no-turtles ]
+    ;; vaccinate randomly among the unvaccinated population
+    member? "1.2" STRATEGY [ report turtles ]
   )
 end
 
 to-report target-population
-  report total-target-population with [not tested?]
-;  let target turtles with [not tested?]
-;  (ifelse
-;    ;; test randomly among the untested population
-;    STRATEGY = "random"      [ report target ]
-;    ;; test only "at risk" / older people (some are still working, most are retired)
-;    STRATEGY = "older"       [ report target with [age >= 60] ]
-;    ;; test only people who work outside of home
-;    STRATEGY = "workers"     [ report target with [not telework?] ]
-;    ;; test only people with symptoms: symptomatic infected state (+ TODO a random number of susceptible people with symptoms but just a flu)
-;    STRATEGY = "symptomatic" [ report target with [epidemic-state = "Symptomatic"] ]
-;    ;; test neighbours (same patch) of agents already tested positive
-;    STRATEGY = "neighbours"  [
-;      ifelse not any? turtles with [tested?]
-;      ;; if no one was tested yet test randomly
-;      [ report target ]
-;      ;; otherwise test the neighbours
-;      [ report target with [any? other turtles-here with [positive?]] ]
-;    ]
-;  )
+  report total-target-population with [not vaccinated?]
 end
 
 
-;; called on each tested citizen
-to test-one
+;; called on each vaccinated citizen
+to vaccinate-one
   ;; update agent
-  set tested? true
-  set shape "triangle"
-
-  ;; test result
-  ifelse infected?
-  ; if agent is infected
-  [
-    ifelse random 100 < sensitivity
-    ; true positive
-    [
-      set positive? true
-      set TP-today TP-today + 1
-    ]
-    ; false negative
-    [
-      set positive? false
-      set FN-today FN-today + 1
-    ]
-  ]
-  ; if agent is NOT infected / is recovered
-  [
-    ifelse random 100 < specificity
-    ; true negative
-    [
-      set positive? false
-      set TN-today TN-today + 1
-    ]
-    ; false positive
-    [
-      set positive? true
-      set FP-today FP-today + 1
-    ]
-  ]
-
-  ;; consequences of positive testing (previously selected by switches in interface)
-  if positive? [
-    set shape "square"
-    set telework? true
-    set quarantined? true
-  ]
+  get-vaccinated
 end
 
 
@@ -426,50 +327,32 @@ end
 ;;;;;;;;;;;;;;;;;;;
 
 to update-states
-  ;; go from incubation to either symptomatic or asymptomatic
-  ask turtles with [epidemic-state = "Incubating" and
-                     ticks > infection-date + incubation-duration] [
-    ; probability to be (a)symptomatic
-    ifelse age < 65 and random 100 < %unreported-infections
-    [ get-asymptomatic ]
-    [ get-symptomatic ]
+  ;; go from infected to either hospitalies or recovered
+  ask turtles with [epidemic-state = "Infected" and
+                     ticks > infection-date + infection-duration] [
+    ; probability to be hospitalised
+    ifelse random-float 1 < probability-hospitalised
+    [ get-hospitalised ]
+    [ get-recovered ]
   ]
-
-  ;; go from (a)symptomatic to recovered
-  ask turtles with [(epidemic-state = "Asymptomatic" or epidemic-state = "Symptomatic") and
-                    ticks > infection-date + infection-duration] [
-    get-recovered
+  ;; go from hospitalised to either deceased or recovered
+  ask turtles with [epidemic-state = "Hospitalised" and
+                     ticks > hospitalisation-date + hospitalisation-duration] [
+    ; probability to be hospitalised
+    ifelse random-float 1 < probability-deceased
+    [ get-deceased ]
+    [ get-recovered ]
   ]
 end
 
 ;; called in go at start of turn
 to reset-counters
-  set TP-today 0
-  set FP-today 0
-  set TN-today 0
-  set FN-today 0
-
   set nb-new-infections 0
 end
 
 
-;; called in go after movement, transmission, testing
+;; called in go after movement, transmission
 to update-counters
-  set TP-tests TP-tests + TP-today
-  set FP-tests FP-tests + FP-today
-  set TN-tests TN-tests + TN-today
-  set FN-tests FN-tests + FN-today
-
-  ;; end of ONE DAY of tests, store % of positive tests
-  let %positive-tests-today nb-to-prop positive-today tests-today
-  set estim-today %positive-tests-today * PPV + (nb-to-prop negative-today tests-today) * (1 - NPV)
-  ;; put at end of list
-  set list-tests lput %positive-tests-today list-tests
-  set list-estim lput estim-today list-estim
-  ;; if list over window size, pop start
-  if length list-tests > window-size [ set list-tests but-first list-tests ]
-  if length list-estim > window-size [ set list-estim but-first list-estim ]
-
   set total-nb-infected total-nb-infected + nb-new-infections
 end
 
@@ -484,37 +367,27 @@ to get-susceptible
   set epidemic-state "Susceptible"
   set color lput transparency color-susceptible
   set infection-date infinity
-  set incubation-duration infinity
   set infection-duration infinity
+  set hospitalisation-date infinity
+  set hospitalisation-duration infinity
   set infected? false
 end
 
-to get-incubating
-  set epidemic-state "Incubating"
-  set color lput transparency color-incubating
+to get-infected
+  set epidemic-state "Infected"
+  set color lput transparency color-infected
   set infection-date ticks
-  set incubation-duration gamma-law incubation-mean incubation-variance
-  set infection-duration infinity
-  set infected? true
-
-  set nb-new-infections nb-new-infections + 1
-end
-
-to get-asymptomatic
-  set epidemic-state "Asymptomatic"
-  set color lput transparency color-asymptomatic
-  set infection-date ticks
-  set incubation-duration infinity
   set infection-duration gamma-law infection-mean infection-variance
+  set hospitalisation-date infinity
+  set hospitalisation-duration infinity
   set infected? true
 end
 
-to get-symptomatic
-  set epidemic-state "Symptomatic"
-  set color lput transparency color-symptomatic
-  set infection-date ticks
-  set incubation-duration infinity
-  set infection-duration gamma-law infection-mean infection-variance
+to get-hospitalised
+  set epidemic-state "Hospitalised"
+  set color lput transparency color-hospitalised
+  set hospitalisation-date ticks
+  set hospitalisation-duration gamma-law hospitalisation-mean hospitalisation-variance
   set infected? true
 end
 
@@ -522,11 +395,23 @@ to get-recovered
   set epidemic-state "Recovered"
   set color lput transparency color-recovered
   set infection-date infinity
-  set incubation-duration infinity
   set infection-duration infinity
+  set hospitalisation-date infinity
+  set hospitalisation-duration infinity
   set infected? false
-  set quarantined? false
-  ifelse tested? [ set shape "triangle" ] [ set shape "circle" ]
+end
+
+to get-deceased
+  set epidemic-state "Deceased"
+  set color lput transparency color-deceased
+  set infection-duration infinity
+  set hospitalisation-duration infinity
+  set infected? false
+end
+
+to get-vaccinated
+  set vaccinated? true
+  set shape "triangle"
 end
 
 
@@ -558,91 +443,31 @@ to-report nb-S
   report count turtles with [epidemic-state = "Susceptible"]
 end
 
-to-report nb-Incub
-  report count turtles with [epidemic-state = "Incubating"]
+to-report nb-I
+  report count turtles with [epidemic-state = "Infected"]
 end
 
-to-report nb-Symp
-  report count turtles with [epidemic-state = "Symptomatic"]
-end
-
-to-report nb-Asymp
-  report count turtles with [epidemic-state = "Asymptomatic"]
+to-report nb-H
+  report count turtles with [epidemic-state = "Hospitalised"]
 end
 
 to-report nb-R
   report count turtles with [epidemic-state = "Recovered"]
 end
 
-; exact nb of people sick in population, to compare with reconstructed value from tests
-to-report nb-I
-  report nb-Symp + nb-Asymp + nb-Incub
-end
-
-to-report prop-Symp
-  report nb-to-prop nb-Symp population-size
+to-report nb-D
+  report count turtles with [epidemic-state = "Deceased"]
 end
 
 ; boolean reporter
 to-report virus-present?
-  report nb-I > 0
+  report nb-I > 0 or nb-H > 0
 end
 
-
-;;; TEST RESULTS ;;;
-
-;; new tests
-to-report positive-today
-  report TP-today + FP-today
+to-report total-vaccinations
+  report count turtles with [vaccinated?]
 end
 
-to-report negative-today
-  report TN-today + FN-today
-end
-
-to-report tests-today
-  report TP-today + FP-today + TN-today + FN-today
-end
-
-
-;; total nb of tests
-to-report positive-tests
-  report TP-tests + FP-tests
-end
-
-to-report negative-tests
-  report TN-tests + FN-tests
-end
-
-to-report total-tests
-  report TP-tests + FP-tests + TN-tests + FN-tests
-end
-
-;; number of tests needed to test the whole target population
-to-report missing-tests
-  report count target-population - number-daily-tests
-end
-
-;; positive predictive value
-to-report PPV
-  report sensitivity * prop-Symp / (sensitivity * prop-Symp + (100 - specificity) * (100 - prop-Symp))
-end
-
-;; negative predictive value
-to-report NPV
-  report specificity * (100 - prop-Symp) / ((100 - sensitivity) * prop-Symp + specificity * (100 - prop-Symp))
-end
-
-
-;;; ESTIMATING NB OF CASES ;;;
-
-to-report sliding-mean [my-list]
-  report mean my-list
-end
-
-to-report nb-undetected-infected
-  report total-nb-infected - TP-tests
-end
 @#$#@#$#@
 GRAPHICS-WINDOW
 533
@@ -690,9 +515,9 @@ NIL
 
 PLOT
 11
-238
+271
 453
-463
+496
 Dynamique épidémique
 Jours
 % cas
@@ -704,16 +529,18 @@ true
 true
 "" ""
 PENS
-"En incubation" 1 0 -16777216 true "" "set-plot-pen-color color-incubating plot nb-to-prop nb-Incub population-size"
-"Asymptomatiques" 1 0 -16777216 true "" "set-plot-pen-color color-asymptomatic plot nb-to-prop nb-Asymp population-size"
-"Symptomatiques" 1 0 -16777216 true "" "set-plot-pen-color color-symptomatic plot nb-to-prop nb-Symp population-size"
+"Infected" 1 0 -16777216 true "" "set-plot-pen-color color-infected plot nb-to-prop nb-I population-size"
+"Hospitalised" 1 0 -16777216 true "" "set-plot-pen-color color-hospitalised plot nb-to-prop nb-H population-size"
+"Recovered" 1 0 -16777216 true "" "set-plot-pen-color color-recovered plot nb-to-prop nb-R population-size"
+"Deceased" 1 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-to-prop nb-D population-size"
+"Vaccinated" 1 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop total-vaccinations population-size"
 
 TEXTBOX
 307
 10
 526
 145
-Pour lancer une simulation:\n1 - Choisir une stratégie de test, le nombre de tests quotidiens (3 pour la stratégie française) et le seuil pour démarrer la campagne de tests\n2 - Cliquer sur \"Initialiser\"\n3 - Cliquer sur \"Simuler\"\n\n
+Pour lancer une simulation:\n1 - Choisir une stratégie de vaccination, le nombre de vaccinations quotidiens et le seuil pour démarrer la campagne de vaccinations\n2 - Cliquer sur \"Initialiser\"\n3 - Cliquer sur \"Simuler\"\n\n
 12
 15
 1
@@ -723,9 +550,9 @@ CHOOSER
 55
 283
 100
-STRATEGIE-DE-TEST
-strategie-de-test
-"1- aléatoire" "2- personnes symptomatiques" "3- personnes âgées" "4- personnes travaillant hors domicile"
+STRATEGIE-DE-VACCINATION
+strategie-de-vaccination
+"1.1 - Efficacité du vaccin (statique)" "1.2 - Efficacité du vaccin (dynamique)"
 0
 
 SLIDER
@@ -733,14 +560,14 @@ SLIDER
 100
 283
 133
-nombre-tests-quotidiens
-nombre-tests-quotidiens
+nombre-vaccinations-initial
+nombre-vaccinations-initial
 0
 30
-3
+0
 1
 1
-tests
+vaccinations
 HORIZONTAL
 
 SLIDER
@@ -748,8 +575,23 @@ SLIDER
 133
 283
 166
-seuil-debut-depistage
-seuil-debut-depistage
+nombre-vaccinations-quotidiens
+nombre-vaccinations-quotidiens
+0
+30
+10
+1
+1
+vaccinations
+HORIZONTAL
+
+SLIDER
+11
+166
+283
+199
+seuil-debut-vaccination
+seuil-debut-vaccination
 0
 50
 0
@@ -758,51 +600,11 @@ seuil-debut-depistage
 %
 HORIZONTAL
 
-PLOT
-13
-476
-453
-701
-Courbe épidémique reconstruite
-Jours
-% cas
-0
-175
-0
-100
-true
-true
-"" ""
-PENS
-"Cas réels" 1 0 -16777216 true "plot 0" "set-plot-pen-color color-recovered plot nb-to-prop nb-I population-size"
-"Cas estimés" 1 0 -16777216 true "" "set-plot-pen-color color-susceptible ifelse ticks > window-size [ plot sliding-mean list-estim ] [ plot 0 ]"
-
-PLOT
-13
-715
-453
-959
-Statistiques de tests
-Jours
-%
-0
-10
-0
-100
-true
-true
-"" ""
-PENS
-"Vrais positifs" 1 0 -16777216 true "" "set-plot-pen-color [166 97 26] plot nb-to-prop TP-tests total-nb-infected"
-"Faux négatifs" 1 0 -16777216 true "" "set-plot-pen-color [223 194 125] plot nb-to-prop FN-tests total-nb-infected"
-"Part de la pop cible dans la pop totale" 1 0 -16777216 true "" "set-plot-pen-color [128 205 193] ifelse total-tests > 0 [ plot nb-to-prop (count total-target-population) population-size ] [ plot 0 ]"
-"Part de personnes testées dans la pop cible" 1 0 -16777216 true "" "set-plot-pen-color [1 133 113] ifelse total-tests > 0 [ plot nb-to-prop (count (total-target-population with [tested?])) (count total-target-population) ] [ plot 0 ]"
-
 MONITOR
 318
-179
+212
 453
-224
+257
 % personnes guéries
 nb-to-prop nb-R population-size
 2
@@ -811,11 +613,11 @@ nb-to-prop nb-R population-size
 
 MONITOR
 147
-179
+212
 309
-224
-nb total de tests effectués
-total-tests
+257
+nb total de vaccinations effectuées
+total-vaccinations
 17
 1
 11
@@ -839,11 +641,11 @@ NIL
 
 MONITOR
 11
-179
+212
 139
-224
-nb de jours de tests
-nb-days-testing
+257
+nb de jours de vaccinations
+nb-days-vaccination
 17
 1
 11
@@ -853,7 +655,7 @@ TEXTBOX
 559
 1032
 783
-Légende couleur :\n- bleu = personnes saines\n- orange = personnes en incubation\n- gris = personnes asymptomatiques\n- rouge = personnes symptomatiques\n- noir = personnes guéries\n\nLégende forme :\n- rond = défaut\n- triangle = personne testée\n- carré = personne en quarantaine (car testée positive)
+Légende des couleurs :\n- bleu = susceptible\n- jaune = infecté\n- rouge = hospitalisé\n- vert = guéri\n- noir = décédé\n\nLégende des formes :\n- rond = non-vacciné\n- triangle = vacciné
 12
 15
 1
