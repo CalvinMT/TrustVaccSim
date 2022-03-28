@@ -12,6 +12,8 @@
 
 globals [
   ;; GUI variables
+  virus-type
+  vaccine-type
   percentage-initialy-vaccinated ;; initial percentage of vaccinated agents
   vaccination-threshold     ;; when to start a screening campaign
   percentage-daily-vaccinations
@@ -99,6 +101,8 @@ end
 ;; setup the GUI variables as global variables
 ;; useful for headless mode and for translation of the interface
 to setup-GUI
+  set virus-type variant-covid-19
+  set vaccine-type vaccin-covid-19
   set percentage-initialy-vaccinated pourcentage-vaccinations-initial
   set vaccination-threshold seuil-debut-vaccination
   set percentage-daily-vaccinations pourcentage-vaccinations-quotidiens
@@ -113,6 +117,38 @@ to setup-globals
   set nb-initialy-vaccinated (percentage-initialy-vaccinated * population-size / 100)
   set nb-daily-vaccinations (percentage-daily-vaccinations * population-size / 100)
   set probability-transmission 0.03
+
+  (ifelse
+    member? "Alpha" virus-type [
+      (ifelse
+        member? "AstraZeneca" vaccine-type [
+          ; TODO
+        ]
+        member? "Moderna" vaccine-type [
+          ; TODO
+        ]
+        member? "Johnson" vaccine-type [
+          ; TODO
+        ]
+        member? "Pfizer" vaccine-type [
+          ; TODO
+        ]
+      )
+    ]
+    member? "Beta" virus-type [
+      ; TODO
+    ]
+    member? "Delta" virus-type [
+      ; TODO
+    ]
+    member? "Gamma" virus-type [
+      ; TODO
+    ]
+    member? "Omicron" virus-type [
+      ; TODO
+    ]
+  )
+  
   ; TODO - change to real value -
   set probability-hospitalised 0.1
   set probability-deceased 0.02
