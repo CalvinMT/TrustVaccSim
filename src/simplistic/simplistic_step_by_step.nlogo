@@ -13,14 +13,14 @@
 globals [
   ;; GUI variables
   STRATEGY
-  number-daily-vaccinations
-  number-initial-vaccinations
-  daily-vaccinations-per-10000 ;; for headless purposes
+  percentage-daily-vaccinations
+  percentage-initialy-vaccinated ;; initial percentage of vaccinated agents
   vaccination-threshold     ;; when to start a screening campaign
 
   population-size
   nb-infected-initialisation ;; initial number of sick agents
-  nb-vaccinated-initialisation ;; initial number of vaccinated agents
+  nb-initialy-vaccinated ;; initial number of vaccinated agents
+  nb-daily-vaccinations ;; number of daily vaccinated agents
   probability-transmission ;; probability that an infected agent will infect a neighbour on same patch
   probability-hospitalised ;; probability for an infected agent to get to a hospitalised state
   probability-deceased ;; probability for an hospitalised agent to get to a deceased state
@@ -100,9 +100,9 @@ end
 ;; setup the GUI variables as global variables
 ;; useful for headless mode and for translation of the interface
 to setup-GUI
-  set STRATEGY STRATEGIE-DE-VACCINATION
-  set number-initial-vaccinations nombre-vaccinations-initial
-  set number-daily-vaccinations nombre-vaccinations-quotidiens
+  set STRATEGY strategie-de-vaccination
+  set percentage-initialy-vaccinated pourcentage-vaccinations-initial
+  set percentage-daily-vaccinations pourcentage-vaccinations-quotidiens
   set vaccination-threshold seuil-debut-vaccination
 end
 
@@ -111,9 +111,9 @@ end
 to setup-globals
   set infinity 99999
   set population-size 2000
-;  set number-daily-vaccinations daily-vaccinations-per-10000 * population-size / 10000
   set nb-infected-initialisation 1
-  set nb-vaccinated-initialisation number-initial-vaccinations
+  set nb-initialy-vaccinated (percentage-initialy-vaccinated * population-size / 100)
+  set nb-daily-vaccinations (percentage-daily-vaccinations * population-size / 100)
   set probability-transmission 0.03
   ; TODO - change to real value -
   set probability-hospitalised 0.1
@@ -181,7 +181,7 @@ to setup-population
   ; set some agents to be initially infected to start the epidemics
   ask n-of nb-infected-initialisation turtles [ get-infected ]
   ; set some agents to be initially vaccinated to start the epidemics
-  ask n-of nb-vaccinated-initialisation turtles [ get-vaccinated ]
+  ask n-of nb-initialy-vaccinated turtles [ get-vaccinated ]
 end
 
 
@@ -274,7 +274,7 @@ to vaccinate-pop
 ;      set nb-campaigns nb-campaigns + 1
       set nb-days-vaccination 0
       ;; vaccinate the target population
-      ask up-to-n-of number-daily-vaccinations target-population [ vaccinate-one ]
+      ask up-to-n-of nb-daily-vaccinations target-population [ vaccinate-one ]
     ]
 
     ;; if vaccination is on-going
@@ -284,7 +284,7 @@ to vaccinate-pop
       ifelse any? target-population
       ;; continue the campaign
       [
-        ask up-to-n-of number-daily-vaccinations target-population [ vaccinate-one ]
+        ask up-to-n-of nb-daily-vaccinations target-population [ vaccinate-one ]
         set nb-days-vaccination nb-days-vaccination + 1
       ]
       ;; stop the campaign
@@ -550,7 +550,7 @@ CHOOSER
 55
 283
 100
-STRATEGIE-DE-VACCINATION
+STRATEGIE DE VACCINATION
 strategie-de-vaccination
 "1.1 - Efficacité du vaccin (statique)" "1.2 - Efficacité du vaccin (dynamique)"
 0
@@ -560,14 +560,14 @@ SLIDER
 100
 283
 133
-nombre-vaccinations-initial
-nombre-vaccinations-initial
+Vaccinations initiales
+pourcentage-vaccinations-initial
 0
-30
+100
 0
 1
 1
-vaccinations
+%
 HORIZONTAL
 
 SLIDER
@@ -575,14 +575,14 @@ SLIDER
 133
 283
 166
-nombre-vaccinations-quotidiens
-nombre-vaccinations-quotidiens
+Vaccinations quotidiennes
+pourcentage-vaccinations-quotidiens
 0
-30
 10
+0
+0.1
 1
-1
-vaccinations
+%
 HORIZONTAL
 
 SLIDER
@@ -590,10 +590,10 @@ SLIDER
 166
 283
 199
-seuil-debut-vaccination
+Seuil début vaccination
 seuil-debut-vaccination
 0
-50
+100
 0
 1
 1
