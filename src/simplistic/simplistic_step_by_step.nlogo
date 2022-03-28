@@ -12,7 +12,6 @@
 
 globals [
   ;; GUI variables
-  STRATEGY
   percentage-daily-vaccinations
   percentage-initialy-vaccinated ;; initial percentage of vaccinated agents
   vaccination-threshold     ;; when to start a screening campaign
@@ -100,7 +99,6 @@ end
 ;; setup the GUI variables as global variables
 ;; useful for headless mode and for translation of the interface
 to setup-GUI
-  set STRATEGY strategie-de-vaccination
   set percentage-initialy-vaccinated pourcentage-vaccinations-initial
   set percentage-daily-vaccinations pourcentage-vaccinations-quotidiens
   set vaccination-threshold seuil-debut-vaccination
@@ -298,19 +296,8 @@ to vaccinate-pop
   )
 end
 
-
-;; choose target population based on selected strategy: WHO exactly is vaccinated
-to-report total-target-population
-  (ifelse
-    ;; vaccinate randomly among the unvaccinated population
-    member? "1.1" STRATEGY [ report no-turtles ]
-    ;; vaccinate randomly among the unvaccinated population
-    member? "1.2" STRATEGY [ report turtles ]
-  )
-end
-
 to-report target-population
-  report total-target-population with [not vaccinated?]
+  report turtles with [not vaccinated?]
 end
 
 
@@ -544,15 +531,24 @@ Pour lancer une simulation:\n1 - Choisir une stratégie de vaccination, le nombr
 12
 15
 1
+CHOOSER
+11
+118
+283
+163
+Variant-COVID-19
+Variant-COVID-19
+"Alpha" "Beta" "Gamma" "Delta" "Omicron"
+0
 
 CHOOSER
 11
 55
 283
 100
-STRATEGIE-DE-VACCINATION
-strategie-de-vaccination
-"1.1 - Efficacité du vaccin (statique)" "1.2 - Efficacité du vaccin (dynamique)"
+Vaccin-COVID-19
+Vaccin-COVID-19
+"AstraZeneca" "Johnson&Johnson" "Moderna" "Pfizer"
 0
 
 SLIDER
