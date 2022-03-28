@@ -454,16 +454,15 @@ end
 to-report total-vaccinations
   report count turtles with [vaccinated?]
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
-533
-10
-1053
-530
+553
+117
+1081
+646
 -1
 -1
-40
+40.0
 1
 10
 1
@@ -481,13 +480,40 @@ GRAPHICS-WINDOW
 1
 1
 ticks
-30
+30.0
+
+TEXTBOX
+14
+10
+260
+111
+Pour lancer une simulation:\n1 - Choisir un variant du virus et un vaccin\n2 - Ajuster les paramètres nécessaires\n3 - Cliquer sur \"Initialiser\"\n4 - Cliquer sur \"Simuler\"\n\n
+12
+15.0
+1
 
 BUTTON
-119
-10
-213
-47
+317
+118
+413
+155
+Initialiser
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+426
+118
+520
+155
 Simuler
 go
 T
@@ -501,36 +527,27 @@ NIL
 1
 
 PLOT
-11
-271
-453
-496
+554
+721
+996
+946
 Dynamique épidémique
 Jours
 % cas
-0
-175
-0
-100
+0.0
+175.0
+0.0
+100.0
 true
 true
 "" ""
 PENS
-"Infected" 1 0 -16777216 true "" "set-plot-pen-color color-infected plot nb-to-prop nb-I population-size"
-"Hospitalised" 1 0 -16777216 true "" "set-plot-pen-color color-hospitalised plot nb-to-prop nb-H population-size"
-"Recovered" 1 0 -16777216 true "" "set-plot-pen-color color-recovered plot nb-to-prop nb-R population-size"
-"Deceased" 1 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-to-prop nb-D population-size"
-"Vaccinated" 1 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop total-vaccinations population-size"
+"Infected" 1.0 0 -16777216 true "" "set-plot-pen-color color-infected plot nb-to-prop nb-I population-size"
+"Hospitalised" 1.0 0 -16777216 true "" "set-plot-pen-color color-hospitalised plot nb-to-prop nb-H population-size"
+"Recovered" 1.0 0 -16777216 true "" "set-plot-pen-color color-recovered plot nb-to-prop nb-R population-size"
+"Deceased" 1.0 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-to-prop nb-D population-size"
+"Vaccinated" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop total-vaccinations population-size"
 
-TEXTBOX
-307
-10
-526
-145
-Pour lancer une simulation:\n1 - Choisir une stratégie de vaccination, le nombre de vaccinations quotidiens et le seuil pour démarrer la campagne de vaccinations\n2 - Cliquer sur \"Initialiser\"\n3 - Cliquer sur \"Simuler\"\n\n
-12
-15
-1
 CHOOSER
 11
 118
@@ -543,24 +560,34 @@ Variant-COVID-19
 
 CHOOSER
 11
-55
+175
 283
-100
+220
 Vaccin-COVID-19
 Vaccin-COVID-19
 "AstraZeneca" "Johnson&Johnson" "Moderna" "Pfizer"
 0
 
+TEXTBOX
+11
+243
+283
+273
+1.1 Efficacité de la vaccination (statique)
+12
+15.0
+1
+
 SLIDER
 11
-100
+297
 283
-133
-pourcentage-vaccinations-initial
-pourcentage-vaccinations-initial
+330
+seuil-debut-vaccination
+seuil-debut-vaccination
 0
 100
-0
+0.0
 1
 1
 %
@@ -568,39 +595,49 @@ HORIZONTAL
 
 SLIDER
 11
-133
+264
 283
-166
+297
+pourcentage-vaccinations-initial
+pourcentage-vaccinations-initial
+0
+100
+0.0
+1
+1
+%
+HORIZONTAL
+
+TEXTBOX
+11
+350
+283
+380
+1.2 Efficacité de la vaccination (dynamique)
+12
+15.0
+1
+
+SLIDER
+11
+369
+283
+402
 pourcentage-vaccinations-quotidiens
 pourcentage-vaccinations-quotidiens
 0
 10
-0
+0.0
 0.1
 1
 %
 HORIZONTAL
 
-SLIDER
-11
-166
-283
-199
-seuil-debut-vaccination
-seuil-debut-vaccination
-0
-100
-0
-1
-1
-%
-HORIZONTAL
-
 MONITOR
-318
-212
-453
-257
+861
+662
+996
+707
 % personnes guéries
 nb-to-prop nb-R population-size
 2
@@ -608,38 +645,21 @@ nb-to-prop nb-R population-size
 11
 
 MONITOR
-147
-212
-309
-257
+690
+662
+852
+707
 nb total de vaccinations effectuées
 total-vaccinations
 17
 1
 11
 
-BUTTON
-10
-10
-106
-47
-Initialiser
-setup
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
 MONITOR
-11
-212
-139
-257
+554
+662
+682
+707
 nb de jours de vaccinations
 nb-days-vaccination
 17
@@ -647,14 +667,25 @@ nb-days-vaccination
 11
 
 TEXTBOX
-539
 559
-1032
-783
-Légende des couleurs :\n- bleu = susceptible\n- jaune = infecté\n- rouge = hospitalisé\n- vert = guéri\n- noir = décédé\n\nLégende des formes :\n- rond = non-vacciné\n- triangle = vacciné
+10
+699
+110
+Légende des couleurs :\n- bleu = susceptible\n- jaune = infecté\n- rouge = hospitalisé\n- vert = guéri\n- noir = décédé
 12
-15
+15.0
 1
+
+TEXTBOX
+725
+10
+875
+55
+Légende des formes :\n- rond = non-vacciné\n- triangle = vacciné
+12
+15.0
+1
+
 @#$#@#$#@
 ## Qu'est-ce que c'est ?
 
@@ -995,22 +1026,22 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.0
+NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
 default
-0
--0.2 0 0 1
-0 1 1 0
-0.2 0 0 1
+0.0
+-0.2 0 0.0 1.0
+0.0 1 1.0 0.0
+0.2 0 0.0 1.0
 link direction
 true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 @#$#@#$#@
-
+0
 @#$#@#$#@
