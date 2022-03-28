@@ -481,7 +481,7 @@ to go
     if any? contacts-to-warn[
       warn-contacts 2
     ]
-  ]-
+  ]
   if REACTING?[
     ask citizens with [(epidemic-state = I) and (not detected?) and (lockdown? = 0) and (to-be-tested = false)] [
       set to-be-tested true
