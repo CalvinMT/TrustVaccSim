@@ -12,9 +12,9 @@
 
 globals [
   ;; GUI variables
-  percentage-daily-vaccinations
   percentage-initialy-vaccinated ;; initial percentage of vaccinated agents
   vaccination-threshold     ;; when to start a screening campaign
+  percentage-daily-vaccinations
 
   population-size
   nb-infected-initialisation ;; initial number of sick agents
@@ -100,8 +100,8 @@ end
 ;; useful for headless mode and for translation of the interface
 to setup-GUI
   set percentage-initialy-vaccinated pourcentage-vaccinations-initial
-  set percentage-daily-vaccinations pourcentage-vaccinations-quotidiens
   set vaccination-threshold seuil-debut-vaccination
+  set percentage-daily-vaccinations pourcentage-vaccinations-quotidiens
 end
 
 
