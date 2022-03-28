@@ -550,7 +550,7 @@ CHOOSER
 55
 283
 100
-STRATEGIE DE VACCINATION
+STRATEGIE-DE-VACCINATION
 strategie-de-vaccination
 "1.1 - Efficacité du vaccin (statique)" "1.2 - Efficacité du vaccin (dynamique)"
 0
@@ -560,7 +560,7 @@ SLIDER
 100
 283
 133
-Vaccinations initiales
+pourcentage-vaccinations-initial
 pourcentage-vaccinations-initial
 0
 100
@@ -575,7 +575,7 @@ SLIDER
 133
 283
 166
-Vaccinations quotidiennes
+pourcentage-vaccinations-quotidiens
 pourcentage-vaccinations-quotidiens
 0
 10
@@ -590,7 +590,7 @@ SLIDER
 166
 283
 199
-Seuil début vaccination
+seuil-debut-vaccination
 seuil-debut-vaccination
 0
 100
