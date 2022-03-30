@@ -17,12 +17,14 @@ globals [
   percentage-initialy-vaccinated ;; initial percentage of vaccinated agents
   vaccination-threshold     ;; when to start a screening campaign
   percentage-daily-vaccinations
+  enable-asymptomatic?
 
   population-size
   nb-infected-initialisation ;; initial number of sick agents
   nb-initialy-vaccinated ;; initial number of vaccinated agents
   nb-daily-vaccinations ;; number of daily vaccinated agents
   probability-transmission ;; probability that an infected agent will infect a neighbour on same patch
+  probability-asymptomatic ;; probability that a susceptible agent will get to an asymptomatic state
   probability-hospitalised ;; probability for an infected agent to get to a hospitalised state
   probability-deceased ;; probability for an hospitalised agent to get to a deceased state
   probability-transmission-vaccinated ;; probability that an infected agent will infect a vacinated neighbour on same patch
@@ -56,6 +58,7 @@ globals [
   ;; colors
   color-susceptible
   color-infected
+  color-asymptomatic
   color-hospitalised
   color-recovered
   color-deceased
@@ -70,7 +73,7 @@ globals [
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 turtles-own [
-  epidemic-state      ;; state of the agent among [Susceptible, Infected, Hospitalised, Recovered, Deceased]
+  epidemic-state      ;; state of the agent among [Susceptible, Infected, Asymptomatic, Hospitalised, Recovered, Deceased]
   infection-date      ;; ticks when got infected
   infection-duration
   hospitalisation-date   ;; ticks when got hospitalised
@@ -106,6 +109,8 @@ to setup-GUI
   set percentage-initialy-vaccinated pourcentage-vaccinations-initial
   set vaccination-threshold seuil-debut-vaccination
   set percentage-daily-vaccinations pourcentage-vaccinations-quotidiens
+  ; TODO - set to GUI switch (i.e. checkbox) variable
+  set enable-asymptomatic? false
 end
 
 
@@ -150,6 +155,7 @@ to setup-globals
   )
   
   ; TODO - change to real value -
+  set probability-asymptomatic 0.2
   set probability-hospitalised 0.1
   set probability-deceased 0.02
   set probability-transmission-vaccinated 0.005
@@ -182,6 +188,7 @@ to setup-globals
   ;; colors
   set color-susceptible [0 153 255]
   set color-infected [254 178 76]
+  set color-asymptomatic [178 178 178]
   set color-hospitalised [255 0 0]
   set color-recovered [0 255 0]
   set color-deceased [0 0 0]
@@ -350,13 +357,18 @@ end
 ;;;;;;;;;;;;;;;;;;;
 
 to update-states
-  ;; go from infected to either hospitalies or recovered
+  ;; go from infected to either hospitalised or recovered
   ask turtles with [epidemic-state = "Infected" and
                      ticks > infection-date + infection-duration] [
     ; probability to be hospitalised
     ifelse random-float 1 < probability-hospitalised
     [ get-hospitalised ]
     [ get-recovered ]
+  ]
+  ;; go from asymptomatic to either recovered
+  ask turtles with [epidemic-state = "Asymptomatic" and
+                     ticks > infection-date + infection-duration] [
+    get-recovered
   ]
   ;; go from hospitalised to either deceased or recovered
   ask turtles with [epidemic-state = "Hospitalised" and
@@ -397,8 +409,16 @@ to get-susceptible
 end
 
 to get-infected
-  set epidemic-state "Infected"
-  set color lput transparency color-infected
+  ;; probability to be asymptomatic
+  ifelse enable-asymptomatic? and random-float 1 < probability-asymptomatic
+  [
+    set epidemic-state "Asymptomatic"
+    set color lput transparency color-asymptomatic
+  ]
+  [
+    set epidemic-state "Infected"
+    set color lput transparency color-infected
+  ]
   set infection-date ticks
   set infection-duration gamma-law infection-mean infection-variance
   set hospitalisation-date infinity

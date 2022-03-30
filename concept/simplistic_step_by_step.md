@@ -50,6 +50,20 @@ The dynamic version of this simulation with contact influence gives the user the
 
 ### 2.3 Dynamic - Coherence influence
 
+As agents will now base themselves on their surroundings to update their level of trust, the asymptomatic state becomes a crucial element in this simulation. Agents surrounded by infected but asymptomatic agents could think that their being lied to because they won't be able to reflect what is being told to them with what they see around them.
+
+```mermaid
+flowchart LR
+    S(S) --> I
+    S ==> A
+    I(I) --> H
+    H(H) --> D(D)
+    H --> R(R)
+    I --> R
+    A(A) ==> R
+```
+_S: Susceptible; I: Infected symptomatic; A: Infected asymptomatic; R: Recovered; H: Hospitalised; D: Deceased_
+
 >Given an average trust level shared amongst agents, an agent radius of perception, a type of spread information, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
 The dynamic version of this simulation with coherence influence requires the user to give an average initial trust level shared throughout the population, a radius of perception that all agents will carry and to choose the type of information to spread to the population at a rate shifted to half of the vaccination rate. Types of information are: real, positive and negative. Real information reflects exactly the state of the population. Positive information amplifies good news, while negative information amplifies bad news. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents, the number of vaccinated agents and the average trust level of the population across time, along with moments of information broadcast.
@@ -66,13 +80,15 @@ The simulated vaccine now has an additional adjustable parameter controlling the
 ```mermaid
 flowchart LR
     S(S) --> I
+    S --> A
     I(I) --> H
     H(H) --> D(D)
     H --> R
     I --> R
+    A --> R
     R(R) ==> S
 ```
-_S: Susceptible; I: Infected; R: Recovered; H: Hospitalised; D: Deceased_
+_S: Susceptible; I: Infected symptomatic; A: Infected asymptomatic; R: Recovered; H: Hospitalised; D: Deceased_
 
 >Given a natural immunity period, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
