@@ -354,8 +354,12 @@ to update-states
   ;; go from infected to either hospitalised or recovered
   ask turtles with [epidemic-state = "Infected" and
                      ticks > infection-date + infection-duration] [
+    let proba-hosp (ifelse-value
+      vaccinated? [ probability-hospitalised-vaccinated ]
+      [ probability-hospitalised ]
+    )
     ; probability to be hospitalised
-    ifelse random-float 1 < probability-hospitalised
+    ifelse random-float 1 < proba-hosp
     [ get-hospitalised ]
     [ get-recovered ]
   ]
@@ -367,8 +371,12 @@ to update-states
   ;; go from hospitalised to either deceased or recovered
   ask turtles with [epidemic-state = "Hospitalised" and
                      ticks > hospitalisation-date + hospitalisation-duration] [
-    ; probability to be hospitalised
-    ifelse random-float 1 < probability-deceased
+    let proba-death (ifelse-value
+      vaccinated? [ probability-deceased-vaccinated ]
+      [ probability-deceased ]
+    )
+    ; probability to die or recover
+    ifelse random-float 1 < proba-death
     [ get-deceased ]
     [ get-recovered ]
   ]
