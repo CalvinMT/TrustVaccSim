@@ -287,13 +287,7 @@ to virus-transmission
     ;; my contacts are the other turtles on the same patch as me
     ask other turtles-here with [epidemic-state = "Susceptible"] [
       ;; each contact can infect
-      ifelse vaccinated? [
-        ; TODO - probability to get infected if vaccinated
-        if random-float 1 < proba-trans [ get-infected ]
-      ]
-      [
-        if random-float 1 < proba-trans [ get-infected ]
-      ]
+      if random-float 1 < proba-trans [ get-infected ]
     ]
   ]
 end
