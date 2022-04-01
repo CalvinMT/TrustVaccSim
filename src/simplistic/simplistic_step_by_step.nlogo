@@ -121,30 +121,40 @@ to setup-globals
   set nb-infected-initialisation 1
   set nb-initialy-vaccinated (percentage-initialy-vaccinated * population-size / 100)
   set nb-daily-vaccinations (percentage-daily-vaccinations * population-size / 100)
-  set probability-transmission 0.03
 
   (ifelse
     member? "Alpha" virus-type [
-      (ifelse
-        member? "AstraZeneca" vaccine-type [
-          ; TODO
-        ]
-        member? "Moderna" vaccine-type [
-          ; TODO
-        ]
-        member? "Johnson" vaccine-type [
-          ; TODO
-        ]
-        member? "Pfizer" vaccine-type [
-          ; TODO
-        ]
-      )
+      ; TODO
     ]
     member? "Beta" virus-type [
       ; TODO
     ]
     member? "Delta" virus-type [
-      ; TODO
+      set probability-transmission 0.3 ; TODO
+      ;;set probability-reinfection 0.098 ; https://www.nejm.org/doi/full/10.1056/NEJMc2200133
+      set probability-asymptomatic 0.2435 ; https://academic.oup.com/jtm/article/27/5/taaa066/5828924
+      set probability-hospitalised 0.2 ; TODO
+      set probability-deceased 0.15 ; TODO
+      (ifelse
+        member? "AstraZeneca" vaccine-type [
+          ; TODO
+        ]
+        member? "Johnson" vaccine-type [
+          set probability-transmission-vaccinated 0.252
+          set probability-hospitalised-vaccinated 0.142
+          set probability-deceased-vaccinated 0.141
+        ]
+        member? "Moderna" vaccine-type [
+          set probability-transmission-vaccinated 0.041
+          set probability-hospitalised-vaccinated 0.028
+          set probability-deceased-vaccinated 0.014
+        ]
+        member? "Pfizer" vaccine-type [
+          set probability-transmission-vaccinated 0.055
+          set probability-hospitalised-vaccinated 0.036
+          set probability-deceased-vaccinated 0.02
+        ]
+      )
     ]
     member? "Gamma" virus-type [
       ; TODO
@@ -153,16 +163,8 @@ to setup-globals
       ; TODO
     ]
   )
-  
-  ; TODO - change to real value -
-  set probability-asymptomatic 0.2
-  set probability-hospitalised 0.1
-  set probability-deceased 0.02
-  set probability-transmission-vaccinated 0.005
-  set probability-hospitalised-vaccinated 0.002
-  set probability-deceased-vaccinated 0.001
-  ; TODO - -------------------- -
 
+  ; TODO - change to real value
   ;; duration of infection (random-gamma init)
   set infection-mean 21
   set infection-variance 1
