@@ -666,11 +666,11 @@ TEXTBOX
 
 SLIDER
 11
-297
+264
 283
-330
-seuil-debut-vaccination
-seuil-debut-vaccination
+297
+pourcentage-vaccinations-initial
+pourcentage-vaccinations-initial
 0
 100
 0.0
@@ -681,11 +681,11 @@ HORIZONTAL
 
 SLIDER
 11
-264
-283
 297
-pourcentage-vaccinations-initial
-pourcentage-vaccinations-initial
+283
+330
+seuil-debut-vaccination
+seuil-debut-vaccination
 0
 100
 0.0
