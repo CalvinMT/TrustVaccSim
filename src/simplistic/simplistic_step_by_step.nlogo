@@ -641,7 +641,7 @@ CHOOSER
 163
 Variant-COVID-19
 Variant-COVID-19
-"Alpha" "Beta" "Gamma" "Delta" "Omicron"
+"Delta"
 0
 
 CHOOSER
@@ -651,7 +651,7 @@ CHOOSER
 220
 Vaccin-COVID-19
 Vaccin-COVID-19
-"AstraZeneca" "Johnson&Johnson" "Moderna" "Pfizer"
+"Johnson&Johnson" "Moderna" "Pfizer"
 0
 
 TEXTBOX
