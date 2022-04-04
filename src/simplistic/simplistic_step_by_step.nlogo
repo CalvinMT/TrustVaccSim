@@ -724,7 +724,7 @@ TEXTBOX
 422
 283
 452
-2.1 Confiance de la population (static)
+2.1 Confiance de la population (statique)
 12
 15.0
 1
