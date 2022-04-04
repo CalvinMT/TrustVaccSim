@@ -17,6 +17,9 @@ globals [
   percentage-initialy-vaccinated ;; initial percentage of vaccinated agents
   vaccination-threshold     ;; when to start a screening campaign
   percentage-daily-vaccinations
+  initial-trust-level
+  use-trust-level?
+  is-initial-trust-average?
   enable-asymptomatic?
 
   population-size
@@ -82,6 +85,8 @@ turtles-own [
 
   ; demographics
   vaccinated?     ;; was already vaccinated
+
+  trust-level     ;; level of trust normalised between 0.0 and 1.0
 ]
 
 
@@ -109,6 +114,10 @@ to setup-GUI
   set percentage-initialy-vaccinated pourcentage-vaccinations-initial
   set vaccination-threshold seuil-debut-vaccination
   set percentage-daily-vaccinations pourcentage-vaccinations-quotidiens
+  set initial-trust-level niveau-de-confiance
+  set use-trust-level? activer-niveau-de-confiance?
+  ; TODO - set to GUI switch (i.e. checkbox) variable
+  set is-initial-trust-average? false
   ; TODO - set to GUI switch (i.e. checkbox) variable
   set enable-asymptomatic? false
 end
@@ -219,6 +228,14 @@ to setup-population
 
     get-susceptible
     set vaccinated? false
+    ifelse is-initial-trust-average?
+    [
+      ; TODO - set to get average
+      set trust-level random-float 1
+    ]
+    [
+      set trust-level initial-trust-level
+    ]
   ]
 
   ; set some agents to be initially infected to start the epidemics
@@ -343,7 +360,16 @@ end
 ;; called on each vaccinated citizen
 to vaccinate-one
   ;; update agent
-  get-vaccinated
+  ifelse use-trust-level?
+  [
+    if random-float 1 < trust-level
+    [
+      get-vaccinated
+    ]
+  ]
+  [
+    get-vaccinated
+  ]
 end
 
 
@@ -692,6 +718,42 @@ pourcentage-vaccinations-quotidiens
 1
 %
 HORIZONTAL
+
+TEXTBOX
+11
+422
+283
+452
+2.1 Confiance de la population (static)
+12
+15.0
+1
+
+SLIDER
+11
+441
+283
+474
+niveau-de-confiance
+niveau-de-confiance
+0
+1
+0.0
+0.1
+1
+ 
+HORIZONTAL
+
+SWITCH
+293
+441
+493
+474
+activer-niveau-de-confiance?
+activer-niveau-de-confiance?
+1
+1
+-1000
 
 MONITOR
 861
