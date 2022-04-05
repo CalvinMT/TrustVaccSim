@@ -22,6 +22,9 @@ globals [
   is-initial-trust-average?
   enable-asymptomatic?
 
+  current-trust-average
+  current-trust-average-count
+
   population-size
   nb-infected-initialisation ;; initial number of sick agents
   nb-initialy-vaccinated ;; initial number of vaccinated agents
@@ -116,8 +119,7 @@ to setup-GUI
   set percentage-daily-vaccinations pourcentage-vaccinations-quotidiens
   set initial-trust-level niveau-de-confiance
   set use-trust-level? activer-niveau-de-confiance?
-  ; TODO - set to GUI switch (i.e. checkbox) variable
-  set is-initial-trust-average? false
+  set is-initial-trust-average? activer-niveau-de-confiance-moyen?
   ; TODO - set to GUI switch (i.e. checkbox) variable
   set enable-asymptomatic? false
 end
@@ -125,6 +127,9 @@ end
 
 ;; generic setup
 to setup-globals
+  set current-trust-average initial-trust-level
+  set current-trust-average 0
+
   set infinity 99999
   set population-size 2000
   set nb-infected-initialisation 1
@@ -230,8 +235,32 @@ to setup-population
     set vaccinated? false
     ifelse is-initial-trust-average?
     [
-      ; TODO - set to get average
-      set trust-level random-float 1
+      (ifelse
+        current-trust-average < initial-trust-level
+        [
+          let trust-average-adjuster (initial-trust-level + (initial-trust-level - current-trust-average))
+          if trust-average-adjuster > 1
+          [
+            set trust-average-adjuster 0.9
+          ]
+          set trust-level trust-average-adjuster + (random-float (1 - trust-average-adjuster))
+        ]
+        current-trust-average > initial-trust-level
+        [
+          let trust-average-adjuster (initial-trust-level - (current-trust-average - initial-trust-level))
+          if trust-average-adjuster < 0
+          [
+            set trust-average-adjuster 0.1
+          ]
+          set trust-level random-float trust-average-adjuster
+        ]
+        [
+          set trust-level random-float 1
+        ]
+      )
+
+      set current-trust-average-count current-trust-average-count + 1
+      set current-trust-average (current-trust-average * (current-trust-average-count - 1) / current-trust-average-count + trust-level / current-trust-average-count)
     ]
     [
       set trust-level initial-trust-level
@@ -751,6 +780,27 @@ SWITCH
 474
 activer-niveau-de-confiance?
 activer-niveau-de-confiance?
+1
+1
+-1000
+
+TEXTBOX
+11
+494
+383
+424
+2.2 Confiance de la population (dynamique - par contact)
+12
+15.0
+1
+
+SWITCH
+11
+513
+283
+546
+activer-niveau-de-confiance-moyen?
+activer-niveau-de-confiance-moyen?
 1
 1
 -1000
