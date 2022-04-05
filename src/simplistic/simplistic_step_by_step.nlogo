@@ -20,10 +20,12 @@ globals [
   initial-trust-level
   use-trust-level?
   is-initial-trust-average?
+  enable-contact-trust-influence?
   enable-asymptomatic?
 
   current-trust-average
   current-trust-average-count
+  trust-influence-level
 
   population-size
   nb-infected-initialisation ;; initial number of sick agents
@@ -69,6 +71,7 @@ globals [
   color-recovered
   color-deceased
   color-vaccinated
+  color-trust-level
   transparency
 ]
 
@@ -120,6 +123,7 @@ to setup-GUI
   set initial-trust-level niveau-de-confiance
   set use-trust-level? activer-niveau-de-confiance?
   set is-initial-trust-average? activer-niveau-de-confiance-moyen?
+  set enable-contact-trust-influence? activer-influence-par-contact?
   ; TODO - set to GUI switch (i.e. checkbox) variable
   set enable-asymptomatic? false
 end
@@ -129,6 +133,8 @@ end
 to setup-globals
   set current-trust-average initial-trust-level
   set current-trust-average 0
+  ; TODO - arbitrarily set - find justification
+  set trust-influence-level 0.3
 
   set infinity 99999
   set population-size 2000
@@ -209,6 +215,7 @@ to setup-globals
   set color-recovered [0 255 0]
   set color-deceased [0 0 0]
   set color-vaccinated [255 153 255]
+  set color-trust-level [0 0 255]
   set transparency 145
 end
 
@@ -288,6 +295,7 @@ to go
     reset-counters
     move-alive
     virus-transmission
+    trust-influence
     vaccinate-pop
 
     ;; update new counters and monitors
@@ -336,6 +344,34 @@ to virus-transmission
     ask other turtles-here with [epidemic-state = "Susceptible"] [
       ;; each contact can infect
       if random-float 1 < proba-trans [ get-infected ]
+    ]
+  ]
+end
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; TRUST INFLUENCE ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+to trust-influence
+  if enable-contact-trust-influence?
+  [
+    ask turtles [
+      let contact-trust-level trust-level
+      let proba-influ (ifelse-value
+        ;; non-trusting agents are less influenced than trusting agents
+        trust-level < 0.5 [ random-float trust-level / 0.5 ]
+        [ random-float (1 - trust-level) + 0.5 ]
+      )
+      ask other turtles-here [
+        if random-float 1 < proba-influ
+        [
+          ;; influence trust
+          let contact-influence (contact-trust-level - trust-level) * trust-influence-level
+          set trust-level trust-level + contact-influence
+        ]
+      ]
     ]
   ]
 end
@@ -569,6 +605,12 @@ end
 to-report total-vaccinations
   report count turtles with [vaccinated?]
 end
+
+to-report trust-average
+  ; TODO - make percentage
+  report sum [trust-level] of turtles
+end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 553
@@ -662,6 +704,7 @@ PENS
 "Recovered" 1.0 0 -16777216 true "" "set-plot-pen-color color-recovered plot nb-to-prop nb-R population-size"
 "Deceased" 1.0 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-to-prop nb-D population-size"
 "Vaccinated" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop total-vaccinations population-size"
+"Trust level" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average population-size"
 
 CHOOSER
 11
@@ -801,6 +844,17 @@ SWITCH
 546
 activer-niveau-de-confiance-moyen?
 activer-niveau-de-confiance-moyen?
+1
+1
+-1000
+
+SWITCH
+11
+546
+283
+579
+activer-influence-par-contact?
+activer-influence-par-contact?
 1
 1
 -1000
