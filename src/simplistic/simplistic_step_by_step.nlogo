@@ -607,7 +607,6 @@ to-report total-vaccinations
 end
 
 to-report trust-average
-  ; TODO - make percentage
   report sum [trust-level] of turtles
 end
 
