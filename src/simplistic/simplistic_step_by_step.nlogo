@@ -237,9 +237,28 @@ to setup-population
 
     get-susceptible
     set vaccinated? false
+  ]
+
+  setup-population-trust-level
+
+  ; set some agents to be initially infected to start the epidemics
+  ask n-of nb-infected-initialisation turtles [ get-infected ]
+  ; set some agents to be initially vaccinated to start the epidemics
+  ask n-of nb-initialy-vaccinated turtles [ get-vaccinated ]
+end
+
+
+;; initialisation of agents' trust level
+to setup-population-trust-level
+  ask turtles
+  [
+    ;; if initial trust level in population is an average
     ifelse is-initial-trust-average?
     [
       (ifelse
+        ;; if current average of population trust is below initial trust level
+        ;; set trust level between X and 1
+        ;; X = opposite number to current average of population trust based on initial trust level
         current-trust-average < initial-trust-level
         [
           let trust-average-adjuster (initial-trust-level + (initial-trust-level - current-trust-average))
@@ -249,6 +268,9 @@ to setup-population
           ]
           set trust-level trust-average-adjuster + (random-float (1 - trust-average-adjuster))
         ]
+        ;; if current average of population trust is above initial trust level
+        ;; set trust level between 0 and X
+        ;; X = opposite number to current average of population trust based on initial trust level
         current-trust-average > initial-trust-level
         [
           let trust-average-adjuster (initial-trust-level - (current-trust-average - initial-trust-level))
@@ -258,6 +280,8 @@ to setup-population
           ]
           set trust-level random-float trust-average-adjuster
         ]
+        ;; if current average of population trust is equal to initial trust level
+        ;; set trust level between 0 and 1
         [
           set trust-level random-float 1
         ]
@@ -266,15 +290,12 @@ to setup-population
       set current-trust-average-count current-trust-average-count + 1
       set current-trust-average (current-trust-average * (current-trust-average-count - 1) / current-trust-average-count + trust-level / current-trust-average-count)
     ]
+    ;; if initial trust level in population is not an average
     [
+      ;; all agents have the same trust level
       set trust-level initial-trust-level
     ]
   ]
-
-  ; set some agents to be initially infected to start the epidemics
-  ask n-of nb-infected-initialisation turtles [ get-infected ]
-  ; set some agents to be initially vaccinated to start the epidemics
-  ask n-of nb-initialy-vaccinated turtles [ get-vaccinated ]
 end
 
 
