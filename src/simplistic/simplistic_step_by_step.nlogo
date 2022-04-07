@@ -25,7 +25,6 @@ globals [
 
   current-trust-average
   current-trust-average-count
-  trust-influence-level
 
   population-size
   nb-infected-initialisation ;; initial number of sick agents
@@ -133,8 +132,6 @@ end
 to setup-globals
   set current-trust-average initial-trust-level
   set current-trust-average 0
-  ; TODO - arbitrarily set - find justification
-  set trust-influence-level 0.3
 
   set infinity 99999
   set population-size 2000
@@ -359,17 +356,39 @@ to trust-influence
   [
     ask turtles [
       let contact-trust-level trust-level
-      let proba-influ (ifelse-value
-        ;; non-trusting agents are less influenced than trusting agents
-        trust-level < 0.5 [ random-float trust-level / 0.5 ]
-        [ random-float (1 - trust-level) + 0.5 ]
-      )
-      ask other turtles-here [
+      ask other turtles in-radius 0.1 [
+        let proba-influ (ifelse-value
+          ;; non-trusting agents are less influenced than trusting agents
+          trust-level < 0.5 [ random-float trust-level / 0.5 ]
+          [ random-float (1 - trust-level) + 0.5 ]
+        )
         if random-float 1 < proba-influ
         [
           ;; influence trust
-          let contact-influence (contact-trust-level - trust-level) * trust-influence-level
-          set trust-level trust-level + contact-influence
+          (ifelse
+            contact-trust-level < 0.5
+            [
+              ;; contact trust level of 0.0 has an intensity of 1
+              let contact-influence-intensity 1 - (contact-trust-level / 0.5)
+              ;; high effectiveness on trust level 0.0 (low on 1.0)
+              let influence-effectiveness 1 - trust-level
+              let contact-influence contact-influence-intensity * influence-effectiveness
+              set trust-level trust-level - contact-influence
+              if trust-level < 0 [ set trust-level 0 ]
+            ]
+            contact-trust-level > 0.5
+            [
+              ;; contact trust level of 1.0 has an intensity of 1
+              let contact-influence-intensity (contact-trust-level / 0.5) - 1
+              ;; high effectiveness on trust level 1.0 (low on 0.0)
+              let influence-effectiveness trust-level
+              let contact-influence contact-influence-intensity * influence-effectiveness
+              set trust-level trust-level + contact-influence
+              if trust-level > 1 [ set trust-level 1 ]
+            ]
+            ;; else contact-trust-level == 0.5
+            ;; contact trust level of 0.5 has an intensity of 0
+          )
         ]
       ]
     ]
