@@ -147,7 +147,7 @@ to setup-globals
       ; TODO
     ]
     member? "Delta" virus-type [
-      set probability-transmission 0.3 ; TODO
+      set probability-transmission 0.3 ; https://covidtracker.fr/covidtracker-world/ - October 4th 2021
       ;;set probability-reinfection 0.098 ; https://www.nejm.org/doi/full/10.1056/NEJMc2200133
       set probability-asymptomatic 0.2435 ; https://academic.oup.com/jtm/article/27/5/taaa066/5828924
       set probability-hospitalised 0.2 ; TODO
