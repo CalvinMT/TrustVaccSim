@@ -840,11 +840,22 @@ TEXTBOX
 15.0
 1
 
-SLIDER
+SWITCH
 11
 441
 283
 474
+activer-niveau-de-confiance?
+activer-niveau-de-confiance?
+1
+1
+-1000
+
+SLIDER
+11
+474
+283
+507
 niveau-de-confiance
 niveau-de-confiance
 0
@@ -855,22 +866,11 @@ niveau-de-confiance
  
 HORIZONTAL
 
-SWITCH
-293
-441
-493
-474
-activer-niveau-de-confiance?
-activer-niveau-de-confiance?
-1
-1
--1000
-
 TEXTBOX
 11
-494
+527
 383
-424
+557
 2.2 Confiance de la population (dynamique - par contact)
 12
 15.0
@@ -878,9 +878,9 @@ TEXTBOX
 
 SWITCH
 11
-513
-283
 546
+283
+579
 activer-niveau-de-confiance-moyen?
 activer-niveau-de-confiance-moyen?
 1
@@ -889,9 +889,9 @@ activer-niveau-de-confiance-moyen?
 
 SWITCH
 11
-546
-283
 579
+283
+612
 activer-influence-par-contact?
 activer-influence-par-contact?
 1
