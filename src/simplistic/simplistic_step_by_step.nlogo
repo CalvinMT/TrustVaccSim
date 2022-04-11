@@ -22,6 +22,8 @@ globals [
   is-initial-trust-average?
   enable-contact-trust-influence?
   enable-asymptomatic?
+  enable-coherence-trust-influence?
+  information-type ;; type of the information spread among [1. Real, 2. Positive, 3. Negative]
 
   current-trust-average
   current-trust-average-count
@@ -123,8 +125,9 @@ to setup-GUI
   set use-trust-level? activer-niveau-de-confiance?
   set is-initial-trust-average? activer-niveau-de-confiance-moyen?
   set enable-contact-trust-influence? activer-influence-par-contact?
-  ; TODO - set to GUI switch (i.e. checkbox) variable
-  set enable-asymptomatic? false
+  set enable-asymptomatic? activer-infection-asymptomatique?
+  set enable-coherence-trust-influence? activer-influence-par-coherence?
+  set information-type type-information-diffusée
 end
 
 
@@ -373,6 +376,11 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to trust-influence
+  contact-trust-influence
+  coherence-trust-influence
+end
+
+to contact-trust-influence
   if enable-contact-trust-influence?
   [
     ask turtles [
@@ -412,6 +420,63 @@ to trust-influence
           )
         ]
       ]
+    ]
+  ]
+end
+
+to coherence-trust-influence
+  if enable-coherence-trust-influence?
+  [
+    ask turtles [
+      let contact-trust-level trust-level
+      ask other turtles in-radius 0.1 [
+        let is-other-vaccinated? vaccinated?
+        let is-other-symptomatic? ((epidemic-state = "Infected") or (epidemic-state = "Hospitalised"))
+        let coherent-influence-modifier 0
+        let incoherent-influence-modifier 0
+        (ifelse
+          ;; Real
+          member? "1." information-type
+          [
+            set coherent-influence-modifier 1
+            set incoherent-influence-modifier 1
+          ]
+          ;; Positive
+          member? "2." information-type
+          [
+            ; TODO - to justify
+            set coherent-influence-modifier 2
+            set incoherent-influence-modifier 2.5
+          ]
+          ;; Negative
+          member? "3." information-type
+          [
+            ; TODO - to justify
+            set coherent-influence-modifier 0.5
+            set incoherent-influence-modifier 0.75
+          ]
+        )
+        ; TODO - to justify (0.01, 0.01, 0.03, 0.05)
+        (ifelse
+          (not is-other-vaccinated?) and (not is-other-symptomatic?)
+          [
+            set contact-trust-level contact-trust-level - (0.01 * incoherent-influence-modifier)
+          ]
+          (not is-other-vaccinated?) and is-other-symptomatic?
+          [
+            set contact-trust-level contact-trust-level + (0.01 * coherent-influence-modifier)
+          ]
+          is-other-vaccinated? and (not is-other-symptomatic?)
+          [
+            set contact-trust-level contact-trust-level + (0.03 * coherent-influence-modifier)
+          ]
+          is-other-vaccinated? and is-other-symptomatic?
+          [
+            set contact-trust-level contact-trust-level - (0.05 * incoherent-influence-modifier)
+          ]
+        )
+      ]
+      set trust-level contact-trust-level
     ]
   ]
 end
@@ -897,6 +962,48 @@ activer-influence-par-contact?
 1
 1
 -1000
+
+TEXTBOX
+11
+632
+383
+662
+2.3 Confiance de la population (dynamique - par cohérence)
+12
+15.0
+1
+
+SWITCH
+11
+651
+283
+684
+activer-infection-asymptomatique?
+activer-infection-asymptomatique?
+1
+1
+-1000
+
+SWITCH
+11
+684
+283
+717
+activer-influence-par-coherence?
+activer-influence-par-coherence?
+1
+1
+-1000
+
+CHOOSER
+11
+717
+283
+762
+type-information-diffusée
+type-information-diffusée
+"1. Réelle" "2. Positive uniquement" "3. Négative uniquement"
+0
 
 MONITOR
 861
