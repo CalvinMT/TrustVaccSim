@@ -434,6 +434,8 @@ to coherence-trust-influence
         let is-other-symptomatic? ((epidemic-state = "Infected") or (epidemic-state = "Hospitalised"))
         let coherent-influence-modifier 0
         let incoherent-influence-modifier 0
+        ;; negative information has more impact than positive information
+        ;; https://onlinelibrary.wiley.com/doi/abs/10.1111/0272-4332.00030
         (ifelse
           ;; Real
           member? "1." information-type
@@ -444,16 +446,14 @@ to coherence-trust-influence
           ;; Positive
           member? "2." information-type
           [
-            ; TODO - to justify
-            set coherent-influence-modifier 2
-            set incoherent-influence-modifier 2.5
+            set coherent-influence-modifier 0.5
+            set incoherent-influence-modifier 0.75
           ]
           ;; Negative
           member? "3." information-type
           [
-            ; TODO - to justify
-            set coherent-influence-modifier 0.5
-            set incoherent-influence-modifier 0.75
+            set coherent-influence-modifier 2
+            set incoherent-influence-modifier 2.5
           ]
         )
         ; TODO - to justify (0.01, 0.01, 0.03, 0.05)
