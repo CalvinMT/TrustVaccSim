@@ -434,7 +434,7 @@ to coherence-trust-influence
         let is-other-symptomatic? ((epidemic-state = "Infected") or (epidemic-state = "Hospitalised"))
         let coherent-influence-modifier 0
         let incoherent-influence-modifier 0
-        ;; negative information has more impact than positive information
+        ;; negative information have more impact than positive information
         ;; https://onlinelibrary.wiley.com/doi/abs/10.1111/0272-4332.00030
         (ifelse
           ;; Real
