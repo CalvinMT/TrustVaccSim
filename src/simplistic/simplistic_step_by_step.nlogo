@@ -477,6 +477,8 @@ to coherence-trust-influence
         )
       ]
       set trust-level contact-trust-level
+      if trust-level < 0 [ set trust-level 0 ]
+      if trust-level > 1 [ set trust-level 1 ]
     ]
   ]
 end
