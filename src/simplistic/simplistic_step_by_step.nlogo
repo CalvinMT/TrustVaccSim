@@ -692,6 +692,10 @@ to-report nb-I
   report count turtles with [epidemic-state = "Infected"]
 end
 
+to-report nb-A
+  report count turtles with [epidemic-state = "Asymptomatic"]
+end
+
 to-report nb-H
   report count turtles with [epidemic-state = "Hospitalised"]
 end
@@ -806,6 +810,7 @@ true
 "" ""
 PENS
 "Infected" 1.0 0 -16777216 true "" "set-plot-pen-color color-infected plot nb-to-prop nb-I population-size"
+"Asymptomatic" 1.0 0 -16777216 true "" "set-plot-pen-color color-asymptomatic plot nb-to-prop nb-A population-size"
 "Hospitalised" 1.0 0 -16777216 true "" "set-plot-pen-color color-hospitalised plot nb-to-prop nb-H population-size"
 "Recovered" 1.0 0 -16777216 true "" "set-plot-pen-color color-recovered plot nb-to-prop nb-R population-size"
 "Deceased" 1.0 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-to-prop nb-D population-size"
