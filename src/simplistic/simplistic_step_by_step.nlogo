@@ -1043,17 +1043,17 @@ nb-days-vaccination
 TEXTBOX
 559
 10
-699
+725
 110
-Légende des couleurs :\n- bleu = susceptible\n- jaune = infecté\n- rouge = hospitalisé\n- vert = guéri\n- noir = décédé
+Légende des couleurs :\n- bleu = susceptible\n- jaune = infecté\n- gris = asymptomatique\n- rouge = hospitalisé\n- vert = guéri\n- noir = décédé
 12
 15.0
 1
 
 TEXTBOX
-725
+750
 10
-875
+900
 55
 Légende des formes :\n- rond = non-vacciné\n- triangle = vacciné
 12
