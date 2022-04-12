@@ -448,12 +448,18 @@ to coherence-trust-influence
           [
             set coherent-influence-modifier 0.5
             set incoherent-influence-modifier 0.75
+            ;; non-trusting agents will neglect positive information
+            set coherent-influence-modifier coherent-influence-modifier * trust-level
+            set incoherent-influence-modifier incoherent-influence-modifier * trust-level
           ]
           ;; Negative
           member? "3." information-type
           [
             set coherent-influence-modifier 2
             set incoherent-influence-modifier 2.5
+            ;; trusting agents will neglect negative information
+            set coherent-influence-modifier coherent-influence-modifier * (1 - trust-level)
+            set incoherent-influence-modifier incoherent-influence-modifier * (1 - trust-level)
           ]
         )
         ; TODO - to justify (0.01, 0.01, 0.03, 0.05)
