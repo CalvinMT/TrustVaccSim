@@ -50,7 +50,7 @@ The dynamic version of this simulation, with contact influence, gives the user t
 
 ### 2.3 Dynamic - Coherence influence
 
-As agents will now base themselves on their surroundings to update their level of trust, the asymptomatic state becomes a crucial element in this simulation. Agents surrounded by infected but asymptomatic agents could think that their being lied to because they won't be able to reflect what is being told to them with what they see around them.
+Agents will now base themselves on their surroundings to update their level of trust. They will be given information about their environment and compare it with what they see around them. This makes the asymptomatic state a crucial element to add to this simulation. Agents surrounded by infected but asymptomatic agents and given the information that the virus is widely spread will wrongly see them as non-infected and could think that the given information is inaccurate. In other words, they won't be able to reflect what is being told to them with what they see around them, resulting with their trust level decreasing.
 
 ```mermaid
 flowchart LR
