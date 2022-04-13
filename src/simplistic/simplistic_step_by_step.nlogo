@@ -119,7 +119,7 @@ to setup-GUI
   set virus-type variant-covid-19
   set vaccine-type vaccin-covid-19
   set percentage-initialy-vaccinated pourcentage-vaccinations-initial
-  set vaccination-threshold seuil-debut-vaccination
+  set vaccination-threshold seuil-infectes-debut-vaccination
   set percentage-daily-vaccinations pourcentage-vaccinations-quotidiens
   set initial-trust-level niveau-de-confiance
   set use-trust-level? activer-niveau-de-confiance?
@@ -868,13 +868,23 @@ pourcentage-vaccinations-initial
 %
 HORIZONTAL
 
+TEXTBOX
+11
+317
+283
+347
+1.2 Efficacité de la vaccination (dynamique)
+12
+15.0
+1
+
 SLIDER
 11
-297
+336
 283
-330
-seuil-debut-vaccination
-seuil-debut-vaccination
+369
+seuil-infectes-debut-vaccination
+seuil-infectes-debut-vaccination
 0
 100
 0.0
@@ -882,16 +892,6 @@ seuil-debut-vaccination
 1
 %
 HORIZONTAL
-
-TEXTBOX
-11
-350
-283
-380
-1.2 Efficacité de la vaccination (dynamique)
-12
-15.0
-1
 
 SLIDER
 11
