@@ -425,7 +425,7 @@ to contact-trust-influence
 end
 
 to coherence-trust-influence
-  if enable-coherence-trust-influence?
+  if enable-coherence-trust-influence? and on-going-vaccination?
   [
     ask turtles [
       let contact-trust-level trust-level
