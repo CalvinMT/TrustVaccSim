@@ -808,7 +808,7 @@ Dynamique épidémique
 Jours
 % cas
 0.0
-175.0
+100.0
 0.0
 100.0
 true
