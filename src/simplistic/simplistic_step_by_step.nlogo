@@ -41,8 +41,7 @@ globals [
   probability-deceased-vaccinated ;; probability for a vacinated hospitalised agent to get to a deceased state
 
   ;; movement
-  infected-avoidance-distance
-  speed
+  initial-speed
 
   infinity ;; default value for durations not in use
 
@@ -94,6 +93,9 @@ turtles-own [
   vaccinated?     ;; was already vaccinated
 
   trust-level     ;; level of trust normalised between 0.0 and 1.0
+
+  ;; movement
+  speed
 ]
 
 
@@ -195,8 +197,7 @@ to setup-globals
   set hospitalisation-variance 1
 
   ;; movement
-  set speed 1
-  set infected-avoidance-distance 1
+  set initial-speed 1
 
   ;; vaccinations counters
   set on-going-vaccination? false
@@ -240,6 +241,8 @@ to setup-population
 
     get-susceptible
     set vaccinated? false
+
+    set speed initial-speed
   ]
 
   setup-population-trust-level
@@ -614,6 +617,7 @@ to get-susceptible
   set hospitalisation-date infinity
   set hospitalisation-duration infinity
   set infected? false
+  set speed initial-speed
 end
 
 to get-infected
@@ -632,6 +636,7 @@ to get-infected
   set hospitalisation-date infinity
   set hospitalisation-duration infinity
   set infected? true
+  set speed initial-speed
 end
 
 to get-hospitalised
@@ -640,6 +645,7 @@ to get-hospitalised
   set hospitalisation-date ticks
   set hospitalisation-duration gamma-law hospitalisation-mean hospitalisation-variance
   set infected? true
+  set speed initial-speed / 10
 end
 
 to get-recovered
@@ -650,6 +656,7 @@ to get-recovered
   set hospitalisation-date infinity
   set hospitalisation-duration infinity
   set infected? false
+  set speed initial-speed
 end
 
 to get-deceased
@@ -658,6 +665,7 @@ to get-deceased
   set infection-duration infinity
   set hospitalisation-duration infinity
   set infected? false
+  set speed 0
 end
 
 to get-vaccinated
