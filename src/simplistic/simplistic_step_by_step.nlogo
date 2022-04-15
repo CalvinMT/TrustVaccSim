@@ -43,6 +43,11 @@ globals [
   ;; movement
   initial-speed
 
+  min-x-hospitalised-patch
+  max-x-hospitalised-patch
+  min-y-hospitalised-patch
+  max-y-hospitalised-patch
+
   infinity ;; default value for durations not in use
 
   ;; new globals pour dépistage
@@ -199,6 +204,11 @@ to setup-globals
   ;; movement
   set initial-speed 1
 
+  set min-x-hospitalised-patch -6
+  set max-x-hospitalised-patch -5
+  set min-y-hospitalised-patch 5
+  set max-y-hospitalised-patch 6
+
   ;; vaccinations counters
   set on-going-vaccination? false
   set nb-days-vaccination 0
@@ -236,7 +246,7 @@ to setup-population
   set-default-shape turtles "circle"
 
   create-turtles population-size [
-    setxy random-xcor random-ycor
+    move-to-random-outside-hospitalised-patch
     set size 0.3
 
     get-susceptible
@@ -334,13 +344,62 @@ end
 
 
 
-;;;;;;;;;;;;;;;;;;;;;
-;;;;; MOVEMENTS ;;;;;
-;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; MOVEMENTS & POSITIONS ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+to-report heading-in-hopitalised-patch [my-speed]
+  let ahead-x 0
+  let ahead-y 0
+  ask patch-ahead my-speed [
+    set ahead-x pxcor
+    set ahead-y pycor
+  ]
+  report
+    ahead-x > min-x-hospitalised-patch - 2 and
+    ahead-x < max-x-hospitalised-patch + 2 and
+    ahead-y > min-y-hospitalised-patch - 2 and
+    ahead-y < max-y-hospitalised-patch + 2
+end
+
+to move-to-hospitalised-patch
+  let x min-x-hospitalised-patch + (random (max-x-hospitalised-patch - min-x-hospitalised-patch + 1))
+  let y min-y-hospitalised-patch + (random (max-y-hospitalised-patch - min-y-hospitalised-patch + 1))
+  set x x + 0.5 - (random-float 1)
+  set y y + 0.5 - (random-float 1)
+  setxy x y
+end
+
+to move-to-random-outside-hospitalised-patch
+  let x random-xcor
+  let y random-ycor
+  while [x > min-x-hospitalised-patch - 1 and x < max-x-hospitalised-patch + 1 and
+         y > min-y-hospitalised-patch - 1 and y < max-y-hospitalised-patch + 1]
+  [
+    set x random-xcor
+    set y random-ycor
+  ]
+  setxy x y
+end
 
 to move-randomly [my-speed]
   set heading random 360
-  forward my-speed
+  ifelse epidemic-state = "Hospitalised"
+  [
+    ;; stay in patch 0 0
+    if heading-in-hopitalised-patch my-speed
+    [
+      forward my-speed
+    ]
+  ]
+  [
+    ;; avoid patch 0 0
+    if heading-in-hopitalised-patch my-speed
+    [
+      set heading (heading + 180) mod 360
+    ]
+    forward my-speed
+  ]
 end
 
 to move-alive
@@ -646,9 +705,12 @@ to get-hospitalised
   set hospitalisation-duration gamma-law hospitalisation-mean hospitalisation-variance
   set infected? true
   set speed initial-speed / 10
+  move-to-hospitalised-patch
 end
 
 to get-recovered
+  if epidemic-state = "Hospitalised"
+  [ move-to-random-outside-hospitalised-patch ]
   set epidemic-state "Recovered"
   set color lput transparency color-recovered
   set infection-date infinity
