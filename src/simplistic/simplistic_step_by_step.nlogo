@@ -24,6 +24,8 @@ globals [
   enable-asymptomatic?
   enable-coherence-trust-influence?
   information-type ;; type of the information spread among [1. Real, 2. Positive, 3. Negative]
+  enable-limited-natural-immunity?
+  enable-limited-vaccination-immunity?
 
   current-trust-average
   current-trust-average-count
@@ -36,9 +38,11 @@ globals [
   probability-asymptomatic ;; probability that a susceptible agent will get to an asymptomatic state
   probability-hospitalised ;; probability for an infected agent to get to a hospitalised state
   probability-deceased ;; probability for an hospitalised agent to get to a deceased state
+  probability-susceptible ;; probability for a recovered agent to get to a recovered state
   probability-transmission-vaccinated ;; probability that an infected agent will infect a vacinated neighbour on same patch
   probability-hospitalised-vaccinated ;; probability for a vacinated infected agent to get to a hospitalised state
   probability-deceased-vaccinated ;; probability for a vacinated hospitalised agent to get to a deceased state
+  probability-susceptible-vaccinated ;; probability for a vaccinated recovered agent to get to a recovered state
 
   ;; movement
   initial-speed
@@ -63,6 +67,10 @@ globals [
   ; mean and variance for random-gamma determining hospitalisation durations
   hospitalisation-mean
   hospitalisation-variance
+
+  ; mean and variance for random-gamma determining recovered durations
+  recovered-mean
+  recovered-variance
 
   ;; metrics
   nb-new-infections
@@ -92,6 +100,8 @@ turtles-own [
   infection-duration
   hospitalisation-date   ;; ticks when got hospitalised
   hospitalisation-duration
+  recovered-date   ;; ticks when got recovered
+  recovered-duration
   infected?           ;; shortcut for Infected
 
   ; demographics
@@ -135,6 +145,8 @@ to setup-GUI
   set enable-asymptomatic? activer-infection-asymptomatique?
   set enable-coherence-trust-influence? activer-influence-par-coherence?
   set information-type type-information-diffusée
+  set enable-limited-natural-immunity? activer-immunite-naturelle-limitee?
+  set enable-limited-vaccination-immunity? activer-immunite-vaccination-limitee?
 end
 
 
@@ -162,6 +174,7 @@ to setup-globals
       set probability-asymptomatic 0.2435 ; https://academic.oup.com/jtm/article/27/5/taaa066/5828924
       set probability-hospitalised 0.2 ; TODO
       set probability-deceased 0.15 ; TODO
+      set probability-susceptible 0.15 ; TODO
       (ifelse
         member? "AstraZeneca" vaccine-type [
           ; TODO
@@ -170,16 +183,19 @@ to setup-globals
           set probability-transmission-vaccinated 0.252
           set probability-hospitalised-vaccinated 0.142
           set probability-deceased-vaccinated 0.141
+          set probability-susceptible-vaccinated 0.6 ; TODO
         ]
         member? "Moderna" vaccine-type [
           set probability-transmission-vaccinated 0.041
           set probability-hospitalised-vaccinated 0.028
           set probability-deceased-vaccinated 0.014
+          set probability-susceptible-vaccinated 0.3 ; TODO
         ]
         member? "Pfizer" vaccine-type [
           set probability-transmission-vaccinated 0.055
           set probability-hospitalised-vaccinated 0.036
           set probability-deceased-vaccinated 0.02
+          set probability-susceptible-vaccinated 0.4 ; TODO
         ]
       )
     ]
@@ -197,9 +213,14 @@ to setup-globals
   set infection-variance 1
 
   ; TODO - change to real value
-  ;; duration of infection (random-gamma init)
+  ;; duration of hospitalisation (random-gamma init)
   set hospitalisation-mean 21
   set hospitalisation-variance 1
+
+  ; TODO - change to real value
+  ;; duration of recovered (random-gamma init)
+  set recovered-mean 6
+  set recovered-variance 1
 
   ;; movement
   set initial-speed 1
@@ -648,6 +669,24 @@ to update-states
     [ get-deceased ]
     [ get-recovered ]
   ]
+  ;; go from recovered to susceptible
+  if enable-limited-natural-immunity? or enable-limited-vaccination-immunity?
+  [
+    ask turtles with [epidemic-state = "Recovered" and
+                      ticks > recovered-date + recovered-duration] [
+      let proba-susc (ifelse-value
+        enable-limited-vaccination-immunity? and vaccinated? [ probability-susceptible-vaccinated ]
+        enable-limited-natural-immunity? [ probability-susceptible ]
+        [ -1 ]
+      )
+      if random-float 1 < proba-susc
+      [
+        get-susceptible
+        if enable-limited-vaccination-immunity? and vaccinated?
+        [ get-unvaccinated ]
+      ]
+    ]
+  ]
 end
 
 ;; called in go at start of turn
@@ -675,6 +714,8 @@ to get-susceptible
   set infection-duration infinity
   set hospitalisation-date infinity
   set hospitalisation-duration infinity
+  set recovered-date infinity
+  set recovered-duration infinity
   set infected? false
   set speed initial-speed
 end
@@ -694,6 +735,8 @@ to get-infected
   set infection-duration gamma-law infection-mean infection-variance
   set hospitalisation-date infinity
   set hospitalisation-duration infinity
+  set recovered-date infinity
+  set recovered-duration infinity
   set infected? true
   set speed initial-speed
 end
@@ -703,6 +746,8 @@ to get-hospitalised
   set color lput transparency color-hospitalised
   set hospitalisation-date ticks
   set hospitalisation-duration gamma-law hospitalisation-mean hospitalisation-variance
+  set recovered-date infinity
+  set recovered-duration infinity
   set infected? true
   set speed initial-speed / 10
   move-to-hospitalised-patch
@@ -717,6 +762,8 @@ to get-recovered
   set infection-duration infinity
   set hospitalisation-date infinity
   set hospitalisation-duration infinity
+  set recovered-date ticks
+  set recovered-duration gamma-law recovered-mean recovered-variance
   set infected? false
   set speed initial-speed
 end
@@ -726,6 +773,7 @@ to get-deceased
   set color lput transparency color-deceased
   set infection-duration infinity
   set hospitalisation-duration infinity
+  set recovered-duration infinity
   set infected? false
   set speed 0
 end
@@ -733,6 +781,11 @@ end
 to get-vaccinated
   set vaccinated? true
   set shape "triangle"
+end
+
+to get-unvaccinated
+  set vaccinated? false
+  set shape "circle"
 end
 
 
@@ -1087,6 +1140,48 @@ type-information-diffusée
 type-information-diffusée
 "1. Réelle" "2. Positive uniquement" "3. Négative uniquement"
 0
+
+TEXTBOX
+11
+782
+383
+812
+3 Immunité naturelle limitée
+12
+15.0
+1
+
+SWITCH
+11
+803
+283
+836
+activer-immunite-naturelle-limitee?
+activer-immunite-naturelle-limitee?
+1
+1
+-1000
+
+TEXTBOX
+11
+856
+383
+886
+4 Immunité de la vaccination limitée
+12
+15.0
+1
+
+SWITCH
+11
+877
+283
+909
+activer-immunite-vaccination-limitee?
+activer-immunite-vaccination-limitee?
+1
+1
+-1000
 
 MONITOR
 554
