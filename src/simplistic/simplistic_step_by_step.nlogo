@@ -1089,13 +1089,13 @@ type-information-diffusée
 0
 
 MONITOR
-861
+554
 662
-996
+682
 707
-% personnes guéries
-nb-to-prop nb-R population-size
-2
+nb de jours de vaccinations
+nb-days-vaccination
+17
 1
 11
 
@@ -1111,13 +1111,13 @@ total-vaccinations
 11
 
 MONITOR
-554
+861
 662
-682
+996
 707
-nb de jours de vaccinations
-nb-days-vaccination
-17
+% personnes guéries
+nb-to-prop nb-R population-size
+2
 1
 11
 
