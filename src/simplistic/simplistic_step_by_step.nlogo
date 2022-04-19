@@ -466,9 +466,9 @@ end
 to contact-trust-influence
   if enable-contact-trust-influence?
   [
-    ask turtles [
+    ask turtles with [epidemic-state != "Deceased"] [
       let contact-trust-level trust-level
-      ask other turtles in-radius 0.1 [
+      ask other turtles in-radius 0.1 with [epidemic-state != "Deceased"] [
         let proba-influ (ifelse-value
           ;; non-trusting agents are less influenced than trusting agents
           trust-level < 0.5 [ random-float trust-level / 0.5 ]
@@ -510,9 +510,9 @@ end
 to coherence-trust-influence
   if enable-coherence-trust-influence? and on-going-vaccination?
   [
-    ask turtles [
+    ask turtles with [epidemic-state != "Deceased"] [
       let contact-trust-level trust-level
-      ask other turtles in-radius 0.1 [
+      ask other turtles in-radius 0.1 with [epidemic-state != "Deceased"] [
         let is-other-vaccinated? vaccinated?
         let is-other-symptomatic? ((epidemic-state = "Infected") or (epidemic-state = "Hospitalised"))
         let coherent-influence-modifier 0
