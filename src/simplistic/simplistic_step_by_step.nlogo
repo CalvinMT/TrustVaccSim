@@ -976,7 +976,7 @@ PLOT
 581
 Influence de la confiance
 Temps
-% / N
+%
 0.0
 100.0
 0.0
@@ -985,8 +985,7 @@ true
 true
 "" ""
 PENS
-"Infectés" 1.0 0 -16777216 true "" "set-plot-pen-color color-infected plot nb-to-prop nb-I population-size"
-"Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-vaccinations-today"
+"Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop nb-vaccinations-today nb-daily-vaccinations"
 "Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average population-size"
 
 CHOOSER
