@@ -848,6 +848,14 @@ to-report nb-H
   report count turtles with [epidemic-state = "Hospitalised"]
 end
 
+to-report nb-H-nV
+  report count turtles with [epidemic-state = "Hospitalised" and not vaccinated?]
+end
+
+to-report nb-H-V
+  report count turtles with [epidemic-state = "Hospitalised" and vaccinated?]
+end
+
 to-report nb-R
   report count turtles with [epidemic-state = "Recovered"]
 end
@@ -1000,6 +1008,25 @@ true
 PENS
 "Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop nb-vaccinations-today nb-daily-vaccinations"
 "Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average population-size"
+
+PLOT
+1099
+581
+1615
+813
+Hospitalisation
+Temps
+Nombre d'hospitalisé
+0.0
+100.0
+0.0
+100.0
+true
+true
+"" ""
+PENS
+"Non-vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-hospitalised plot nb-H-nV"
+"Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-H-V"
 
 CHOOSER
 11
