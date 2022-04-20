@@ -58,6 +58,7 @@ globals [
   on-going-vaccination? ;; is there a vaccination campaign currently
   nb-days-vaccination   ;; number of days elapsed since the beginning of the vaccination campaign
 ;  nb-campaigns      ;; number of vaccination campaigns
+  nb-vaccinations-today
   list-vaccinations        ;; remember %vaccinated each day
 
   ; mean and variance for random-gamma determining infection durations
@@ -234,6 +235,7 @@ to setup-globals
   set on-going-vaccination? false
   set nb-days-vaccination 0
 ;  set nb-campaigns 0
+  set nb-vaccinations-today 0
   set list-vaccinations []
 
   ;; metrics
@@ -579,7 +581,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to vaccinate-pop
-  (ifelse
+  if
     ;; if not vaccination currently and proportion of infected above the threshold and there are people to vaccinate
     not on-going-vaccination? and
     (nb-to-prop nb-I population-size) > vaccination-threshold and
@@ -588,29 +590,30 @@ to vaccinate-pop
       set on-going-vaccination? true
 ;      set nb-campaigns nb-campaigns + 1
       set nb-days-vaccination 0
-      ;; vaccinate the target population
-      ask up-to-n-of nb-daily-vaccinations target-population [ vaccinate-one ]
-    ]
+  ]
 
     ;; if vaccination is on-going
-    on-going-vaccination? [
+  if on-going-vaccination? [
 
-      ;; are there people to vaccinate?
-      ifelse any? target-population
-      ;; continue the campaign
-      [
-        ask up-to-n-of nb-daily-vaccinations target-population [ vaccinate-one ]
-        set nb-days-vaccination nb-days-vaccination + 1
-      ]
-      ;; stop the campaign
-      [
-;        set on-going-vaccination? false
-;        ask turtles with [vaccinated?] [
-;          set vaccinated? false
-;        ]
-      ]
+    ;; reset today vaccination counter
+    set nb-vaccinations-today 0
+
+    ;; are there people to vaccinate?
+    ifelse any? target-population
+    ;; continue the campaign
+    [
+      ;; vaccinate the target population
+      ask up-to-n-of nb-daily-vaccinations target-population [ vaccinate-one ]
+      set nb-days-vaccination nb-days-vaccination + 1
     ]
-  )
+    ;; stop the campaign
+    [
+      ;set on-going-vaccination? false
+      ;ask turtles with [vaccinated?] [
+        ;set vaccinated? false
+      ;]
+    ]
+  ]
 end
 
 to-report target-population
@@ -626,10 +629,12 @@ to vaccinate-one
     if random-float 1 < trust-level
     [
       get-vaccinated
+      set nb-vaccinations-today nb-vaccinations-today + 1
     ]
   ]
   [
     get-vaccinated
+    set nb-vaccinations-today nb-vaccinations-today + 1
   ]
 end
 
@@ -698,6 +703,7 @@ end
 ;; called in go after movement, transmission
 to update-counters
   set total-nb-infected total-nb-infected + nb-new-infections
+  set list-vaccinations lput nb-vaccinations-today list-vaccinations
 end
 
 
