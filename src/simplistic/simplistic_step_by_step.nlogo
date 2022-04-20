@@ -626,7 +626,7 @@ to vaccinate-pop
 end
 
 to-report target-population
-  report turtles with [not vaccinated? and epidemic-state != "Infected" and not vaccinated? and epidemic-state != "Hospitalised" and epidemic-state != "Deceased"]
+  report turtles with [not vaccinated? and epidemic-state != "Infected" and not vaccinated? and epidemic-state != "Hospitalised" and epidemic-state != "Recovered" and epidemic-state != "Deceased"]
 end
 
 
