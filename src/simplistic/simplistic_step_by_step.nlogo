@@ -65,6 +65,10 @@ globals [
   infection-mean
   infection-variance
 
+  ; mean and variance for random-gamma determining asymptomatic infection durations
+  asymptomatic-mean
+  asymptomatic-variance
+
   ; mean and variance for random-gamma determining hospitalisation durations
   hospitalisation-mean
   hospitalisation-variance
@@ -214,6 +218,10 @@ to setup-globals
   set infection-variance 1
 
   ; TODO - change to real value
+  ;; duration of asymptomatic infection (random-gamma init)
+  set asymptomatic-mean 15
+  set asymptomatic-variance 2
+
   ;; duration of hospitalisation (random-gamma init)
   set hospitalisation-mean 21
   set hospitalisation-variance 1
@@ -732,13 +740,14 @@ to get-infected
   [
     set epidemic-state "Asymptomatic"
     set color lput transparency color-asymptomatic
+    set infection-duration gamma-law asymptomatic-mean asymptomatic-variance
   ]
   [
     set epidemic-state "Infected"
     set color lput transparency color-infected
+    set infection-duration gamma-law infection-mean infection-variance
   ]
   set infection-date ticks
-  set infection-duration gamma-law infection-mean infection-variance
   set hospitalisation-date infinity
   set hospitalisation-duration infinity
   set recovered-date infinity
