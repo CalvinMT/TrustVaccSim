@@ -185,21 +185,24 @@ to setup-globals
           ; TODO
         ]
         member? "Johnson" vaccine-type [
+          ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
           set probability-transmission-vaccinated 0.252
           set probability-hospitalised-vaccinated 0.142
           set probability-deceased-vaccinated 0.141
           set probability-susceptible-vaccinated 0.6 ; TODO
         ]
         member? "Moderna" vaccine-type [
+          ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
           set probability-transmission-vaccinated 0.041
           set probability-hospitalised-vaccinated 0.028
           set probability-deceased-vaccinated 0.014
           set probability-susceptible-vaccinated 0.3 ; TODO
         ]
         member? "Pfizer" vaccine-type [
+          ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
           set probability-transmission-vaccinated 0.055
           set probability-hospitalised-vaccinated 0.036
-          set probability-deceased-vaccinated 0.02
+          set probability-deceased-vaccinated 0.02 ; https://www.nejm.org/doi/full/10.1056/NEJMoa2115624
           set probability-susceptible-vaccinated 0.4 ; TODO
         ]
       )
