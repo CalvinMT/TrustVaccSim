@@ -222,9 +222,10 @@ to setup-globals
   set asymptomatic-mean 15
   set asymptomatic-variance 2
 
+  ;; https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7589278/
   ;; duration of hospitalisation (random-gamma init)
-  set hospitalisation-mean 21
-  set hospitalisation-variance 1
+  set hospitalisation-mean 10
+  set hospitalisation-variance 3
 
   ; TODO - change to real value
   ;; duration of recovered (random-gamma init)
