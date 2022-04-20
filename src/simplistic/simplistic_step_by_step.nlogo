@@ -855,7 +855,6 @@ end
 to-report trust-average
   report sum [trust-level] of turtles
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 553
@@ -931,7 +930,7 @@ NIL
 PLOT
 554
 721
-996
+1070
 946
 Dynamique épidémique
 Jours
@@ -950,6 +949,44 @@ PENS
 "Guéris" 1.0 0 -16777216 true "" "set-plot-pen-color color-recovered plot nb-to-prop nb-R population-size"
 "Décédés" 1.0 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-to-prop nb-D population-size"
 "Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop total-vaccinations population-size"
+"Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average population-size"
+
+PLOT
+1099
+117
+1615
+349
+Répartition de la confiance
+Niveau de confiance
+Nombre d'agent
+0.0
+2000.0
+0.0
+1.0
+false
+false
+"set-plot-x-range 0 1\n set-plot-y-range 0 100\n set-histogram-num-bars 200" ""
+PENS
+"turtles" 1 1 -2674135 true "" "histogram [trust-level] of turtles"
+
+PLOT
+1099
+349
+1615
+581
+Influence de la confiance
+Temps
+% / N
+0.0
+100.0
+0.0
+100.0
+true
+true
+"" ""
+PENS
+"Infectés" 1.0 0 -16777216 true "" "set-plot-pen-color color-infected plot nb-to-prop nb-I population-size"
+"Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-vaccinations-today"
 "Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average population-size"
 
 CHOOSER
@@ -1070,7 +1107,7 @@ niveau-de-confiance
 0.0
 0.1
 1
- 
+NIL
 HORIZONTAL
 
 TEXTBOX
@@ -1182,7 +1219,7 @@ SWITCH
 11
 877
 283
-909
+910
 activer-immunite-vaccination-limitee?
 activer-immunite-vaccination-limitee?
 1
