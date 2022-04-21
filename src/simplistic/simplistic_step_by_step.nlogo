@@ -40,6 +40,7 @@ globals [
   probability-deceased ;; probability for an hospitalised agent to get to a deceased state
   probability-susceptible ;; probability for a recovered agent to get to a recovered state
   probability-transmission-vaccinated ;; probability that an infected agent will infect a vacinated neighbour on same patch
+  probability-asymptomatic-vaccinated ;; probability for a susceptible agent to get to a asymptomatic state
   probability-hospitalised-vaccinated ;; probability for a vacinated infected agent to get to a hospitalised state
   probability-deceased-vaccinated ;; probability for a vacinated hospitalised agent to get to a deceased state
   probability-susceptible-vaccinated ;; probability for a vaccinated recovered agent to get to a recovered state
@@ -188,6 +189,7 @@ to setup-globals
           ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
           ;; for 2 vaccine shots
           set probability-transmission-vaccinated 0.252
+          set probability-asymptomatic-vaccinated 0.1 ; TODO
           set probability-hospitalised-vaccinated 0.142
           set probability-deceased-vaccinated 0.141
           set probability-susceptible-vaccinated 0.6 ; TODO
@@ -196,6 +198,7 @@ to setup-globals
           ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
           ;; for 2 vaccine shots
           set probability-transmission-vaccinated 0.041
+          set probability-asymptomatic-vaccinated 0.2 ; TODO
           set probability-hospitalised-vaccinated 0.028
           set probability-deceased-vaccinated 0.014
           set probability-susceptible-vaccinated 0.3 ; TODO
@@ -204,6 +207,7 @@ to setup-globals
           ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
           ;; for 2 vaccine shots
           set probability-transmission-vaccinated 0.055
+          set probability-asymptomatic-vaccinated 0.16 ; TODO
           set probability-hospitalised-vaccinated 0.036
           set probability-deceased-vaccinated 0.02 ; https://www.nejm.org/doi/full/10.1056/NEJMoa2115624
           set probability-susceptible-vaccinated 0.4 ; TODO
@@ -742,8 +746,13 @@ to get-susceptible
 end
 
 to get-infected
+  let proba-asymp (ifelse-value
+    enable-asymptomatic? and vaccinated? [ probability-asymptomatic-vaccinated ]
+    enable-asymptomatic? and not vaccinated? [ probability-asymptomatic ]
+    [ -1 ]
+  )
   ;; probability to be asymptomatic
-  ifelse enable-asymptomatic? and random-float 1 < probability-asymptomatic
+  ifelse random-float 1 < proba-asymp
   [
     set epidemic-state "Asymptomatic"
     set color lput transparency color-asymptomatic
