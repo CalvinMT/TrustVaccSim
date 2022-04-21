@@ -186,6 +186,7 @@ to setup-globals
         ]
         member? "Johnson" vaccine-type [
           ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
+          ;; for 2 vaccine shots
           set probability-transmission-vaccinated 0.252
           set probability-hospitalised-vaccinated 0.142
           set probability-deceased-vaccinated 0.141
@@ -193,6 +194,7 @@ to setup-globals
         ]
         member? "Moderna" vaccine-type [
           ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
+          ;; for 2 vaccine shots
           set probability-transmission-vaccinated 0.041
           set probability-hospitalised-vaccinated 0.028
           set probability-deceased-vaccinated 0.014
@@ -200,6 +202,7 @@ to setup-globals
         ]
         member? "Pfizer" vaccine-type [
           ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
+          ;; for 2 vaccine shots
           set probability-transmission-vaccinated 0.055
           set probability-hospitalised-vaccinated 0.036
           set probability-deceased-vaccinated 0.02 ; https://www.nejm.org/doi/full/10.1056/NEJMoa2115624
@@ -1045,7 +1048,7 @@ CHOOSER
 220
 Vaccin-COVID-19
 Vaccin-COVID-19
-"Johnson&Johnson" "Moderna" "Pfizer"
+"Johnson&Johnson (2 doses)" "Moderna (2 doses)" "Pfizer (2 doses)"
 0
 
 TEXTBOX
