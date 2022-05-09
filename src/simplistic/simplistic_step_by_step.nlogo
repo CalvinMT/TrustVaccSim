@@ -23,7 +23,7 @@ globals [
   enable-contact-trust-influence?
   enable-asymptomatic?
   enable-coherence-trust-influence?
-  information-type ;; type of the information spread among [1. Real, 2. Positive, 3. Negative]
+  information-type ;; type of the information spread among [1. None, 2. Positive, 3. Negative]
   enable-limited-natural-immunity?
   enable-limited-vaccination-immunity?
 
@@ -541,7 +541,7 @@ to coherence-trust-influence
         ;; negative information have more impact than positive information
         ;; https://onlinelibrary.wiley.com/doi/abs/10.1111/0272-4332.00030
         (ifelse
-          ;; Real
+          ;; None
           member? "1." information-type
           [
             set coherent-influence-modifier 1
@@ -1232,7 +1232,7 @@ CHOOSER
 762
 type-information-diffusée
 type-information-diffusée
-"1. Réelle" "2. Positive uniquement" "3. Négative uniquement"
+"1. Aucune" "2. Positive uniquement" "3. Négative uniquement"
 0
 
 TEXTBOX
