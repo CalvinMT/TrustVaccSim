@@ -1,6 +1,6 @@
 # Simplistic step-by-step
 
-The simulation of [question 17: "Dépistons ! Oui mais qui, quand et comment ?"](https://covprehension.org/2020/05/12/q17.html) from the website [CoVprehension.org](https://covprehension.org/) has been chosen as basis for the following simulations. Its agents have five possible health states of which three are kept and two are added: susceptible, infected (i.e. symptomatic), recovered, hospitalised and deceased. Susceptible agents can get infected. Infected agents can infect susceptible agents, recover from their infection over time by becoming recovered agents or get hospitalised as the infection gets worse. Hospitalised agents can either become recovered agents or deceased agents. The deceased and hospitalised states are both considered as final states for the first simulations. The latter gives full immunity to agents against the virus. The simulation ends once no more agents are in the infected or hospitalised state.
+The simulation of [question 17: "Dépistons ! Oui mais qui, quand et comment ?"](https://covprehension.org/2020/05/12/q17.html) from the website [CoVprehension.org](https://covprehension.org/) was chosen as basis for the following simulations. Its agents have five possible health states of which three are kept and two are added: susceptible, infected (i.e. symptomatic), recovered, hospitalised and deceased. Susceptible agents can get infected. Infected agents can infect susceptible agents, recover from their infection over time by becoming recovered agents or get hospitalised as the infection worsens. Hospitalised agents can either become recovered agents or deceased agents. The deceased and hospitalised states are both considered as final states for the first simulations. The latter gives full immunity to agents against the virus. The simulation ends once no more agents are in the infected or hospitalised state.
 
 ```mermaid
 flowchart LR
@@ -14,7 +14,7 @@ _S: Susceptible; I: Infected; R: Recovered; H: Hospitalised; D: Deceased_
 
 ## 1. Vaccine efficiency
 
-Agents are given an additional parameter showing their vaccinated state, which is different from a health state. Either they are vaccinated, or they're not. The vaccinated parameter plays a role in the probability for agents to get infected, in the time it takes them to recover from their infection and by influencing the chances they have not to get hospitalised and die. In other words, a good vaccine makes vaccinated agents have fewer chances to get infected by other agents, it makes them recover faster from their infected state and it should prevent them from being hospitalised.
+Agents are given an additional parameter showing their vaccinated state, which is different from a health state. Either they are vaccinated, or they're not. The vaccinated parameter plays a role in the probability for agents to get infected, in the time it takes them to recover from their infection and by influencing the chances they have to not get hospitalised, nor die. In other words, a good vaccine makes vaccinated agents have fewer chances to get infected by other agents, it makes them recover faster from their infected state and it should prevent them from getting hospitalised.
 
 The simulated vaccine has five adjustable parameters, all controlling the probability for a vaccinated agent of any state to get to the next state.
 
