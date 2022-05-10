@@ -22,7 +22,7 @@ globals [
   is-initial-trust-average?
   enable-contact-trust-influence?
   enable-asymptomatic?
-  enable-coherence-trust-influence?
+  enable-observation-trust-influence?
   information-type ;; type of the information spread among [1. None, 2. Positive, 3. Negative]
   enable-limited-natural-immunity?
   enable-limited-vaccination-immunity?
@@ -149,7 +149,7 @@ to setup-GUI
   set is-initial-trust-average? activer-niveau-de-confiance-moyen?
   set enable-contact-trust-influence? activer-influence-par-contact?
   set enable-asymptomatic? activer-infection-asymptomatique?
-  set enable-coherence-trust-influence? activer-influence-par-coherence?
+  set enable-observation-trust-influence? activer-influence-par-observation?
   set information-type type-information-diffusée
   set enable-limited-natural-immunity? activer-immunite-naturelle-limitee?
   set enable-limited-vaccination-immunity? activer-immunite-vaccination-limitee?
@@ -481,7 +481,7 @@ end
 
 to trust-influence
   contact-trust-influence
-  coherence-trust-influence
+  observation-trust-influence
 end
 
 to contact-trust-influence
@@ -528,65 +528,41 @@ to contact-trust-influence
   ]
 end
 
-to coherence-trust-influence
-  if enable-coherence-trust-influence? and on-going-vaccination?
+to observation-trust-influence
+  if enable-observation-trust-influence? and on-going-vaccination?
   [
     ask turtles with [epidemic-state != "Deceased"] [
-      let contact-trust-level trust-level
+      let observer-update 0
       ask other turtles in-radius 0.1 with [epidemic-state != "Deceased"] [
         let is-other-vaccinated? vaccinated?
         let is-other-symptomatic? ((epidemic-state = "Infected") or (epidemic-state = "Hospitalised"))
-        let coherent-influence-modifier 0
-        let incoherent-influence-modifier 0
+        ; TODO - to justify (0.01, 0.01, 0.03, 0.05)
         ;; negative information have more impact than positive information
         ;; https://onlinelibrary.wiley.com/doi/abs/10.1111/0272-4332.00030
         (ifelse
-          ;; None
-          member? "1." information-type
-          [
-            set coherent-influence-modifier 1
-            set incoherent-influence-modifier 1
-          ]
-          ;; Positive
-          member? "2." information-type
-          [
-            set coherent-influence-modifier 0.5
-            set incoherent-influence-modifier 0.75
-            ;; non-trusting agents will neglect positive information
-            set coherent-influence-modifier coherent-influence-modifier * trust-level
-            set incoherent-influence-modifier incoherent-influence-modifier * trust-level
-          ]
-          ;; Negative
-          member? "3." information-type
-          [
-            set coherent-influence-modifier 2
-            set incoherent-influence-modifier 2.5
-            ;; trusting agents will neglect negative information
-            set coherent-influence-modifier coherent-influence-modifier * (1 - trust-level)
-            set incoherent-influence-modifier incoherent-influence-modifier * (1 - trust-level)
-          ]
-        )
-        ; TODO - to justify (0.01, 0.01, 0.03, 0.05)
-        (ifelse
           (not is-other-vaccinated?) and (not is-other-symptomatic?)
           [
-            set contact-trust-level contact-trust-level - (0.01 * incoherent-influence-modifier)
+            ;; negative information
+            set observer-update observer-update - (0.01 * (1 - trust-level))
           ]
           (not is-other-vaccinated?) and is-other-symptomatic?
           [
-            set contact-trust-level contact-trust-level + (0.01 * coherent-influence-modifier)
+            ;; positive information
+            set observer-update observer-update + (0.01 * trust-level)
           ]
           is-other-vaccinated? and (not is-other-symptomatic?)
           [
-            set contact-trust-level contact-trust-level + (0.03 * coherent-influence-modifier)
+            ;; positive information
+            set observer-update observer-update + (0.03 * trust-level)
           ]
           is-other-vaccinated? and is-other-symptomatic?
           [
-            set contact-trust-level contact-trust-level - (0.05 * incoherent-influence-modifier)
+            ;; negative information
+            set observer-update observer-update - (0.05 * (1 - trust-level))
           ]
         )
       ]
-      set trust-level contact-trust-level
+      set trust-level trust-level + observer-update
       if trust-level < 0 [ set trust-level 0 ]
       if trust-level > 1 [ set trust-level 1 ]
     ]
@@ -1198,7 +1174,7 @@ TEXTBOX
 632
 383
 662
-2.3 Confiance de la population (dynamique - par cohérence)
+2.3 Confiance de la population (dynamique - par observation)
 12
 15.0
 1
@@ -1219,8 +1195,8 @@ SWITCH
 684
 283
 717
-activer-influence-par-coherence?
-activer-influence-par-coherence?
+activer-influence-par-observation?
+activer-influence-par-observation?
 1
 1
 -1000

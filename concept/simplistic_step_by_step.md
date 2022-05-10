@@ -48,9 +48,9 @@ The dynamic version of this simulation, with contact influence, gives the user t
 
 ![image 2-2](images/2-2.drawio.png)
 
-### 2.3 Dynamic - Coherence influence
+### 2.3 Dynamic - Observation influence
 
-Agents will now base themselves on their surroundings to update their level of trust. They will be given information about their environment and compare it with what they see around them. This makes the asymptomatic state a crucial element to add to this simulation. Agents surrounded by infected but asymptomatic agents and given the information that the virus is widely spread will wrongly see them as non-infected and could think that the given information is inaccurate. In other words, they won't be able to reflect what is being told to them with what they see around them, resulting with their trust level decreasing.
+Agents will now base themselves on their surroundings to update their level of trust. This makes the asymptomatic state a crucial element to add to this simulation. An agent surrounded by vaccinated and asymptomatic agents will think that the vaccine is efficient, while an agent surrounded by unvaccinated and asymptomatic agents will think that the vaccine is useless.
 
 ```mermaid
 flowchart LR
@@ -64,9 +64,9 @@ flowchart LR
 ```
 _S: Susceptible; I: Infected symptomatic; A: Infected asymptomatic; R: Recovered; H: Hospitalised; D: Deceased_
 
->Given an average trust level shared amongst agents, a type of spread information, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
+>Given an average trust level shared amongst agents, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
-The dynamic version of this simulation, with coherence influence, requires the user to give an average initial trust level shared throughout the population and to choose the type of information on which the population will base its knowledge. Types of information are: real, positive and negative. Real information reflects exactly the state of the population. Positive information amplifies good news, while negative information amplifies bad news. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents, the number of vaccinated agents and the average trust level of the population across time.
+The dynamic version of this simulation, with coherence influence, requires the user to give an average initial trust level shared throughout the population. Results of this simulation are viewed in a graph showing the number of infected agents, the number of recovered agents, the number of vaccinated agents and the average trust level of the population across time.
 
 
 ![image 2-3](images/2-3.drawio.png)
