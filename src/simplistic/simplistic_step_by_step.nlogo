@@ -198,7 +198,7 @@ to setup-globals
           ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
           ;; for 2 vaccine shots
           set probability-transmission-vaccinated 0.041
-          set probability-asymptomatic-vaccinated 0.2 ; TODO
+          set probability-asymptomatic-vaccinated 0.5 ; TODO
           set probability-hospitalised-vaccinated 0.028
           set probability-deceased-vaccinated 0.014
           set probability-susceptible-vaccinated 0.3 ; TODO
