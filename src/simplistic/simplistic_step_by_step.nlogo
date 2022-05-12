@@ -35,11 +35,13 @@ globals [
   nb-initialy-vaccinated ;; initial number of vaccinated agents
   nb-daily-vaccinations ;; number of daily vaccinated agents
   probability-transmission ;; probability that an infected agent will infect a neighbour on same patch
+  probability-reinfection ;; probability that a susceptible agent previously infected gets infected again
   probability-asymptomatic ;; probability that a susceptible agent will get to an asymptomatic state
   probability-hospitalised ;; probability for an infected agent to get to a hospitalised state
   probability-deceased ;; probability for an hospitalised agent to get to a deceased state
   probability-susceptible ;; probability for a recovered agent to get to a recovered state
   probability-transmission-vaccinated ;; probability that an infected agent will infect a vacinated neighbour on same patch
+  probability-reinfection-vaccinated ;; probability that a vaccinated susceptible agent previously infected gets infected again
   probability-asymptomatic-vaccinated ;; probability for a susceptible agent to get to a asymptomatic state
   probability-hospitalised-vaccinated ;; probability for a vacinated infected agent to get to a hospitalised state
   probability-deceased-vaccinated ;; probability for a vacinated hospitalised agent to get to a deceased state
@@ -110,6 +112,9 @@ turtles-own [
   recovered-duration
   infected?           ;; shortcut for Infected
 
+  previously-infected?  ;; was previously infected
+  previously-vaccinated?  ;; was previously vaccinated
+
   ; demographics
   vaccinated?     ;; was already vaccinated
 
@@ -176,7 +181,7 @@ to setup-globals
     ]
     member? "Delta" virus-type [
       set probability-transmission 0.3 ; https://covidtracker.fr/covidtracker-world/ - October 4th 2021
-      ;;set probability-reinfection 0.098 ; https://www.nejm.org/doi/full/10.1056/NEJMc2200133
+      set probability-reinfection 0.098 ; https://www.nejm.org/doi/full/10.1056/NEJMc2200133
       set probability-asymptomatic 0.2435 ; https://academic.oup.com/jtm/article/27/5/taaa066/5828924
       set probability-hospitalised 0.2 ; TODO
       set probability-deceased 0.15 ; TODO
@@ -189,6 +194,7 @@ to setup-globals
           ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
           ;; for 2 vaccine shots
           set probability-transmission-vaccinated 0.252
+          set probability-reinfection-vaccinated 0.21 ; TODO
           set probability-asymptomatic-vaccinated 0.1 ; TODO
           set probability-hospitalised-vaccinated 0.142
           set probability-deceased-vaccinated 0.141
@@ -198,6 +204,7 @@ to setup-globals
           ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
           ;; for 2 vaccine shots
           set probability-transmission-vaccinated 0.041
+          set probability-reinfection-vaccinated 0.01 ; TODO
           set probability-asymptomatic-vaccinated 0.5 ; TODO
           set probability-hospitalised-vaccinated 0.028
           set probability-deceased-vaccinated 0.014
@@ -207,6 +214,7 @@ to setup-globals
           ; https://www.nejm.org/doi/full/10.1056/NEJMoa2117128
           ;; for 2 vaccine shots
           set probability-transmission-vaccinated 0.055
+          set probability-reinfection-vaccinated 0.02 ; TODO
           set probability-asymptomatic-vaccinated 0.16 ; TODO
           set probability-hospitalised-vaccinated 0.036
           set probability-deceased-vaccinated 0.02 ; https://www.nejm.org/doi/full/10.1056/NEJMoa2115624
@@ -292,7 +300,9 @@ to setup-population
     set size 0.3
 
     get-susceptible
+    set previously-infected? false
     set vaccinated? false
+    set previously-vaccinated? false
 
     set speed initial-speed
   ]
@@ -461,7 +471,8 @@ to virus-transmission
   ask turtles with [infected?] [
     ;; use a different transmission probability depending on agent's state
     let proba-trans (ifelse-value
-      vaccinated? [ probability-transmission-vaccinated ]
+      previously-infected? [ probability-reinfection ]
+      previously-vaccinated? and not previously-infected? [ probability-transmission-vaccinated ]
       [ probability-transmission ]
     )
 
@@ -745,6 +756,7 @@ to get-infected
   set recovered-date infinity
   set recovered-duration infinity
   set infected? true
+  set previously-infected? true
   set speed initial-speed
 end
 
@@ -787,6 +799,7 @@ end
 
 to get-vaccinated
   set vaccinated? true
+  set previously-vaccinated? true
   set shape "triangle"
 end
 
