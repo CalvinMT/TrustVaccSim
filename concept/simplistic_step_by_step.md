@@ -10,7 +10,7 @@ flowchart LR
     H --> R(R)
     I --> R
 ```
-_S: Susceptible; I: Infected; R: Recovered; H: Hospitalised; D: Deceased_
+_S: Susceptible; I: Infected; H: Hospitalised; R: Recovered; D: Deceased_
 
 ## 1. Vaccine efficiency
 
@@ -62,7 +62,7 @@ flowchart LR
     I --> R
     A(A) ==> R
 ```
-_S: Susceptible; I: Infected symptomatic; A: Infected asymptomatic; R: Recovered; H: Hospitalised; D: Deceased_
+_S: Susceptible; I: Infected symptomatic; A: Infected asymptomatic; H: Hospitalised; R: Recovered; D: Deceased_
 
 >Given an average trust level shared amongst agents, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
@@ -88,7 +88,7 @@ flowchart LR
     A --> R
     R(R) ==> S
 ```
-_S: Susceptible; I: Infected symptomatic; A: Infected asymptomatic; R: Recovered; H: Hospitalised; D: Deceased_
+_S: Susceptible; I: Infected symptomatic; A: Infected asymptomatic; H: Hospitalised; R: Recovered; D: Deceased_
 
 >Given a natural immunity period, a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
 
