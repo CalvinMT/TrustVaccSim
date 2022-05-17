@@ -491,8 +491,10 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to trust-influence
-  contact-trust-influence
-  observation-trust-influence
+  if ticks mod 5 = 0 [
+    contact-trust-influence
+    observation-trust-influence
+  ]
 end
 
 to contact-trust-influence
