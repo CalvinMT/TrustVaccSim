@@ -780,7 +780,7 @@ to get-hospitalised
   set recovered-date infinity
   set recovered-duration infinity
   set infected? true
-  set speed initial-speed / 10
+  set speed initial-speed / 50
   move-to-hospitalised-patch
 end
 
