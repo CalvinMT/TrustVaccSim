@@ -110,6 +110,7 @@ turtles-own [
   hospitalisation-duration
   recovered-date   ;; ticks when got recovered
   recovered-duration
+  deceased-date   ;; ticks when died
   infected?           ;; shortcut for Infected
 
   previously-infected?  ;; was previously infected
@@ -700,6 +701,15 @@ to update-states
       ]
     ]
   ]
+  ;; dispose of deceased turtles
+  ask turtles with [epidemic-state = "Deceased" and
+                    ticks - deceased-date < transparency] [
+    let new-transparency (transparency - (ticks - deceased-date) * 10)
+    if new-transparency < 0 [
+      set new-transparency 0
+    ]
+    set color lput new-transparency color-deceased
+  ]
 end
 
 ;; called in go at start of turn
@@ -795,6 +805,7 @@ to get-deceased
   set infection-duration infinity
   set hospitalisation-duration infinity
   set recovered-duration infinity
+  set deceased-date ticks
   set infected? false
   set speed 0
 end
