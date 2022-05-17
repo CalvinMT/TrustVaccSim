@@ -544,7 +544,7 @@ to observation-trust-influence
   [
     ask turtles with [epidemic-state != "Deceased"] [
       let observer-update 0
-      ask other turtles in-radius 0.1 with [epidemic-state != "Deceased"] [
+      ask other turtles in-radius 0.5 with [epidemic-state != "Deceased"] [
         let is-other-vaccinated? vaccinated?
         let is-other-symptomatic? ((epidemic-state = "Infected") or (epidemic-state = "Hospitalised"))
         ; TODO - to justify (0.01, 0.01, 0.03, 0.05)
