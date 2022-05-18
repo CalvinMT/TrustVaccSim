@@ -134,8 +134,8 @@ end
 ;; setup the GUI variables as global variables
 ;; useful for headless mode and for translation of the interface
 to setup-GUI
-  set virus-config dangerosite-du-virus
-  set vaccine-config efficacite-du-vaccin
+  set virus-config dangerosite-du-virus / 10
+  set vaccine-config efficacite-du-vaccin / 10
   set initial-trust-level niveau-de-confiance-initial
 end
 
@@ -952,10 +952,10 @@ SLIDER
 151
 dangerosite-du-virus
 dangerosite-du-virus
-0
 1
-0.0
-0.1
+9
+1
+1
 1
 NIL
 HORIZONTAL
@@ -967,10 +967,10 @@ SLIDER
 184
 efficacite-du-vaccin
 efficacite-du-vaccin
-0
 1
-0.0
-0.1
+9
+1
+1
 1
 NIL
 HORIZONTAL
