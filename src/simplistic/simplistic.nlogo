@@ -390,15 +390,14 @@ end
 ;; virus transmission to susceptibles only
 to virus-transmission
   ask turtles with [infected?] [
-    ;; use a different transmission probability depending on agent's state
-    let proba-trans (ifelse-value
-      previously-infected? [ probability-reinfection ]
-      previously-vaccinated? and not previously-infected? [ probability-transmission-vaccinated ]
-      [ probability-transmission ]
-    )
-
     ;; my contacts are the other turtles on the same patch as me
     ask other turtles-here with [epidemic-state = "Susceptible"] [
+      ;; use a different transmission probability depending on agent's state
+      let proba-trans (ifelse-value
+        previously-infected? [ probability-reinfection ]
+        previously-vaccinated? and not previously-infected? [ probability-transmission-vaccinated ]
+        [ probability-transmission ]
+      )
       ;; each contact can infect
       if random-float 1 < proba-trans [ get-infected ]
     ]
