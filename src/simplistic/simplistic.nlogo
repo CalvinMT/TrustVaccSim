@@ -151,19 +151,19 @@ to setup-globals
   set percentage-daily-vaccinations 2
   set nb-daily-vaccinations (percentage-daily-vaccinations * population-size / 100)
 
-  set probability-transmission 0.3 * virus-config
-  set probability-reinfection 0.098 * virus-config
-  set probability-asymptomatic 0.2435 * virus-config
-  set probability-hospitalised 0.2 * virus-config
-  set probability-deceased 0.15 * virus-config
-  set probability-susceptible 0.15 * virus-config
+  set probability-transmission 0.5 * virus-config
+  set probability-reinfection 0.2 * virus-config
+  set probability-asymptomatic 0.25 * (1 - virus-config)
+  set probability-hospitalised 0.7 * virus-config
+  set probability-deceased 0.5 * virus-config
+  set probability-susceptible 0.5 * (1 - virus-config)
   
-  set probability-transmission-vaccinated 0.041 * (1 - vaccine-config)
-  set probability-reinfection-vaccinated 0.01 * (1 - vaccine-config)
-  set probability-asymptomatic-vaccinated 0.5 * (1 - vaccine-config)
-  set probability-hospitalised-vaccinated 0.028 * (1 - vaccine-config)
-  set probability-deceased-vaccinated 0.014 * (1 - vaccine-config)
-  set probability-susceptible-vaccinated 0.3 * (1 - vaccine-config)
+  set probability-transmission-vaccinated probability-transmission * (1 - vaccine-config)
+  set probability-reinfection-vaccinated probability-reinfection * (1 - vaccine-config)
+  set probability-asymptomatic-vaccinated probability-asymptomatic * vaccine-config
+  set probability-hospitalised-vaccinated probability-hospitalised * (1 - vaccine-config)
+  set probability-deceased-vaccinated probability-deceased * (1 - vaccine-config)
+  set probability-susceptible-vaccinated probability-susceptible * vaccine-config
 
   ;; duration of infection (random-gamma init)
   set infection-mean 21
