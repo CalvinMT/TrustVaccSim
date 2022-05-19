@@ -772,7 +772,7 @@ end
 
 ; boolean reporter
 to-report virus-present?
-  report nb-I > 0 or nb-H > 0
+  report nb-I > 0 or nb-A > 0 or nb-H > 0
 end
 
 to-report total-vaccinations
