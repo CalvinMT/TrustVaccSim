@@ -114,6 +114,7 @@ turtles-own [
 
   ;; movement
   speed
+  on-visit?
 ]
 
 
@@ -241,6 +242,7 @@ to setup-population
     set previously-vaccinated? false
 
     set speed initial-speed
+    set on-visit? false
   ]
 
   setup-population-trust-level
@@ -304,6 +306,7 @@ to go
   ifelse virus-present?
   [
     reset-counters
+    visit-hospitalised
     move-alive
     virus-transmission
     trust-influence
@@ -359,9 +362,24 @@ to move-to-random-outside-hospitalised-patch
   setxy x y
 end
 
+to visit-hospitalised
+  if ticks mod tick-trigger = 0 [
+    ask turtles with [on-visit?] [
+      set on-visit? false
+      move-to-random-outside-hospitalised-patch
+    ]
+    if nb-H > 0 [
+      ask up-to-n-of 10 turtles with [epidemic-state = "Susceptible" or epidemic-state = "Asymptomatic" or epidemic-state = "Recovered"] [
+        set on-visit? true
+        move-to-hospitalised-patch
+      ]
+    ]
+  ]
+end
+
 to move-randomly [my-speed]
   set heading random 360
-  ifelse epidemic-state = "Hospitalised"
+  ifelse epidemic-state = "Hospitalised" or on-visit?
   [
     ;; stay in patch 0 0
     if heading-in-hopitalised-patch my-speed
@@ -395,7 +413,7 @@ end
 to virus-transmission
   ask turtles with [infected?] [
     ;; my contacts are the other turtles on the same patch as me
-    ask other turtles-here with [epidemic-state = "Susceptible"] [
+    ask other turtles-here with [epidemic-state = "Susceptible" and not on-visit?] [
       ;; use a different transmission probability depending on agent's state
       let proba-trans (ifelse-value
         previously-infected? [ probability-reinfection ]
@@ -422,7 +440,7 @@ to trust-influence
 end
 
 to contact-trust-influence
-  ask turtles with [epidemic-state != "Deceased"] [
+  ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
     let contact-trust-level trust-level
     ask other turtles in-radius 0.1 with [epidemic-state != "Deceased"] [
       let proba-influ (ifelse-value
@@ -465,7 +483,7 @@ end
 to observation-trust-influence
   if on-going-vaccination?
   [
-    ask turtles with [epidemic-state != "Deceased"] [
+    ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
       let observer-update 0
       ask other turtles in-radius 0.5 with [epidemic-state != "Deceased"] [
         let is-other-vaccinated? vaccinated?
