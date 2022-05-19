@@ -788,7 +788,7 @@ to-report total-vaccinations
 end
 
 to-report trust-average
-  report sum [trust-level] of turtles
+  report sum [trust-level] of turtles with [epidemic-state != "Deceased"]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
