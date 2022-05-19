@@ -466,20 +466,9 @@ to observation-trust-influence
       ask other turtles in-radius 0.5 with [epidemic-state != "Deceased"] [
         let is-other-vaccinated? vaccinated?
         let is-other-symptomatic? ((epidemic-state = "Infected") or (epidemic-state = "Hospitalised"))
-        ; TODO - to justify (0.01, 0.01, 0.03, 0.05)
         ;; negative information have more impact than positive information
         ;; https://onlinelibrary.wiley.com/doi/abs/10.1111/0272-4332.00030
         (ifelse
-          (not is-other-vaccinated?) and (not is-other-symptomatic?)
-          [
-            ;; negative information
-            set observer-update observer-update - (0.01 * (1 - trust-level))
-          ]
-          (not is-other-vaccinated?) and is-other-symptomatic?
-          [
-            ;; positive information
-            set observer-update observer-update + (0.01 * trust-level)
-          ]
           is-other-vaccinated? and (not is-other-symptomatic?)
           [
             ;; positive information
