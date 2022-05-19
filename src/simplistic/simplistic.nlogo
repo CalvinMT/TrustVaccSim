@@ -39,6 +39,8 @@ globals [
   ;; movement
   initial-speed
 
+  tick-trigger
+
   min-x-hospitalised-patch
   max-x-hospitalised-patch
   min-y-hospitalised-patch
@@ -184,6 +186,8 @@ to setup-globals
 
   ;; movement
   set initial-speed 1
+
+  set tick-trigger 5
 
   set min-x-hospitalised-patch -6
   set max-x-hospitalised-patch -5
@@ -411,7 +415,7 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to trust-influence
-  if ticks mod 5 = 0 [
+  if ticks mod tick-trigger = 0 [
     contact-trust-influence
     observation-trust-influence
   ]
