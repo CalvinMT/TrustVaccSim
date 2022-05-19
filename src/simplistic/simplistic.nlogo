@@ -530,7 +530,7 @@ to vaccinate-pop
 end
 
 to-report target-population
-  report turtles with [not vaccinated? and (epidemic-state != "Susceptible" or epidemic-state != "Asymptomatic")]
+  report turtles with [not vaccinated? and (epidemic-state = "Susceptible" or epidemic-state = "Asymptomatic")]
 end
 
 
