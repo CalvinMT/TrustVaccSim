@@ -770,6 +770,14 @@ to-report nb-D
   report count turtles with [epidemic-state = "Deceased"]
 end
 
+to-report nb-D-nV
+  report count turtles with [epidemic-state = "Deceased" and not vaccinated?]
+end
+
+to-report nb-D-V
+  report count turtles with [epidemic-state = "Deceased" and vaccinated?]
+end
+
 ; boolean reporter
 to-report virus-present?
   report nb-I > 0 or nb-A > 0 or nb-H > 0
@@ -933,6 +941,25 @@ true
 PENS
 "Non-vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-hospitalised plot nb-H-nV"
 "Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-H-V"
+
+PLOT
+1099
+813
+1615
+1045
+Décés
+Temps
+Nombre de décés
+0.0
+100.0
+0.0
+50.0
+true
+true
+"" ""
+PENS
+"Non-vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-D-nV"
+"Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-D-V"
 
 SLIDER
 11
