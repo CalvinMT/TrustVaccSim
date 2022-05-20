@@ -16,30 +16,32 @@ globals [
   vaccine-config
   initial-trust-level
 
-  current-trust-average
+  current-trust-average ;; current trust average
 
   population-size
-  nb-infected-initialisation ;; initial number of sick agents
-  percentage-daily-vaccinations ;; percentage of the population to vaccinate at each tick
-  nb-daily-vaccinations ;; number of daily vaccinated agents
-  probability-transmission ;; probability that an infected agent will infect a neighbour on same patch
-  probability-reinfection ;; probability that a susceptible agent previously infected gets infected again
-  probability-asymptomatic ;; probability that a susceptible agent will get to an asymptomatic state
-  probability-hospitalised ;; probability for an infected agent to get to a hospitalised state
-  probability-deceased ;; probability for an hospitalised agent to get to a deceased state
-  probability-susceptible ;; probability for a recovered agent to get to a recovered state
-  probability-transmission-vaccinated ;; probability that an infected agent will infect a vacinated neighbour on same patch
-  probability-reinfection-vaccinated ;; probability that a vaccinated susceptible agent previously infected gets infected again
-  probability-asymptomatic-vaccinated ;; probability for a susceptible agent to get to a asymptomatic state
-  probability-hospitalised-vaccinated ;; probability for a vacinated infected agent to get to a hospitalised state
-  probability-deceased-vaccinated ;; probability for a vacinated hospitalised agent to get to a deceased state
-  probability-susceptible-vaccinated ;; probability for a vaccinated recovered agent to get to a recovered state
+  nb-infected-initialisation            ;; initial number of sick agents
+  percentage-daily-vaccinations         ;; percentage of the population to vaccinate at each tick
+  nb-daily-vaccinations                 ;; number of daily vaccinated agents
+  probability-transmission              ;; probability that an infected agent will infect a neighbour on same patch
+  probability-reinfection               ;; probability that a susceptible agent previously infected gets infected again
+  probability-asymptomatic              ;; probability that a susceptible agent will get to an asymptomatic state
+  probability-hospitalised              ;; probability for an infected agent to get to a hospitalised state
+  probability-deceased                  ;; probability for an hospitalised agent to get to a deceased state
+  probability-susceptible               ;; probability for a recovered agent to get to a recovered state
+  probability-transmission-vaccinated   ;; probability that an infected agent will infect a vacinated neighbour on same patch
+  probability-reinfection-vaccinated    ;; probability that a vaccinated susceptible agent previously infected gets infected again
+  probability-asymptomatic-vaccinated   ;; probability for a susceptible agent to get to a asymptomatic state
+  probability-hospitalised-vaccinated   ;; probability for a vacinated infected agent to get to a hospitalised state
+  probability-deceased-vaccinated       ;; probability for a vacinated hospitalised agent to get to a deceased state
+  probability-susceptible-vaccinated    ;; probability for a vaccinated recovered agent to get to a recovered state
 
   ;; movement
   initial-speed
 
+  ;; event
   tick-trigger
 
+  ;; patch boundaries
   min-x-hospitalised-patch
   max-x-hospitalised-patch
   min-y-hospitalised-patch
@@ -50,8 +52,8 @@ globals [
   ;; new globals pour dépistage
   on-going-vaccination? ;; is there a vaccination campaign currently
   nb-days-vaccination   ;; number of days elapsed since the beginning of the vaccination campaign
-  nb-vaccinations-today
-  list-vaccinations        ;; remember %vaccinated each day
+  nb-vaccinations-today ;; number of vaccines given on this current day
+  list-vaccinations     ;; remember %vaccinated each day
 
   ; mean and variance for random-gamma determining infection durations
   infection-mean
@@ -92,15 +94,15 @@ globals [
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 turtles-own [
-  epidemic-state      ;; state of the agent among [Susceptible, Infected, Asymptomatic, Hospitalised, Recovered, Deceased]
-  infection-date      ;; ticks when got infected
-  infection-duration
-  hospitalisation-date   ;; ticks when got hospitalised
-  hospitalisation-duration
-  recovered-date   ;; ticks when got recovered
-  recovered-duration
-  deceased-date   ;; ticks when died
-  infected?           ;; shortcut for Infected
+  epidemic-state            ;; state of the agent among [Susceptible, Infected, Asymptomatic, Hospitalised, Recovered, Deceased]
+  infection-date            ;; ticks when got infected
+  infection-duration        ;; number of ticks before the end of the infectious state
+  hospitalisation-date      ;; ticks when got hospitalised
+  hospitalisation-duration  ;; number of ticks before the end of the hospitalised state
+  recovered-date            ;; ticks when got recovered
+  recovered-duration        ;; number of ticks before the end of the recovered state
+  deceased-date             ;; ticks when died
+  infected?                 ;; shortcut for Infected
 
   previously-infected?  ;; was previously infected
   previously-vaccinated?  ;; was previously vaccinated
@@ -112,7 +114,7 @@ turtles-own [
 
   ;; movement
   speed
-  on-visit?
+  on-visit? ;; is the agent currently visiting a hospitalised patch
 ]
 
 
@@ -152,12 +154,12 @@ to setup-globals
   set percentage-daily-vaccinations 2
   set nb-daily-vaccinations (percentage-daily-vaccinations * population-size / 100)
 
-  set probability-transmission 0.5 * virus-config
+  set probability-transmission 0.5 * virus-config         ;; S->I|A - probability for an agent to get infected
   set probability-reinfection 0.2 * virus-config
-  set probability-asymptomatic 0.25 * (1 - virus-config)
-  set probability-hospitalised 0.7 * virus-config
-  set probability-deceased 0.5 * virus-config
-  set probability-susceptible 0.5 * (1 - virus-config)
+  set probability-asymptomatic 0.25 * (1 - virus-config)  ;; I|A - probability for an agent to go into a Infectious or a Asymptomatic state
+  set probability-hospitalised 0.7 * virus-config         ;; I->H|R - after a duration, probability for an agent to go into a Hospitalised or a Recovered state
+  set probability-deceased 0.5 * virus-config             ;; H->R|D - after a duration, probability for an agent to go into a Recovered or a Deceased state
+  set probability-susceptible 0.5 * (1 - virus-config)    ;; R->R|S - after a duration, probability for an agent to go into a Susceptible state
   
   set probability-transmission-vaccinated probability-transmission * (1 - vaccine-config)
   set probability-reinfection-vaccinated probability-reinfection * (1 - vaccine-config)
@@ -166,34 +168,36 @@ to setup-globals
   set probability-deceased-vaccinated probability-deceased * (1 - vaccine-config)
   set probability-susceptible-vaccinated probability-susceptible * vaccine-config
 
-  ;; duration of infection (random-gamma init)
+  ;; I->H|R - duration of infection (random-gamma init)
   set infection-mean 21
   set infection-variance 1
 
-  ;; duration of asymptomatic infection (random-gamma init)
+  ;; A->R - duration of asymptomatic infection (random-gamma init)
   set asymptomatic-mean 15
   set asymptomatic-variance 2
 
   ;; https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7589278/
-  ;; duration of hospitalisation (random-gamma init)
+  ;; H->R|D - duration of hospitalisation (random-gamma init)
   set hospitalisation-mean 10
   set hospitalisation-variance 3
 
-  ;; duration of recovered (random-gamma init)
+  ;; R->S - duration of recovered (random-gamma init)
   set recovered-mean 6
   set recovered-variance 1
 
   ;; movement
   set initial-speed 1
 
+  ;; event
   set tick-trigger 5
 
+  ;; patch boundaries
   set min-x-hospitalised-patch -6
   set max-x-hospitalised-patch -5
   set min-y-hospitalised-patch 5
   set max-y-hospitalised-patch 6
 
-  ;; vaccinations counters
+  ;; vaccination counters
   set on-going-vaccination? false
   set nb-days-vaccination 0
   set nb-vaccinations-today 0
@@ -251,7 +255,8 @@ end
 
 ;; initialisation of agents' trust level
 to setup-population-trust-level
-  let current-trust-average-count 0 ;; number of currently initialised agents' trust
+  ;; number of currently initialised agents' trust
+  let current-trust-average-count 0
   ask turtles
   [
     (ifelse
@@ -326,6 +331,7 @@ end
 ;;;;; MOVEMENTS & POSITIONS ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; is the agent's next position a hospitalised patch?
 to-report heading-in-hopitalised-patch [my-speed]
   let ahead-x 0
   let ahead-y 0
@@ -340,6 +346,7 @@ to-report heading-in-hopitalised-patch [my-speed]
     ahead-y < max-y-hospitalised-patch + 2
 end
 
+;; move the agent into a random hospitalised patch
 to move-to-hospitalised-patch
   let x min-x-hospitalised-patch + (random (max-x-hospitalised-patch - min-x-hospitalised-patch + 1))
   let y min-y-hospitalised-patch + (random (max-y-hospitalised-patch - min-y-hospitalised-patch + 1))
@@ -348,6 +355,7 @@ to move-to-hospitalised-patch
   setxy x y
 end
 
+;; move the agent on a random patch that is not considered to be a hospitalised patch
 to move-to-random-outside-hospitalised-patch
   let x random-xcor
   let y random-ycor
@@ -360,12 +368,15 @@ to move-to-random-outside-hospitalised-patch
   setxy x y
 end
 
+;; update hospitalised patches' visitors
 to visit-hospitalised
   if ticks mod tick-trigger = 0 [
+    ;; move visitors outside of hospitalised patches
     ask turtles with [on-visit?] [
       set on-visit? false
       move-to-random-outside-hospitalised-patch
     ]
+    ;; move visitors into hospitalised patches, if any hospitalised agents
     if nb-H > 0 [
       ask up-to-n-of 10 turtles with [epidemic-state = "Susceptible" or epidemic-state = "Asymptomatic" or epidemic-state = "Recovered"] [
         set on-visit? true
@@ -379,14 +390,14 @@ to move-randomly [my-speed]
   set heading random 360
   ifelse epidemic-state = "Hospitalised" or on-visit?
   [
-    ;; stay in patch 0 0
+    ;; stay inside hospitalised patches
     if heading-in-hopitalised-patch my-speed
     [
       forward my-speed
     ]
   ]
   [
-    ;; avoid patch 0 0
+    ;; avoid hospitalised patches
     if heading-in-hopitalised-patch my-speed
     [
       set heading (heading + 180) mod 360
@@ -437,6 +448,7 @@ to trust-influence
   ]
 end
 
+;; update agents' trust level when in contact with each other
 to contact-trust-influence
   ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
     let contact-trust-level trust-level
@@ -478,6 +490,7 @@ to contact-trust-influence
   ]
 end
 
+;; update agents' trust level according to the infectious & vaccination status of agents around them (as well as themselves)
 to observation-trust-influence
   if on-going-vaccination?
   [
