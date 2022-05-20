@@ -51,7 +51,6 @@ globals [
   ;; new globals pour dépistage
   on-going-vaccination? ;; is there a vaccination campaign currently
   nb-days-vaccination   ;; number of days elapsed since the beginning of the vaccination campaign
-;  nb-campaigns      ;; number of vaccination campaigns
   nb-vaccinations-today
   list-vaccinations        ;; remember %vaccinated each day
 
@@ -198,7 +197,6 @@ to setup-globals
   ;; vaccinations counters
   set on-going-vaccination? false
   set nb-days-vaccination 0
-;  set nb-campaigns 0
   set nb-vaccinations-today 0
   set list-vaccinations []
 
@@ -523,7 +521,6 @@ to vaccinate-pop
     any? target-population [
       ;; start a vaccination campaign
       set on-going-vaccination? true
-;      set nb-campaigns nb-campaigns + 1
       set nb-days-vaccination 0
   ]
 
