@@ -17,7 +17,6 @@ globals [
   initial-trust-level
 
   current-trust-average
-  current-trust-average-count
 
   population-size
   nb-infected-initialisation ;; initial number of sick agents
@@ -252,6 +251,7 @@ end
 
 ;; initialisation of agents' trust level
 to setup-population-trust-level
+  let current-trust-average-count 0 ;; number of currently initialised agents' trust
   ask turtles
   [
     (ifelse
