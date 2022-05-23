@@ -804,7 +804,7 @@ to-report virus-present?
 end
 
 to-report total-vaccinations
-  report count turtles with [vaccinated?]
+  report count turtles with [vaccinated? and epidemic-state != "Deceased"]
 end
 
 to-report trust-average
