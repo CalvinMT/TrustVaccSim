@@ -435,6 +435,8 @@ to influence-over-trust
   if ticks mod tick-trigger = 0 [
     contact-influence-over-trust
     observation-influence-over-trust
+    information-influence-over-trust nb-H nb-H-V false
+    information-influence-over-trust nb-D nb-D-V true
   ]
 end
 
@@ -505,6 +507,39 @@ to observation-influence-over-trust
         )
       ]
       set trust-level trust-level + observer-update
+      if trust-level < 0 [ set trust-level 0 ]
+      if trust-level > 1 [ set trust-level 1 ]
+    ]
+  ]
+end
+
+;; update agents' trust level comparing the percentage of agents in epidemiologic state X with the percentage of agents not in the epidemiologic state X
+to information-influence-over-trust [nb-X nb-X-V is-X-D?]
+  if on-going-vaccination? and nb-X > 0
+  [
+    ;; percentage of vaccinated among X
+    let prop-X-V nb-to-prop nb-X-V nb-X
+    ;; percentage of vaccinated not among X
+    let prop-nX-V 0
+    ifelse is-X-D?
+    [set prop-nX-V nb-to-prop (total-vaccinations - nb-X-V) (population-size - nb-X)]
+    [set prop-nX-V nb-to-prop (total-vaccinations - nb-X-V) (population-size - nb-X - nb-D)]
+    
+    ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
+      let trust-level-update 0
+      let prop-nX-X-V-difference (prop-nX-V - prop-X-V) / 1000
+
+      ifelse prop-nX-X-V-difference >= 0 [
+        ;; positive information is attenuated (* 0.5)
+        ;; non-trusting agents will tend to neglect the positive information
+        set trust-level-update prop-nX-X-V-difference * 0.5 * trust-level
+      ]
+      [
+        ;; trusting agents will tend to neglect the negative information
+        set trust-level-update prop-nX-X-V-difference * (1 - trust-level)
+      ]
+
+      set trust-level trust-level + trust-level-update
       if trust-level < 0 [ set trust-level 0 ]
       if trust-level > 1 [ set trust-level 1 ]
     ]
