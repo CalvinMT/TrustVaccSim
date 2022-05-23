@@ -23,13 +23,11 @@ globals [
   percentage-daily-vaccinations         ;; percentage of the population to vaccinate at each tick
   nb-daily-vaccinations                 ;; number of daily vaccinated agents
   probability-transmission              ;; probability that an infected agent will infect a neighbour on same patch
-  probability-reinfection               ;; probability that a susceptible agent previously infected gets infected again
   probability-asymptomatic              ;; probability that a susceptible agent will get to an asymptomatic state
   probability-hospitalised              ;; probability for an infected agent to get to a hospitalised state
   probability-deceased                  ;; probability for an hospitalised agent to get to a deceased state
   probability-susceptible               ;; probability for a recovered agent to get to a recovered state
   probability-transmission-vaccinated   ;; probability that an infected agent will infect a vacinated neighbour on same patch
-  probability-reinfection-vaccinated    ;; probability that a vaccinated susceptible agent previously infected gets infected again
   probability-asymptomatic-vaccinated   ;; probability for a susceptible agent to get to a asymptomatic state
   probability-hospitalised-vaccinated   ;; probability for a vacinated infected agent to get to a hospitalised state
   probability-deceased-vaccinated       ;; probability for a vacinated hospitalised agent to get to a deceased state
@@ -104,9 +102,6 @@ turtles-own [
   deceased-date             ;; ticks when died
   infected?                 ;; shortcut for Infected
 
-  previously-infected?  ;; was previously infected
-  previously-vaccinated?  ;; was previously vaccinated
-
   ; demographics
   vaccinated?     ;; was already vaccinated
 
@@ -155,14 +150,12 @@ to setup-globals
   set nb-daily-vaccinations (percentage-daily-vaccinations * population-size / 100)
 
   set probability-transmission 0.5 * virus-config         ;; S->I|A - probability for an agent to get infected
-  set probability-reinfection 0.2 * virus-config
   set probability-asymptomatic 0.25 * (1 - virus-config)  ;; I|A - probability for an agent to go into a Infectious or a Asymptomatic state
   set probability-hospitalised 0.7 * virus-config         ;; I->H|R - after a duration, probability for an agent to go into a Hospitalised or a Recovered state
   set probability-deceased 0.5 * virus-config             ;; H->R|D - after a duration, probability for an agent to go into a Recovered or a Deceased state
   set probability-susceptible 0.5 * (1 - virus-config)    ;; R->R|S - after a duration, probability for an agent to go into a Susceptible state
   
   set probability-transmission-vaccinated probability-transmission * (1 - vaccine-config)
-  set probability-reinfection-vaccinated probability-reinfection * (1 - vaccine-config)
   set probability-asymptomatic-vaccinated probability-asymptomatic * vaccine-config
   set probability-hospitalised-vaccinated probability-hospitalised * (1 - vaccine-config)
   set probability-deceased-vaccinated probability-deceased * (1 - vaccine-config)
@@ -238,9 +231,7 @@ to setup-population
     set size 0.3
 
     get-susceptible
-    set previously-infected? false
     set vaccinated? false
-    set previously-vaccinated? false
 
     set speed initial-speed
     set on-visit? false
@@ -425,8 +416,7 @@ to virus-transmission
     ask other turtles-here with [epidemic-state = "Susceptible" and not on-visit?] [
       ;; use a different transmission probability depending on agent's state
       let proba-trans (ifelse-value
-        previously-infected? [ probability-reinfection ]
-        previously-vaccinated? and not previously-infected? [ probability-transmission-vaccinated ]
+        vaccinated? [ probability-transmission-vaccinated ]
         [ probability-transmission ]
       )
       ;; each contact can infect
@@ -692,7 +682,6 @@ to get-infected
   set recovered-date infinity
   set recovered-duration infinity
   set infected? true
-  set previously-infected? true
   set speed initial-speed
 end
 
@@ -736,7 +725,6 @@ end
 
 to get-vaccinated
   set vaccinated? true
-  set previously-vaccinated? true
   set shape "triangle"
 end
 
