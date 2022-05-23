@@ -303,7 +303,7 @@ to go
     visit-hospitalised
     move-alive
     virus-transmission
-    trust-influence
+    influence-over-trust
     vaccinate-pop
 
     ;; update new counters and monitors
@@ -427,19 +427,19 @@ end
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;; TRUST INFLUENCE ;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; INFLUENCE OVER TRUST ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-to trust-influence
+to influence-over-trust
   if ticks mod tick-trigger = 0 [
-    contact-trust-influence
-    observation-trust-influence
+    contact-influence-over-trust
+    observation-influence-over-trust
   ]
 end
 
 ;; update agents' trust level when in contact with each other
-to contact-trust-influence
+to contact-influence-over-trust
   ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
     let contact-trust-level trust-level
     ask other turtles in-radius 0.1 with [epidemic-state != "Deceased"] [
@@ -481,7 +481,7 @@ to contact-trust-influence
 end
 
 ;; update agents' trust level according to the infectious & vaccination status of agents around them (as well as themselves)
-to observation-trust-influence
+to observation-influence-over-trust
   if on-going-vaccination?
   [
     ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
