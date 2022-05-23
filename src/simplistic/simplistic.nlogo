@@ -153,13 +153,13 @@ to setup-globals
   set probability-asymptomatic 0.25 * (1 - virus-config)  ;; I|A - probability for an agent to go into a Infectious or a Asymptomatic state
   set probability-hospitalised 0.7 * virus-config         ;; I->H|R - after a duration, probability for an agent to go into a Hospitalised or a Recovered state
   set probability-deceased 0.5 * virus-config             ;; H->R|D - after a duration, probability for an agent to go into a Recovered or a Deceased state
-  set probability-susceptible 0.5 * (1 - virus-config)    ;; R->R|S - after a duration, probability for an agent to go into a Susceptible state
+  set probability-susceptible 0.5 * virus-config          ;; R->R|S - after a duration, probability for an agent to go into a Susceptible state
   
   set probability-transmission-vaccinated probability-transmission * (1 - vaccine-config)
   set probability-asymptomatic-vaccinated probability-asymptomatic * vaccine-config
   set probability-hospitalised-vaccinated probability-hospitalised * (1 - vaccine-config)
   set probability-deceased-vaccinated probability-deceased * (1 - vaccine-config)
-  set probability-susceptible-vaccinated probability-susceptible * vaccine-config
+  set probability-susceptible-vaccinated probability-susceptible * (1 - vaccine-config)
 
   ;; I->H|R - duration of infection (random-gamma init)
   set infection-mean 21
