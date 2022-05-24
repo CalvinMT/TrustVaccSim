@@ -22,6 +22,7 @@ globals [
   nb-infected-initialisation            ;; initial number of sick agents
   percentage-daily-vaccinations         ;; percentage of the population to vaccinate at each tick
   nb-daily-vaccinations                 ;; number of daily vaccinated agents
+  max-nb-daily-vaccinations             ;; maximum number of daily vaccinated agents
   probability-transmission              ;; probability that an infected agent will infect a neighbour on same patch
   probability-asymptomatic              ;; probability that a susceptible agent will get to an asymptomatic state
   probability-hospitalised              ;; probability for an infected agent to get to a hospitalised state
@@ -556,6 +557,8 @@ end
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 to vaccinate-pop
+  set max-nb-daily-vaccinations count target-population
+
   if
     ;; if not vaccination currently and proportion of infected above the threshold and there are people to vaccinate
     not on-going-vaccination? and
@@ -967,7 +970,7 @@ PLOT
 349
 1615
 581
-Influence de la confiance
+Influence de la confiance sur la vaccination
 Temps
 %
 0.0
@@ -978,7 +981,7 @@ true
 true
 "" ""
 PENS
-"Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop nb-vaccinations-today nb-daily-vaccinations"
+"Vaccination" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop nb-vaccinations-today min list nb-daily-vaccinations max-nb-daily-vaccinations"
 "Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average population-size"
 
 PLOT
