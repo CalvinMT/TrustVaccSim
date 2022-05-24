@@ -324,11 +324,14 @@ end
 
 ;; is the agent's next position a hospitalised patch?
 to-report heading-in-hopitalised-patch [my-speed]
-  let ahead-x 0
-  let ahead-y 0
-  ask patch-ahead my-speed [
-    set ahead-x pxcor
-    set ahead-y pycor
+  let ahead-x [pxcor] of patch-here
+  let ahead-y [pycor] of patch-here
+  let next-patch patch-ahead my-speed
+  if next-patch != nobody [
+    ask next-patch [
+      set ahead-x pxcor
+      set ahead-y pycor
+    ]
   ]
   report
     ahead-x > min-x-hospitalised-patch - 2 and
