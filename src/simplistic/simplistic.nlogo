@@ -437,17 +437,17 @@ end
 
 to influence-over-trust
   if ticks mod tick-trigger = 0 [
-    contact-influence-over-trust
-    observation-influence-over-trust
-    information-influence-over-trust nb-H nb-H-V false
-    information-influence-over-trust nb-D nb-D-V true
+    interpersonal-influence-over-trust
+    observational-influence-over-trust
+    informational-influence-over-trust nb-H nb-H-V false
+    informational-influence-over-trust nb-D nb-D-V true
   ]
 end
 
 ;; update agents' trust level when in contact with each other
-to contact-influence-over-trust
+to interpersonal-influence-over-trust
   ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
-    let contact-trust-level trust-level
+    let influencer-trust-level trust-level
     ask other turtles in-radius 0.1 with [epidemic-state != "Deceased"] [
       let proba-influ (ifelse-value
         ;; non-trusting agents are less influenced than trusting agents
@@ -458,28 +458,28 @@ to contact-influence-over-trust
       [
         ;; influence trust
         (ifelse
-          contact-trust-level < 0.5
+          influencer-trust-level < 0.5
           [
-            ;; contact trust level of 0.0 has an intensity of 1
-            let contact-influence-intensity 1 - (contact-trust-level / 0.5)
+            ;; influencer's trust level of 0.0 has an intensity of 1
+            let influencer-influence-intensity 1 - (influencer-trust-level / 0.5)
             ;; high effectiveness on trust level 0.0 (low on 1.0)
             let influence-effectiveness 1 - trust-level
-            let contact-influence contact-influence-intensity * influence-effectiveness
-            set trust-level trust-level - contact-influence
+            let influence-update influencer-influence-intensity * influence-effectiveness
+            set trust-level trust-level - influence-update
             if trust-level < 0 [ set trust-level 0 ]
           ]
-          contact-trust-level > 0.5
+          influencer-trust-level > 0.5
           [
-            ;; contact trust level of 1.0 has an intensity of 1
-            let contact-influence-intensity (contact-trust-level / 0.5) - 1
+            ;; influencer's trust level of 1.0 has an intensity of 1
+            let influencer-influence-intensity (influencer-trust-level / 0.5) - 1
             ;; high effectiveness on trust level 1.0 (low on 0.0)
             let influence-effectiveness trust-level
-            let contact-influence contact-influence-intensity * influence-effectiveness
-            set trust-level trust-level + contact-influence
+            let influence-update influencer-influence-intensity * influence-effectiveness
+            set trust-level trust-level + influence-update
             if trust-level > 1 [ set trust-level 1 ]
           ]
-          ;; else contact-trust-level == 0.5
-          ;; contact trust level of 0.5 has an intensity of 0
+          ;; else influencer-trust-level == 0.5
+          ;; influencer's trust level of 0.5 has an intensity of 0
         )
       ]
     ]
@@ -487,7 +487,7 @@ to contact-influence-over-trust
 end
 
 ;; update agents' trust level according to the infectious & vaccination status of agents around them (as well as themselves)
-to observation-influence-over-trust
+to observational-influence-over-trust
   if on-going-vaccination?
   [
     ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
@@ -518,7 +518,7 @@ to observation-influence-over-trust
 end
 
 ;; update agents' trust level comparing the percentage of agents in epidemiologic state X with the percentage of agents not in the epidemiologic state X
-to information-influence-over-trust [nb-X nb-X-V is-X-D?]
+to informational-influence-over-trust [nb-X nb-X-V is-X-D?]
   if on-going-vaccination? and nb-X > 0
   [
     ;; percentage of vaccinated among X
