@@ -844,6 +844,14 @@ to-report virus-present?
   report nb-I > 0 or nb-A > 0 or nb-H > 0
 end
 
+to-report total-living-population
+  report count turtles with [epidemic-state != "Deceased"]
+end
+
+to-report living-turtles
+  report turtles with [epidemic-state != "Deceased"]
+end
+
 to-report total-vaccinations
   report count turtles with [vaccinated? and epidemic-state != "Deceased"]
 end
@@ -945,7 +953,7 @@ PENS
 "Guéris" 1.0 0 -16777216 true "" "set-plot-pen-color color-recovered plot nb-to-prop nb-R population-size"
 "Décédés" 1.0 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-to-prop nb-D population-size"
 "Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop total-vaccinations population-size"
-"Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average population-size"
+"Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average total-living-population"
 
 PLOT
 1099
@@ -963,7 +971,7 @@ false
 false
 "set-plot-x-range 0 1\n set-plot-y-range 0 100\n set-histogram-num-bars 200" ""
 PENS
-"turtles" 1 1 -2674135 true "" "histogram [trust-level] of turtles"
+"turtles" 1 1 -2674135 true "" "histogram [trust-level] of living-turtles"
 
 PLOT
 1099
@@ -982,7 +990,7 @@ true
 "" ""
 PENS
 "Vaccination" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop nb-vaccinations-today min list nb-daily-vaccinations max-nb-daily-vaccinations"
-"Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average population-size"
+"Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average total-living-population"
 
 PLOT
 1099
