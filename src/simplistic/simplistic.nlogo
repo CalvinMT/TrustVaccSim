@@ -157,7 +157,7 @@ to setup-globals
   set probability-hospitalised 0.7 * virus-config         ;; I->H|R - after a duration, probability for an agent to go into a Hospitalised or a Recovered state
   set probability-deceased 0.5 * virus-config             ;; H->R|D - after a duration, probability for an agent to go into a Recovered or a Deceased state
   set probability-susceptible 0.5 * virus-config          ;; R->R|S - after a duration, probability for an agent to go into a Susceptible state
-  
+
   set probability-transmission-vaccinated probability-transmission * (1 - vaccine-config)
   set probability-asymptomatic-vaccinated probability-asymptomatic * vaccine-config
   set probability-hospitalised-vaccinated probability-hospitalised * (1 - vaccine-config)
@@ -544,7 +544,7 @@ to informational-influence-over-trust [nb-X nb-X-V is-X-D?]
       ifelse is-X-D?
       [set prop-nX-V nb-to-prop (total-vaccinations - nb-X-V) (population-size - nb-X)]
       [set prop-nX-V nb-to-prop (total-vaccinations - nb-X-V) (population-size - nb-X - nb-D)]
-      
+
       ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
         let trust-level-update 0
         let prop-nX-X-V-difference (prop-nX-V - prop-X-V) / 1000
@@ -988,7 +988,7 @@ false
 false
 "set-plot-x-range 0 1\n set-plot-y-range 0 100\n set-histogram-num-bars 200" ""
 PENS
-"turtles" 1 1 -2674135 true "" "histogram [trust-level] of living-turtles"
+"turtles" 1.0 1 -2674135 true "" "histogram [trust-level] of living-turtles"
 
 PLOT
 1099
@@ -1056,7 +1056,7 @@ dangerosite-du-virus
 dangerosite-du-virus
 1
 5
-1
+5.0
 1
 1
 NIL
@@ -1071,7 +1071,7 @@ efficacite-du-vaccin
 efficacite-du-vaccin
 1
 9
-1
+9.0
 1
 1
 NIL
@@ -1086,7 +1086,7 @@ niveau-de-confiance-initial
 niveau-de-confiance-initial
 0
 1
-0.5
+0.9
 0.1
 1
 NIL
@@ -1099,7 +1099,7 @@ SWITCH
 250
 activer-information-incomplete?
 activer-information-incomplete?
-1
+0
 1
 -1000
 
@@ -1500,6 +1500,24 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="test" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <timeLimit steps="700"/>
+    <metric>count turtles with [epidemic-state = "Hospitalised" and vaccinated? = false]</metric>
+    <metric>count turtles with [epidemic-state = "Hospitalised" and vaccinated? = true]</metric>
+    <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = false]</metric>
+    <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = true]</metric>
+    <steppedValueSet variable="dangerosite-du-virus" first="1" step="1" last="5"/>
+    <steppedValueSet variable="efficacite-du-vaccin" first="1" step="1" last="9"/>
+    <steppedValueSet variable="niveau-de-confiance-initial" first="0.1" step="0.1" last="0.9"/>
+    <enumeratedValueSet variable="activer-information-incomplete?">
+      <value value="false"/>
+      <value value="true"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
