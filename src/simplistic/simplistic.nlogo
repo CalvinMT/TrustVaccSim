@@ -891,9 +891,9 @@ end
 @#$#@#$#@
 GRAPHICS-WINDOW
 553
-117
+126
 1081
-646
+655
 -1
 -1
 40.0
@@ -919,7 +919,7 @@ ticks
 TEXTBOX
 14
 10
-260
+282
 111
 Pour lancer une simulation:\n 1 - Ajuster les paramètres nécessaires\n 2 - Cliquer sur \"Initialiser\"\n 3 - Cliquer sur \"Simuler\"\n\n
 12
@@ -928,9 +928,9 @@ Pour lancer une simulation:\n 1 - Ajuster les paramètres nécessaires\n 2 - Cli
 
 BUTTON
 317
-118
+127
 413
-155
+164
 Initialiser
 setup
 NIL
@@ -945,9 +945,9 @@ NIL
 
 BUTTON
 426
-118
+127
 520
-155
+164
 Simuler
 go
 T
@@ -962,9 +962,9 @@ NIL
 
 PLOT
 554
-721
-1070
-946
+665
+1082
+955
 Dynamique épidémique
 Jours
 % cas
@@ -986,9 +986,9 @@ PENS
 
 PLOT
 1099
-117
+126
 1615
-349
+358
 Répartition de la confiance
 Niveau de confiance
 Nombre d'agent
@@ -1004,9 +1004,9 @@ PENS
 
 PLOT
 1099
-349
+358
 1615
-581
+590
 Influence de la confiance sur la vaccination
 Temps
 %
@@ -1023,9 +1023,9 @@ PENS
 
 PLOT
 1099
-581
+590
 1615
-813
+822
 Hospitalisation
 Temps
 Nombre d'hospitalisé
@@ -1042,9 +1042,9 @@ PENS
 
 PLOT
 1099
-813
+822
 1615
-1045
+1054
 Décés
 Temps
 Nombre de décés
@@ -1061,14 +1061,14 @@ PENS
 
 SLIDER
 11
-118
+127
 283
-151
+160
 dangerosite-du-virus
 dangerosite-du-virus
 1
 5
-1
+1.0
 1
 1
 NIL
@@ -1076,14 +1076,14 @@ HORIZONTAL
 
 SLIDER
 11
-151
+160
 283
-184
+193
 efficacite-du-vaccin
 efficacite-du-vaccin
 1
 9
-1
+1.0
 1
 1
 NIL
@@ -1091,9 +1091,9 @@ HORIZONTAL
 
 SLIDER
 11
-184
+193
 283
-217
+226
 niveau-de-confiance-initial
 niveau-de-confiance-initial
 0.1
@@ -1106,9 +1106,9 @@ HORIZONTAL
 
 SWITCH
 11
-217
+226
 283
-250
+259
 activer-information-incomplete?
 activer-information-incomplete?
 0
@@ -1116,10 +1116,10 @@ activer-information-incomplete?
 -1000
 
 MONITOR
-554
-662
-682
-707
+11
+268
+283
+313
 nb d'hospitalisé total
 nb-total-hospitalised
 17
@@ -1127,10 +1127,10 @@ nb-total-hospitalised
 11
 
 MONITOR
-690
-662
-852
-707
+11
+313
+283
+358
 nb de vacciné hospitalisé total
 nb-total-hospitalised-vaccinated
 17
@@ -1138,10 +1138,10 @@ nb-total-hospitalised-vaccinated
 11
 
 MONITOR
-861
-662
-996
-707
+11
+358
+283
+403
 nb total de vaccinations effectuées
 total-vaccinations
 2
@@ -1152,7 +1152,7 @@ TEXTBOX
 559
 10
 725
-110
+114
 Légende des couleurs :\n- bleu = susceptible\n- jaune = infecté\n- gris = asymptomatique\n- rouge = hospitalisé\n- vert = guéri\n- noir = décédé
 12
 15.0
