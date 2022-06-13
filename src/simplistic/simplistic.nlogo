@@ -1045,9 +1045,9 @@ PLOT
 822
 1615
 1054
-Décés
+Décès
 Temps
-Nombre de décés
+Nombre de décès
 0.0
 100.0
 0.0
@@ -1171,7 +1171,7 @@ Légende des formes :\n- rond = non-vacciné\n- triangle = vacciné
 @#$#@#$#@
 ## Qu'est-ce que c'est ?
 
-Ce modèle propose d'explorer différents processus liés à la diffusion d'un virus dans une population d'individus sains et non immunisés. Les guérisons et décés ne sont pas pris en compte.
+Ce modèle propose d'explorer différents processus liés à la diffusion d'un virus dans une population d'individus sains et non immunisés. Les guérisons et décès ne sont pas pris en compte.
 
 ## Comment ça marche ?
 
