@@ -1068,7 +1068,7 @@ dangerosite-du-virus
 dangerosite-du-virus
 1
 5
-5.0
+1
 1
 1
 NIL
@@ -1083,7 +1083,7 @@ efficacite-du-vaccin
 efficacite-du-vaccin
 1
 9
-9.0
+1
 1
 1
 NIL
@@ -1096,9 +1096,9 @@ SLIDER
 217
 niveau-de-confiance-initial
 niveau-de-confiance-initial
-0
-1
+0.1
 0.9
+0.5
 0.1
 1
 NIL
