@@ -1120,8 +1120,8 @@ MONITOR
 662
 682
 707
-nb de jours de vaccinations
-nb-days-vaccination
+nb d'hospitalisé total
+nb-total-hospitalised
 17
 1
 11
@@ -1131,8 +1131,8 @@ MONITOR
 662
 852
 707
-nb total de vaccinations effectuées
-total-vaccinations
+nb de vacciné hospitalisé total
+nb-total-hospitalised-vaccinated
 17
 1
 11
@@ -1142,8 +1142,8 @@ MONITOR
 662
 996
 707
-% personnes guéries
-nb-to-prop nb-R population-size
+nb total de vaccinations effectuées
+total-vaccinations
 2
 1
 11
