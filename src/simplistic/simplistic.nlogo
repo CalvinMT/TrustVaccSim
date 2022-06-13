@@ -921,7 +921,7 @@ TEXTBOX
 10
 260
 111
-Pour lancer une simulation:\n1 - Choisir un variant du virus et un vaccin\n2 - Ajuster les paramètres nécessaires\n3 - Cliquer sur \"Initialiser\"\n4 - Cliquer sur \"Simuler\"\n\n
+Pour lancer une simulation:\n 1 - Ajuster les paramètres nécessaires\n 2 - Cliquer sur \"Initialiser\"\n 3 - Cliquer sur \"Simuler\"\n\n
 12
 15.0
 1
