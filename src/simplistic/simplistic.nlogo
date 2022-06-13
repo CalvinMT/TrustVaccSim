@@ -1517,8 +1517,8 @@ NetLogo 6.2.2
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="700"/>
-    <metric>count turtles with [epidemic-state = "Hospitalised" and vaccinated? = false]</metric>
-    <metric>count turtles with [epidemic-state = "Hospitalised" and vaccinated? = true]</metric>
+    <metric>nb-total-hospitalised</metric>
+    <metric>nb-total-hospitalsied-vaccinated</metric>
     <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = false]</metric>
     <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = true]</metric>
     <steppedValueSet variable="dangerosite-du-virus" first="1" step="1" last="5"/>
