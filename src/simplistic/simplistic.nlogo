@@ -55,6 +55,10 @@ globals [
   nb-vaccinations-today ;; number of vaccines given on this current day
   list-vaccinations     ;; remember %vaccinated each day
 
+  ;; hospitalised counters
+  nb-total-hospitalised             ;; current total number agents who has been in a hospitalised state
+  nb-total-hospitalised-vaccinated  ;; current total number vaccinated agents who has been in a hospitalised state
+
   ; mean and variance for random-gamma determining infection durations
   infection-mean
   infection-variance
@@ -198,6 +202,10 @@ to setup-globals
   set nb-days-vaccination 0
   set nb-vaccinations-today 0
   set list-vaccinations []
+
+  ;; hospitalised counters
+  set nb-total-hospitalised 0
+  set nb-total-hospitalised-vaccinated 0
 
   ;; metrics
   set total-nb-infected 0
@@ -639,8 +647,12 @@ to update-states
       [ probability-hospitalised ]
     )
     ; probability to be hospitalised
-    ifelse random-float 1 < proba-hosp
-    [ get-hospitalised ]
+    ifelse random-float 1 < proba-hosp [
+      get-hospitalised
+      set nb-total-hospitalised nb-total-hospitalised + 1
+      if vaccinated?
+      [ set nb-total-hospitalised-vaccinated nb-total-hospitalised-vaccinated + 1 ]
+    ]
     [ get-recovered ]
   ]
   ;; go from asymptomatic to either recovered
