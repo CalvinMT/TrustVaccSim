@@ -88,6 +88,10 @@ globals [
   color-deceased
   color-vaccinated
   color-trust-level
+  color-D-nV-nT     ;; deceased, not vaccinated, not trusting
+  color-D-nV-T      ;; deceased, not vaccinated, trusting
+  color-D-V-nT      ;; deceased, vaccinated, not trusting
+  color-D-V-T       ;; deceased, vaccinated, trusting
   transparency
 ]
 
@@ -219,6 +223,12 @@ to setup-globals
   set color-deceased [0 0 0]
   set color-vaccinated [255 153 255]
   set color-trust-level [0 0 255]
+
+  set color-D-nV-nT [0 0 0]
+  set color-D-nV-T [0 0 127]
+  set color-D-V-nT [127 76 127]
+  set color-D-V-T [255 153 255]
+
   set transparency 145
 end
 
@@ -1098,6 +1108,27 @@ true
 PENS
 "Non-vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-D-nV"
 "Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-D-V"
+
+PLOT
+11
+822
+527
+1054
+Décès par état de vaccination et niveau de confiance
+Temps
+% de décès
+0.0
+100.0
+0.0
+100.0
+true
+true
+"" ""
+PENS
+"Non-vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-nT plot nb-to-prop nb-D-nV-nT nb-nV-nT"
+"Non-vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-T plot nb-to-prop nb-D-nV-T nb-nV-T"
+"Vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-nT plot nb-to-prop nb-D-V-nT nb-V-nT"
+"Vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-T plot nb-to-prop nb-D-V-T nb-V-T"
 
 SLIDER
 11
