@@ -868,6 +868,46 @@ to-report nb-D-V
   report count turtles with [epidemic-state = "Deceased" and vaccinated?]
 end
 
+to-report nb-D-nT
+  report count turtles with [epidemic-state = "Deceased" and trust-level < 0.5]
+end
+
+to-report nb-D-T
+  report count turtles with [epidemic-state = "Deceased" and trust-level > 0.5]
+end
+
+to-report nb-D-nV-nT
+  report count turtles with [epidemic-state = "Deceased" and not vaccinated? and trust-level < 0.5]
+end
+
+to-report nb-D-nV-T
+  report count turtles with [epidemic-state = "Deceased" and not vaccinated? and trust-level > 0.5]
+end
+
+to-report nb-D-V-nT
+  report count turtles with [epidemic-state = "Deceased" and vaccinated? and trust-level < 0.5]
+end
+
+to-report nb-D-V-T
+  report count turtles with [epidemic-state = "Deceased" and vaccinated? and trust-level > 0.5]
+end
+
+to-report nb-nV-nT
+  report count turtles with [not vaccinated? and trust-level < 0.5]
+end
+
+to-report nb-nV-T
+  report count turtles with [not vaccinated? and trust-level > 0.5]
+end
+
+to-report nb-V-nT
+  report count turtles with [vaccinated? and trust-level < 0.5]
+end
+
+to-report nb-V-T
+  report count turtles with [vaccinated? and trust-level > 0.5]
+end
+
 ; boolean reporter
 to-report virus-present?
   report nb-I > 0 or nb-A > 0 or nb-H > 0
