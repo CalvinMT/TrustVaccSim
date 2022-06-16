@@ -1101,7 +1101,7 @@ Nombre de décès
 0.0
 100.0
 0.0
-10.0
+5.0
 true
 true
 "" ""
@@ -1116,19 +1116,19 @@ PLOT
 1054
 Décès par état de vaccination et niveau de confiance
 Temps
-% de décès
+Nombre de décès
 0.0
 100.0
 0.0
-100.0
+5.0
 true
 true
 "" ""
 PENS
-"Non-vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-nT plot nb-to-prop nb-D-nV-nT nb-nV-nT"
-"Non-vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-T plot nb-to-prop nb-D-nV-T nb-nV-T"
-"Vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-nT plot nb-to-prop nb-D-V-nT nb-V-nT"
-"Vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-T plot nb-to-prop nb-D-V-T nb-V-T"
+"Non-vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-nT plot nb-D-nV-nT"
+"Non-vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-T plot nb-D-nV-T"
+"Vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-nT plot nb-D-V-nT"
+"Vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-T plot nb-D-V-T"
 
 SLIDER
 11
