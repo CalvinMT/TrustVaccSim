@@ -88,6 +88,10 @@ globals [
   color-deceased
   color-vaccinated
   color-trust-level
+  color-H-nV-nT     ;; hospitalised, not vaccinated, not trusting
+  color-H-nV-T      ;; hospitalised, not vaccinated, trusting
+  color-H-V-nT      ;; hospitalised, vaccinated, not trusting
+  color-H-V-T       ;; hospitalised, vaccinated, trusting
   color-D-nV-nT     ;; deceased, not vaccinated, not trusting
   color-D-nV-T      ;; deceased, not vaccinated, trusting
   color-D-V-nT      ;; deceased, vaccinated, not trusting
@@ -223,6 +227,11 @@ to setup-globals
   set color-deceased [0 0 0]
   set color-vaccinated [255 153 255]
   set color-trust-level [0 0 255]
+
+  set color-H-nV-nT [255 0 0]
+  set color-H-nV-T [127 0 127]
+  set color-H-V-nT [255 76 127]
+  set color-H-V-T [255 153 255]
 
   set color-D-nV-nT [0 0 0]
   set color-D-nV-T [0 0 127]
@@ -862,6 +871,22 @@ to-report nb-H-V
   report count turtles with [epidemic-state = "Hospitalised" and vaccinated?]
 end
 
+to-report nb-H-nV-nT
+  report count turtles with [epidemic-state = "Hospitalised" and not vaccinated? and trust-level < 0.5]
+end
+
+to-report nb-H-nV-T
+  report count turtles with [epidemic-state = "Hospitalised" and not vaccinated? and trust-level > 0.5]
+end
+
+to-report nb-H-V-nT
+  report count turtles with [epidemic-state = "Hospitalised" and vaccinated? and trust-level < 0.5]
+end
+
+to-report nb-H-V-T
+  report count turtles with [epidemic-state = "Hospitalised" and vaccinated? and trust-level > 0.5]
+end
+
 to-report nb-R
   report count turtles with [epidemic-state = "Recovered"]
 end
@@ -1108,6 +1133,27 @@ true
 PENS
 "Non-vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-D-nV"
 "Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-D-V"
+
+PLOT
+11
+590
+527
+822
+Hospitalisation par état de vaccination et niveau de confiance
+Temps
+Nombre d'hospitalisation
+0.0
+100.0
+0.0
+50.0
+true
+true
+"" ""
+PENS
+"Non-vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-H-nV-nT plot nb-H-nV-nT"
+"Non-vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-H-nV-T plot nb-H-nV-T"
+"Vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-H-V-nT plot nb-H-V-nT"
+"Vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-H-V-T plot nb-H-V-T"
 
 PLOT
 11
