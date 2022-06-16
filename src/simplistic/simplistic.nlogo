@@ -1103,11 +1103,11 @@ PLOT
 822
 Hospitalisation
 Temps
-Nombre d'hospitalisé
+Nombre d'hospitalisation
 0.0
 100.0
 0.0
-100.0
+50.0
 true
 true
 "" ""
