@@ -15,7 +15,7 @@ globals [
   virus-config
   vaccine-config
   initial-trust-level
-  activate-incomplete-information?
+  activate-misinterpreted-information?
 
   current-trust-average ;; current trust average
 
@@ -149,7 +149,7 @@ to setup-GUI
   set virus-config dangerosite-du-virus / 10
   set vaccine-config efficacite-du-vaccin / 10
   set initial-trust-level niveau-de-confiance-initial
-  set activate-incomplete-information? activer-information-incomplete?
+  set activate-misinterpreted-information? activer-information-mas-interpretee?
 end
 
 
@@ -552,7 +552,7 @@ to informational-influence-over-trust [nb-X nb-X-V is-X-D?]
   [
     ;; percentage of vaccinated among X
     let prop-X-V nb-to-prop nb-X-V nb-X
-    ifelse activate-incomplete-information?
+    ifelse activate-misinterpreted-information?
     [
       ;; informational influence with a lack of knowledge or difficulties understanding statistics
       ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
@@ -1226,8 +1226,8 @@ SWITCH
 226
 283
 259
-activer-information-incomplete?
-activer-information-incomplete?
+activer-information-mal-interpretee?
+activer-information-mal-interpretee?
 0
 1
 -1000
@@ -1641,7 +1641,7 @@ NetLogo 6.2.2
     <steppedValueSet variable="dangerosite-du-virus" first="1" step="1" last="5"/>
     <steppedValueSet variable="efficacite-du-vaccin" first="1" step="1" last="9"/>
     <steppedValueSet variable="niveau-de-confiance-initial" first="0.1" step="0.1" last="0.9"/>
-    <enumeratedValueSet variable="activer-information-incomplete?">
+    <enumeratedValueSet variable="activer-information-mal-interpretee?">
       <value value="false"/>
       <value value="true"/>
     </enumeratedValueSet>
