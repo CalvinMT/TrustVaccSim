@@ -1082,7 +1082,7 @@ PLOT
 358
 1615
 590
-Influence de la confiance sur la vaccination
+Influence de la confiance sur la vaccination journalière
 Temps
 %
 0.0
@@ -1101,7 +1101,7 @@ PLOT
 590
 1615
 822
-Hospitalisation
+Hospitalisation par état de vaccination
 Temps
 Nombre d'hospitalisation
 0.0
@@ -1120,7 +1120,7 @@ PLOT
 822
 1615
 1054
-Décès
+Décès par état de vaccination
 Temps
 Nombre de décès
 0.0
@@ -1237,7 +1237,7 @@ MONITOR
 268
 283
 313
-nb d'hospitalisé total
+nb total d'hospitalisé
 nb-total-hospitalised
 17
 1
@@ -1248,7 +1248,7 @@ MONITOR
 313
 283
 358
-nb de vacciné hospitalisé total
+nb total de vacciné hospitalisé
 nb-total-hospitalised-vaccinated
 17
 1
