@@ -149,7 +149,7 @@ to setup-GUI
   set virus-config dangerosite-du-virus / 10
   set vaccine-config efficacite-du-vaccin / 10
   set initial-trust-level niveau-de-confiance-initial
-  set activate-misinterpreted-information? activer-information-mas-interpretee?
+  set activate-misinterpreted-information? activer-information-mal-interpretee?
 end
 
 
