@@ -79,6 +79,11 @@ globals [
   nb-new-infections
   total-nb-infected
 
+  nb-D-nV-nT
+  nb-D-nV-T
+  nb-D-V-nT
+  nb-D-V-T
+
   ;; colors
   color-susceptible
   color-infected
@@ -217,6 +222,11 @@ to setup-globals
 
   ;; metrics
   set total-nb-infected 0
+
+  set nb-D-nV-nT 0
+  set nb-D-nV-T 0
+  set nb-D-V-nT 0
+  set nb-D-V-T 0
 
   ;; colors
   set color-susceptible [0 153 255]
@@ -810,6 +820,16 @@ to get-deceased
   set deceased-date ticks
   set infected? false
   set speed 0
+  (ifelse
+    not vaccinated? and trust-level < 0.5
+    [ set nb-D-nV-nT nb-D-nV-nT + 1 ]
+    not vaccinated? and trust-level > 0.5
+    [ set nb-D-nV-T nb-D-nV-T + 1 ]
+    vaccinated? and trust-level < 0.5
+    [ set nb-D-V-nT nb-D-V-nT + 1 ]
+    vaccinated? and trust-level > 0.5
+    [ set nb-D-V-T nb-D-V-T + 1 ]
+  )
 end
 
 to get-vaccinated
@@ -909,22 +929,6 @@ end
 
 to-report nb-D-T
   report count turtles with [epidemic-state = "Deceased" and trust-level > 0.5]
-end
-
-to-report nb-D-nV-nT
-  report count turtles with [epidemic-state = "Deceased" and not vaccinated? and trust-level < 0.5]
-end
-
-to-report nb-D-nV-T
-  report count turtles with [epidemic-state = "Deceased" and not vaccinated? and trust-level > 0.5]
-end
-
-to-report nb-D-V-nT
-  report count turtles with [epidemic-state = "Deceased" and vaccinated? and trust-level < 0.5]
-end
-
-to-report nb-D-V-T
-  report count turtles with [epidemic-state = "Deceased" and vaccinated? and trust-level > 0.5]
 end
 
 to-report nb-nV-nT
