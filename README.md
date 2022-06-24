@@ -1,2 +1,2 @@
 # TrustVaccSim
-Simulation evaluating trust and resistance towards vaccination protocols during a pandemic
+Agent-based educational simulation of trust in vaccination during a pandemic
