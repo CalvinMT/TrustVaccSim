@@ -24,6 +24,18 @@ The simulated vaccine has five adjustable parameters, all controlling the probab
 
 The static version of this simulation requires the user to give a fixed percentage of vaccinated agents among the population before the start of the simulation. Varying this percentage should, depending on the vaccine's effectiveness, expose a turning point at which a percentage of vaccinated agents is sufficient to totally limit the spread of the virus, thus enabling group immunity. Results of this simulation are viewed in a graph showing the number of infected agents and the number of recovered agents across time.
 
+Values to try:
+
+ - 0%
+ - 25%
+ - 50%
+ - 75%
+ - 90%
+
+What can be said about the infected and hospitalised curves?
+
+What can be said about dead agents?
+
 ### 1.2 Dynamic
 
 >Given a vaccine effectiveness and a rate at which to vaccinate a percentage of the population, how does it affect the spread of the virus in that population?
