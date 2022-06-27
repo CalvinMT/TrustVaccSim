@@ -1232,7 +1232,7 @@ SWITCH
 259
 activer-information-mal-interpretee?
 activer-information-mal-interpretee?
-0
+1
 1
 -1000
 
