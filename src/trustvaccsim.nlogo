@@ -1,8 +1,5 @@
 ; adapted from Q17: Dépistons ! Oui mais qui, quand et comment ?
-; Calvin Massonnet
-
-; adapted from Q3: simulateur central
-; Carole et Helene
+; CoVprehension.org
 
 ;__includes [ "headless.nls" ]
 
@@ -1290,18 +1287,22 @@ Légende des formes :\n- rond = non-vacciné\n- triangle = vacciné
 1
 
 @#$#@#$#@
-## Qu'est-ce que c'est ?
+## Description
 
-Ce modèle propose d'explorer différents processus liés à la diffusion d'un virus dans une population d'individus sains et non immunisés. Les guérisons et décès ne sont pas pris en compte.
+Ce modèle est un outil pédagogique qui permet d'explorer, à travers une simulation, l'influence de la confiance sur la vaccination suivant différent scénarios adaptable par l'utilisateur.
 
-## Comment ça marche ?
 
-Il suffit de choisir une simulation dans le menu déroulant, de l'initialiser (bouton "Prêt ?" et de la lancer (bouton "Partez!")
+## Fonctionnalité
+
+L'utilisateur choisi un niveau pour les paramètre de la dangerosité du virus, de l'efficacité du vaccin et de la confiance moyenne initiale de la population.
+Il peut également choisir d'activer ou non la mauvaise interprétation des informations institutionnelles par la population.
+
+Une fois le choix des paramètres terminé, l'utilisateur initialise le simulateur en cliquant sur "Initialiser" et lance la simulation en cliquant sur "Simuler".
 
 
 ## CREDITS AND REFERENCES
 
-Modèle développé par Arnaud Banos pour le site https://covprehension.org/
+Modèle développé par Calvin Massonnet dans la continuité des projets du site https://covprehension.org/ et financé par le projet MODCOV19 du CNRS.
 @#$#@#$#@
 default
 true
