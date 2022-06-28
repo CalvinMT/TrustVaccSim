@@ -1638,14 +1638,26 @@ NetLogo 6.2.2
   <experiment name="test" repetitions="10" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
-    <timeLimit steps="700"/>
+    <timeLimit steps="1000"/>
     <metric>nb-total-hospitalised</metric>
-    <metric>nb-total-hospitalsied-vaccinated</metric>
+    <metric>nb-total-hospitalised-vaccinated</metric>
     <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = false]</metric>
     <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = true]</metric>
-    <steppedValueSet variable="dangerosite-du-virus" first="1" step="1" last="5"/>
-    <steppedValueSet variable="efficacite-du-vaccin" first="1" step="1" last="9"/>
-    <steppedValueSet variable="niveau-de-confiance-initial" first="0.1" step="0.1" last="0.9"/>
+    <enumeratedValueSet variable="dangerosite-du-virus">
+      <value value="1"/>
+      <value value="3"/>
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="efficacite-du-vaccin">
+      <value value="1"/>
+      <value value="5"/>
+      <value value="9"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="niveau-de-confiance-initial">
+      <value value="0.1"/>
+      <value value="0.5"/>
+      <value value="0.9"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="activer-information-mal-interpretee?">
       <value value="false"/>
       <value value="true"/>
