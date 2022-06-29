@@ -72,6 +72,10 @@ globals [
   recovered-mean
   recovered-variance
 
+  ; mean and variance for random-gamma determining vaccination durations
+  vaccinated-mean
+  vaccinated-variance
+
   ;; metrics
   nb-new-infections
   total-nb-infected
@@ -115,6 +119,8 @@ turtles-own [
   hospitalisation-duration  ;; number of ticks before the end of the hospitalised state
   recovered-date            ;; ticks when got recovered
   recovered-duration        ;; number of ticks before the end of the recovered state
+  vaccinated-date           ;; ticks when got vaccinated
+  vaccinated-duration       ;; number of ticks before the end of the vaccination effect
   deceased-date             ;; ticks when died
   infected?                 ;; shortcut for Infected
 
@@ -195,6 +201,10 @@ to setup-globals
   ;; R->S - duration of recovered (random-gamma init)
   set recovered-mean 6
   set recovered-variance 3
+
+  ;; R->S - duration of vaccination (random-gamma init)
+  set vaccinated-mean 6
+  set vaccinated-variance 3
 
   ;; movement
   set initial-speed 1
@@ -722,6 +732,11 @@ to update-states
     ]
     set color lput new-transparency color-deceased
   ]
+
+  ask turtles with [vaccinated? and
+                    ticks > vaccinated-date + vaccinated-duration] [
+    get-unvaccinated
+  ]
 end
 
 ;; called in go at start of turn
@@ -833,6 +848,8 @@ end
 to get-vaccinated
   set vaccinated? true
   set shape "triangle"
+  set vaccinated-date ticks
+  set vaccinated-duration gamma-law vaccinated-mean recovered-variance
 end
 
 to get-unvaccinated
