@@ -538,12 +538,12 @@ to observational-influence-over-trust
           is-other-vaccinated? and (not is-other-symptomatic?)
           [
             ;; positive information
-            set observer-update observer-update + (0.03 * trust-level)
+            set observer-update observer-update + (0.01 * trust-level)
           ]
           is-other-vaccinated? and is-other-symptomatic?
           [
             ;; negative information
-            set observer-update observer-update - (0.05 * (1 - trust-level))
+            set observer-update observer-update - (0.03 * (1 - trust-level))
           ]
         )
       ]
