@@ -163,7 +163,7 @@ to setup-globals
   set infinity 99999
   set population-size 2000
   set nb-infected-initialisation 1
-  set percentage-daily-vaccinations 2
+  set percentage-daily-vaccinations 20
   set nb-daily-vaccinations (percentage-daily-vaccinations * population-size / 100)
 
   set probability-transmission 0.5 * virus-config         ;; S->I|A - probability for an agent to get infected
@@ -178,22 +178,23 @@ to setup-globals
   set probability-deceased-vaccinated probability-deceased * (1 - vaccine-config)
   set probability-susceptible-vaccinated probability-susceptible * (1 - vaccine-config)
 
+  ;; based on Q17 CoVprehension.org
   ;; I->H|R - duration of infection (random-gamma init)
-  set infection-mean 21
-  set infection-variance 1
+  set infection-mean 2.1
+  set infection-variance 0.1
 
   ;; A->R - duration of asymptomatic infection (random-gamma init)
-  set asymptomatic-mean 15
-  set asymptomatic-variance 2
+  set asymptomatic-mean 1.5
+  set asymptomatic-variance 0.2
 
   ;; https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7589278/
   ;; H->R|D - duration of hospitalisation (random-gamma init)
-  set hospitalisation-mean 10
-  set hospitalisation-variance 3
+  set hospitalisation-mean 1
+  set hospitalisation-variance 0.3
 
   ;; R->S - duration of recovered (random-gamma init)
   set recovered-mean 6
-  set recovered-variance 1
+  set recovered-variance 3
 
   ;; movement
   set initial-speed 1
