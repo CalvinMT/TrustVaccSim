@@ -202,7 +202,7 @@ to setup-globals
   set recovered-mean 6
   set recovered-variance 3
 
-  ;; R->S - duration of vaccination (random-gamma init)
+  ;; duration of vaccination (random-gamma init)
   set vaccinated-mean 6
   set vaccinated-variance 3
 
