@@ -486,8 +486,8 @@ to influence-over-trust
   if ticks mod tick-trigger = 0 [
     interpersonal-influence-over-trust
     observational-influence-over-trust
-    informational-influence-over-trust nb-H nb-H-V false
-    informational-influence-over-trust nb-D nb-D-V true
+    institutional-influence-over-trust nb-H nb-H-V false
+    institutional-influence-over-trust nb-D nb-D-V true
   ]
 end
 
@@ -565,14 +565,14 @@ to observational-influence-over-trust
 end
 
 ;; update agents' trust level comparing the percentage of agents in epidemiologic state X with the percentage of agents not in the epidemiologic state X
-to informational-influence-over-trust [nb-X nb-X-V is-X-D?]
+to institutional-influence-over-trust [nb-X nb-X-V is-X-D?]
   if on-going-vaccination? and nb-X > 0
   [
     ;; percentage of vaccinated among X
     let prop-X-V nb-to-prop nb-X-V nb-X
     ifelse activate-misinterpreted-information?
     [
-      ;; informational influence with a lack of knowledge or difficulties understanding statistics
+      ;; institutional influence with a lack of knowledge or difficulties understanding statistics
       ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
         let trust-level-update 0
         set trust-level-update (prop-X-V / 1000) * -1 * (1 - trust-level)
@@ -583,7 +583,7 @@ to informational-influence-over-trust [nb-X nb-X-V is-X-D?]
       ]
     ]
     [
-      ;; informational influence with complete knowledge and understanding of statistics
+      ;; institutional influence with complete knowledge and understanding of statistics
       ;; percentage of vaccinated not among X
       let prop-nX-V 0
       ifelse is-X-D?
