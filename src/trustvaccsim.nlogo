@@ -85,6 +85,11 @@ globals [
   nb-D-V-nT
   nb-D-V-T
 
+  nb-D-nV-nM
+  nb-D-nV-M
+  nb-D-V-nM
+  nb-D-V-M
+
   ;; colors
   color-susceptible
   color-infected
@@ -94,6 +99,7 @@ globals [
   color-deceased
   color-vaccinated
   color-trust-level
+  color-misinterpret
   color-H-nV-nT     ;; hospitalised, not vaccinated, not trusting
   color-H-nV-T      ;; hospitalised, not vaccinated, trusting
   color-H-V-nT      ;; hospitalised, vaccinated, not trusting
@@ -102,6 +108,10 @@ globals [
   color-D-nV-T      ;; deceased, not vaccinated, trusting
   color-D-V-nT      ;; deceased, vaccinated, not trusting
   color-D-V-T       ;; deceased, vaccinated, trusting
+  color-D-nV-nM     ;; deceased, not vaccinated, no misinterpretation
+  color-D-nV-M      ;; deceased, not vaccinated, misinterpretation
+  color-D-V-nM      ;; deceased, vaccinated, no misinterpretation
+  color-D-V-M       ;; deceased, vaccinated, misinterpretation
   transparency
 ]
 
@@ -128,6 +138,7 @@ turtles-own [
   vaccinated?     ;; was already vaccinated
 
   trust-level     ;; level of trust normalised between 0.0 and 1.0
+  misinterpret?   ;; interprets wrongly institutional information
 
   ;; movement
   speed
@@ -236,6 +247,11 @@ to setup-globals
   set nb-D-V-nT 0
   set nb-D-V-T 0
 
+  set nb-D-nV-nM 0
+  set nb-D-nV-M 0
+  set nb-D-V-nM 0
+  set nb-D-V-M 0
+
   ;; colors
   set color-susceptible [0 153 255]
   set color-infected [254 178 76]
@@ -245,6 +261,7 @@ to setup-globals
   set color-deceased [0 0 0]
   set color-vaccinated [255 153 255]
   set color-trust-level [0 0 255]
+  set color-misinterpret [178 76 76]
 
   set color-H-nV-nT [255 0 0]
   set color-H-nV-T [127 0 127]
@@ -255,6 +272,11 @@ to setup-globals
   set color-D-nV-T [0 0 127]
   set color-D-V-nT [127 76 127]
   set color-D-V-T [255 153 255]
+
+  set color-D-nV-nM [0 0 0]
+  set color-D-nV-M [178 76 76]
+  set color-D-V-nM [255 153 255]
+  set color-D-V-M [178 114 255]
 
   set transparency 145
 end
@@ -286,6 +308,7 @@ to setup-population
   ]
 
   setup-population-trust-level
+  setup-population-misinterpretation
 
   ; set some agents to be initially infected to start the epidemics
   ask n-of nb-infected-initialisation turtles [ get-infected ]
@@ -336,6 +359,17 @@ to setup-population-trust-level
 end
 
 
+;; initialisation of agents' misinterpretation attribute
+to setup-population-misinterpretation
+  ask turtles
+  [
+    set misinterpret? false
+  ]
+  ask n-of (population-size / 2) turtles
+  [
+    set misinterpret? true
+  ]
+end
 
 
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -570,28 +604,19 @@ to institutional-influence-over-trust [nb-X nb-X-V is-X-D?]
   [
     ;; percentage of vaccinated among X
     let prop-X-V nb-to-prop nb-X-V nb-X
-    ifelse activate-misinterpreted-information?
-    [
-      ;; institutional influence with a lack of knowledge or difficulties understanding statistics
-      ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
-        let trust-level-update 0
-        set trust-level-update (prop-X-V / 1000) * -1 * (1 - trust-level)
-
-        set trust-level trust-level + trust-level-update
-        if trust-level < 0 [ set trust-level 0 ]
-        if trust-level > 1 [ set trust-level 1 ]
-      ]
-    ]
-    [
-      ;; institutional influence with complete knowledge and understanding of statistics
-      ;; percentage of vaccinated not among X
-      let prop-nX-V 0
-      ifelse is-X-D?
+    ;; percentage of vaccinated not among X
+    let prop-nX-V 0
+    ifelse is-X-D?
       [set prop-nX-V nb-to-prop (total-vaccinations - nb-X-V) (population-size - nb-X)]
       [set prop-nX-V nb-to-prop (total-vaccinations - nb-X-V) (population-size - nb-X - nb-D)]
-
-      ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
-        let trust-level-update 0
+    ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
+      let trust-level-update 0
+      ;; institutional influence with a lack of knowledge or difficulties understanding statistics
+      ifelse activate-misinterpreted-information? and misinterpret? [
+        set trust-level-update (prop-X-V / 1000) * -1 * (1 - trust-level)
+      ]
+      ;; institutional influence with complete knowledge and understanding of statistics
+      [
         let prop-nX-X-V-difference (prop-nX-V - prop-X-V) / 1000
 
         ifelse prop-nX-X-V-difference >= 0 [
@@ -603,11 +628,10 @@ to institutional-influence-over-trust [nb-X nb-X-V is-X-D?]
           ;; trusting agents will tend to neglect the negative information
           set trust-level-update prop-nX-X-V-difference * (1 - trust-level)
         ]
-
-        set trust-level trust-level + trust-level-update
-        if trust-level < 0 [ set trust-level 0 ]
-        if trust-level > 1 [ set trust-level 1 ]
       ]
+      set trust-level trust-level + trust-level-update
+      if trust-level < 0 [ set trust-level 0 ]
+      if trust-level > 1 [ set trust-level 1 ]
     ]
   ]
 end
@@ -843,6 +867,16 @@ to get-deceased
     vaccinated? and trust-level > 0.5
     [ set nb-D-V-T nb-D-V-T + 1 ]
   )
+  (ifelse
+    not vaccinated? and not misinterpret?
+    [ set nb-D-nV-nM nb-D-nV-nM + 1 ]
+    not vaccinated? and misinterpret?
+    [ set nb-D-nV-M nb-D-nV-M + 1 ]
+    vaccinated? and not misinterpret?
+    [ set nb-D-V-nM nb-D-V-nM + 1 ]
+    vaccinated? and misinterpret?
+    [ set nb-D-V-M nb-D-V-M + 1 ]
+  )
 end
 
 to get-vaccinated
@@ -982,6 +1016,10 @@ end
 to-report trust-average
   report sum [trust-level] of turtles with [epidemic-state != "Deceased"]
 end
+
+to-report nb-misinterpret
+  report count living-turtles with [misinterpret?]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
 553
@@ -1077,6 +1115,7 @@ PENS
 "Décédés" 1.0 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-to-prop nb-D population-size"
 "Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop total-vaccinations population-size"
 "Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average total-living-population"
+"Mésinterprétation" 1.0 0 -16777216 true "" "set-plot-pen-color color-misinterpret plot nb-to-prop nb-misinterpret population-size"
 
 PLOT
 1099
@@ -1194,6 +1233,27 @@ PENS
 "Non-vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-T plot nb-D-nV-T"
 "Vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-nT plot nb-D-V-nT"
 "Vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-T plot nb-D-V-T"
+
+PLOT
+554
+955
+1082
+1187
+Décès par état de vaccination et status de mésinterprétation
+Temps
+Nombre de décès
+0.0
+100.0
+0.0
+5.0
+true
+true
+"" ""
+PENS
+"Non-vaccinés et interprétation correct" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-nM plot nb-D-nV-nM"
+"Non-vaccinés et interprétation incorrect" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-M plot nb-D-nV-M"
+"Vaccinés et interprétation correct" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-nM plot nb-D-V-nM"
+"Vaccinés et interprétation incorrect" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-M plot nb-D-V-M"
 
 SLIDER
 11
