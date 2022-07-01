@@ -1669,33 +1669,13 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="test" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="misinterpretation" repetitions="10" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="1000"/>
-    <metric>nb-total-hospitalised</metric>
-    <metric>nb-total-hospitalised-vaccinated</metric>
-    <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = false]</metric>
-    <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = true]</metric>
-    <enumeratedValueSet variable="dangerosite-du-virus">
-      <value value="1"/>
-      <value value="3"/>
-      <value value="5"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="efficacite-du-vaccin">
-      <value value="1"/>
-      <value value="5"/>
-      <value value="9"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="niveau-de-confiance-initial">
-      <value value="0.1"/>
-      <value value="0.5"/>
-      <value value="0.9"/>
-    </enumeratedValueSet>
-    <enumeratedValueSet variable="activer-information-mal-interpretee?">
-      <value value="false"/>
-      <value value="true"/>
-    </enumeratedValueSet>
+    <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = false and misinterpret? = false]</metric>
+    <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = false and misinterpret? = true]</metric>
+    <steppedValueSet variable="niveau-de-confiance-initial" first="0.1" step="0.1" last="0.9"/>
   </experiment>
 </experiments>
 @#$#@#$#@
