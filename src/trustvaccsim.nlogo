@@ -180,7 +180,7 @@ to setup-globals
   set infinity 99999
   set population-size 2000
   set nb-infected-initialisation 1
-  set percentage-daily-vaccinations 20
+  set percentage-daily-vaccinations 100
   set nb-daily-vaccinations (percentage-daily-vaccinations * population-size / 100)
 
   set probability-transmission 0.5 * virus-config         ;; S->I|A - probability for an agent to get infected
