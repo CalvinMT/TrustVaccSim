@@ -1019,9 +1019,9 @@ to-report nb-misinterpret
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-553
+301
 126
-1081
+829
 655
 -1
 -1
@@ -1090,9 +1090,9 @@ NIL
 1
 
 PLOT
-1099
+847
 126
-1615
+1363
 358
 Dynamique épidémique
 Jours
@@ -1114,9 +1114,9 @@ PENS
 "Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average total-living-population"
 
 PLOT
-1099
+847
 358
-1615
+1363
 590
 Décès par état de vaccination et statut de mésinterprétation
 Temps
@@ -1150,9 +1150,9 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-559
+307
 10
-725
+473
 114
 Légende des couleurs :\n- bleu = susceptible\n- jaune = infecté\n- gris = asymptomatique\n- rouge = hospitalisé\n- vert = guéri\n- noir = décédé
 12
@@ -1160,9 +1160,9 @@ Légende des couleurs :\n- bleu = susceptible\n- jaune = infecté\n- gris = asym
 1
 
 TEXTBOX
-750
+498
 10
-900
+648
 55
 Légende des formes :\n- rond = non-vacciné\n- triangle = vacciné
 12
