@@ -9,10 +9,8 @@
 
 globals [
   ;; GUI variables
-  virus-config
   vaccine-config
   initial-trust-level
-  activate-misinterpreted-information?
 
   current-trust-average ;; current trust average
 
@@ -165,15 +163,14 @@ end
 ;; setup the GUI variables as global variables
 ;; useful for headless mode and for translation of the interface
 to setup-GUI
-  set virus-config dangerosite-du-virus / 10
-  set vaccine-config efficacite-du-vaccin / 10
   set initial-trust-level niveau-de-confiance-initial
-  set activate-misinterpreted-information? activer-information-mal-interpretee?
 end
 
 
 ;; generic setup
 to setup-globals
+  set vaccine-config 0.9
+
   set current-trust-average initial-trust-level
   set current-trust-average 0
 
@@ -183,11 +180,11 @@ to setup-globals
   set percentage-daily-vaccinations 100
   set nb-daily-vaccinations (percentage-daily-vaccinations * population-size / 100)
 
-  set probability-transmission 0.5 * virus-config         ;; S->I|A - probability for an agent to get infected
-  set probability-asymptomatic 0.25 * (1 - virus-config)  ;; I|A - probability for an agent to go into a Infectious or a Asymptomatic state
-  set probability-hospitalised 0.7 * virus-config         ;; I->H|R - after a duration, probability for an agent to go into a Hospitalised or a Recovered state
-  set probability-deceased 0.5 * virus-config             ;; H->R|D - after a duration, probability for an agent to go into a Recovered or a Deceased state
-  set probability-susceptible 0.5 * virus-config          ;; R->R|S - after a duration, probability for an agent to go into a Susceptible state
+  set probability-transmission 0.25         ;; S->I|A - probability for an agent to get infected
+  set probability-asymptomatic 0.125        ;; I|A - probability for an agent to go into a Infectious or a Asymptomatic state
+  set probability-hospitalised 0.35         ;; I->H|R - after a duration, probability for an agent to go into a Hospitalised or a Recovered state
+  set probability-deceased 0.25             ;; H->R|D - after a duration, probability for an agent to go into a Recovered or a Deceased state
+  set probability-susceptible 0.25          ;; R->R|S - after a duration, probability for an agent to go into a Susceptible state
 
   set probability-transmission-vaccinated probability-transmission * (1 - vaccine-config)
   set probability-asymptomatic-vaccinated probability-asymptomatic * vaccine-config
@@ -612,7 +609,7 @@ to institutional-influence-over-trust [nb-X nb-X-V is-X-D?]
     ask turtles with [epidemic-state != "Hospitalised" and epidemic-state != "Deceased"] [
       let trust-level-update 0
       ;; institutional influence with a lack of knowledge or difficulties understanding statistics
-      ifelse activate-misinterpreted-information? and misinterpret? [
+      ifelse misinterpret? [
         set trust-level-update (prop-X-V / 100) * -1 * (1 - trust-level)
       ]
       ;; institutional influence with complete knowledge and understanding of statistics
@@ -1257,36 +1254,6 @@ PENS
 
 SLIDER
 11
-127
-283
-160
-dangerosite-du-virus
-dangerosite-du-virus
-1
-5
-1.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-11
-160
-283
-193
-efficacite-du-vaccin
-efficacite-du-vaccin
-1
-9
-1.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-11
 193
 283
 226
@@ -1299,17 +1266,6 @@ niveau-de-confiance-initial
 1
 NIL
 HORIZONTAL
-
-SWITCH
-11
-226
-283
-259
-activer-information-mal-interpretee?
-activer-information-mal-interpretee?
-1
-1
--1000
 
 MONITOR
 11
