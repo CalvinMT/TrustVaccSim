@@ -1239,7 +1239,7 @@ PLOT
 955
 1082
 1187
-Décès par état de vaccination et status de mésinterprétation
+Décès par état de vaccination et statut de mésinterprétation
 Temps
 Nombre de décès
 0.0
