@@ -613,11 +613,11 @@ to institutional-influence-over-trust [nb-X nb-X-V is-X-D?]
       let trust-level-update 0
       ;; institutional influence with a lack of knowledge or difficulties understanding statistics
       ifelse activate-misinterpreted-information? and misinterpret? [
-        set trust-level-update (prop-X-V / 1000) * -1 * (1 - trust-level)
+        set trust-level-update (prop-X-V / 100) * -1 * (1 - trust-level)
       ]
       ;; institutional influence with complete knowledge and understanding of statistics
       [
-        let prop-nX-X-V-difference (prop-nX-V - prop-X-V) / 1000
+        let prop-nX-X-V-difference (prop-nX-V - prop-X-V) / 100
 
         ifelse prop-nX-X-V-difference >= 0 [
           ;; positive information is attenuated (* 0.5)
