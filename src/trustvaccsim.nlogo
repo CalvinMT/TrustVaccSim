@@ -1056,10 +1056,10 @@ Pour lancer une simulation:\n 1 - Ajuster les paramètres nécessaires\n 2 - Cli
 1
 
 BUTTON
-317
-127
-413
-164
+11
+171
+140
+208
 Initialiser
 setup
 NIL
@@ -1073,10 +1073,10 @@ NIL
 1
 
 BUTTON
-426
-127
-520
-164
+154
+171
+283
+208
 Simuler
 go
 T
@@ -1090,10 +1090,10 @@ NIL
 1
 
 PLOT
-554
-665
-1082
-955
+1099
+126
+1615
+358
 Dynamique épidémique
 Jours
 % cas
@@ -1112,130 +1112,12 @@ PENS
 "Décédés" 1.0 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-to-prop nb-D population-size"
 "Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop total-vaccinations population-size"
 "Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average total-living-population"
-"Mésinterprétation" 1.0 0 -16777216 true "" "set-plot-pen-color color-misinterpret plot nb-to-prop nb-misinterpret population-size"
-
-PLOT
-1099
-126
-1615
-358
-Répartition de la confiance
-Niveau de confiance
-Nombre d'agent
-0.0
-2000.0
-0.0
-1.0
-false
-false
-"set-plot-x-range 0 1\n set-plot-y-range 0 100\n set-histogram-num-bars 200" ""
-PENS
-"turtles" 1.0 1 -2674135 true "" "histogram [trust-level] of living-turtles"
 
 PLOT
 1099
 358
 1615
 590
-Influence de la confiance sur la vaccination journalière
-Temps
-%
-0.0
-100.0
-0.0
-100.0
-true
-true
-"" ""
-PENS
-"Vaccination" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-to-prop nb-vaccinations-today min list nb-daily-vaccinations max-nb-daily-vaccinations"
-"Confiance" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average total-living-population"
-
-PLOT
-1099
-590
-1615
-822
-Hospitalisation par état de vaccination
-Temps
-Nombre d'hospitalisation
-0.0
-100.0
-0.0
-50.0
-true
-true
-"" ""
-PENS
-"Non-vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-hospitalised plot nb-H-nV"
-"Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-H-V"
-
-PLOT
-1099
-822
-1615
-1054
-Décès par état de vaccination
-Temps
-Nombre de décès
-0.0
-100.0
-0.0
-5.0
-true
-true
-"" ""
-PENS
-"Non-vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-deceased plot nb-D-nV"
-"Vaccinés" 1.0 0 -16777216 true "" "set-plot-pen-color color-vaccinated plot nb-D-V"
-
-PLOT
-11
-590
-527
-822
-Hospitalisation par état de vaccination et niveau de confiance
-Temps
-Nombre d'hospitalisation
-0.0
-100.0
-0.0
-50.0
-true
-true
-"" ""
-PENS
-"Non-vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-H-nV-nT plot nb-H-nV-nT"
-"Non-vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-H-nV-T plot nb-H-nV-T"
-"Vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-H-V-nT plot nb-H-V-nT"
-"Vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-H-V-T plot nb-H-V-T"
-
-PLOT
-11
-822
-527
-1054
-Décès par état de vaccination et niveau de confiance
-Temps
-Nombre de décès
-0.0
-100.0
-0.0
-5.0
-true
-true
-"" ""
-PENS
-"Non-vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-nT plot nb-D-nV-nT"
-"Non-vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-T plot nb-D-nV-T"
-"Vaccinés pas confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-nT plot nb-D-V-nT"
-"Vaccinés confiants" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-T plot nb-D-V-T"
-
-PLOT
-554
-955
-1082
-1187
 Décès par état de vaccination et statut de mésinterprétation
 Temps
 Nombre de décès
@@ -1254,9 +1136,9 @@ PENS
 
 SLIDER
 11
-193
+127
 283
-226
+160
 niveau-de-confiance-initial
 niveau-de-confiance-initial
 0.1
@@ -1266,39 +1148,6 @@ niveau-de-confiance-initial
 1
 NIL
 HORIZONTAL
-
-MONITOR
-11
-268
-283
-313
-nb total d'hospitalisé
-nb-total-hospitalised
-17
-1
-11
-
-MONITOR
-11
-313
-283
-358
-nb total de vacciné hospitalisé
-nb-total-hospitalised-vaccinated
-17
-1
-11
-
-MONITOR
-11
-358
-283
-403
-nb total de vaccinations effectuées
-total-vaccinations
-2
-1
-11
 
 TEXTBOX
 559
