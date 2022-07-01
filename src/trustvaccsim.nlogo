@@ -686,7 +686,7 @@ end
 ;; called on each vaccinated citizen
 to vaccinate-one
   ;; update agent
-  if random-float 1 < trust-level
+  if random-float 1 <= trust-level
   [
     get-vaccinated
     set nb-vaccinations-today nb-vaccinations-today + 1
