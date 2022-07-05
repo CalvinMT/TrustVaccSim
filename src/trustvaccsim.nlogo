@@ -1036,9 +1036,9 @@ end
 @#$#@#$#@
 GRAPHICS-WINDOW
 301
-126
+10
 829
-655
+539
 -1
 -1
 40.0
@@ -1063,9 +1063,9 @@ ticks
 
 TEXTBOX
 14
-10
+112
 282
-111
+175
 Pour lancer une simulation:\n 1 - Ajuster les paramètres nécessaires\n 2 - Cliquer sur \"Initialiser\"\n 3 - Cliquer sur \"Simuler\"\n\n
 12
 15.0
@@ -1073,9 +1073,9 @@ Pour lancer une simulation:\n 1 - Ajuster les paramètres nécessaires\n 2 - Cli
 
 BUTTON
 11
-171
+54
 140
-208
+91
 Initialiser
 setup
 NIL
@@ -1090,9 +1090,9 @@ NIL
 
 BUTTON
 154
-171
+54
 283
-208
+91
 Simuler
 go
 T
@@ -1107,9 +1107,9 @@ NIL
 
 PLOT
 847
-126
+10
 1363
-358
+242
 Dynamique épidémique
 Jours
 % cas
@@ -1131,9 +1131,9 @@ PENS
 
 PLOT
 847
-358
+242
 1363
-590
+474
 Niveau de confiance par statut de mésinterprétation
 Temps
 %
@@ -1150,9 +1150,9 @@ PENS
 
 PLOT
 847
-590
+474
 1363
-822
+706
 Décès par état de vaccination et statut de mésinterprétation
 Temps
 Nombre de décès
@@ -1171,9 +1171,9 @@ PENS
 
 SLIDER
 11
-127
+10
 283
-160
+43
 niveau-de-confiance-initial
 niveau-de-confiance-initial
 0.1
@@ -1185,20 +1185,20 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-307
-10
-473
-114
+14
+201
+180
+305
 Légende des couleurs :\n- bleu = susceptible\n- jaune = infecté\n- gris = asymptomatique\n- rouge = hospitalisé\n- vert = guéri\n- noir = décédé
 12
 15.0
 1
 
 TEXTBOX
-498
-10
-648
-55
+14
+334
+164
+379
 Légende des formes :\n- rond = non-vacciné\n- triangle = vacciné
 12
 15.0
