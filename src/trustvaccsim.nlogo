@@ -1002,6 +1002,14 @@ to-report total-living-population
   report count turtles with [epidemic-state != "Deceased"]
 end
 
+to-report total-living-population-without-misinterpret
+  report count turtles with [epidemic-state != "Deceased" and misinterpret? = false]
+end
+
+to-report total-living-population-misinterpret
+  report count turtles with [epidemic-state != "Deceased" and misinterpret? = true]
+end
+
 to-report living-turtles
   report turtles with [epidemic-state != "Deceased"]
 end
@@ -1012,6 +1020,14 @@ end
 
 to-report trust-average
   report sum [trust-level] of turtles with [epidemic-state != "Deceased"]
+end
+
+to-report trust-average-without-misinterpret
+  report sum [trust-level] of turtles with [epidemic-state != "Deceased" and misinterpret? = false]
+end
+
+to-report trust-average-misinterpret
+  report sum [trust-level] of turtles with [epidemic-state != "Deceased" and misinterpret? = true]
 end
 
 to-report nb-misinterpret
@@ -1118,6 +1134,25 @@ PLOT
 358
 1363
 590
+Niveau de confiance par statut de mésinterprétation
+Temps
+%
+0.0
+100.0
+0.0
+100.0
+true
+true
+"" ""
+PENS
+"Interprétation correcte" 1.0 0 -16777216 true "" "set-plot-pen-color color-trust-level plot nb-to-prop trust-average-without-misinterpret total-living-population-without-misinterpret"
+"Interprétation incorrecte" 1.0 0 -16777216 true "" "set-plot-pen-color color-misinterpret plot nb-to-prop trust-average-misinterpret total-living-population-misinterpret"
+
+PLOT
+847
+590
+1363
+822
 Décès par état de vaccination et statut de mésinterprétation
 Temps
 Nombre de décès
