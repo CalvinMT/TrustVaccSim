@@ -1129,10 +1129,10 @@ true
 true
 "" ""
 PENS
-"Non-vaccinés et interprétation correct" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-nM plot nb-D-nV-nM"
-"Non-vaccinés et interprétation incorrect" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-M plot nb-D-nV-M"
-"Vaccinés et interprétation correct" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-nM plot nb-D-V-nM"
-"Vaccinés et interprétation incorrect" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-M plot nb-D-V-M"
+"Non-vaccinés et interprétation correcte" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-nM plot nb-D-nV-nM"
+"Non-vaccinés et interprétation incorrecte" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-nV-M plot nb-D-nV-M"
+"Vaccinés et interprétation correcte" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-nM plot nb-D-V-nM"
+"Vaccinés et interprétation incorrecte" 1.0 0 -16777216 true "" "set-plot-pen-color color-D-V-M plot nb-D-V-M"
 
 SLIDER
 11
