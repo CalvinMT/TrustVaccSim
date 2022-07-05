@@ -1553,12 +1553,16 @@ NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="misinterpretation" repetitions="10" runMetricsEveryStep="true">
+  <experiment name="misinterpretation" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="1000"/>
-    <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = false and misinterpret? = false]</metric>
-    <metric>count turtles with [epidemic-state = "Deceased" and vaccinated? = false and misinterpret? = true]</metric>
+    <metric>nb-D-nV-nM</metric>
+    <metric>nb-D-nV-M</metric>
+    <metric>nb-D-V-nM</metric>
+    <metric>nb-D-V-M</metric>
+    <metric>nb-to-prop trust-average-without-misinterpret total-living-population-without-misinterpret</metric>
+    <metric>nb-to-prop trust-average-misinterpret total-living-population-misinterpret</metric>
     <steppedValueSet variable="niveau-de-confiance-initial" first="0.1" step="0.1" last="0.9"/>
   </experiment>
 </experiments>
