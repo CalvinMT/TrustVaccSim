@@ -1063,19 +1063,19 @@ ticks
 
 TEXTBOX
 14
-112
-282
-175
-Pour lancer une simulation:\n 1 - Ajuster les paramètres nécessaires\n 2 - Cliquer sur \"Initialiser\"\n 3 - Cliquer sur \"Simuler\"\n\n
+10
+283
+100
+Pour lancer une simulation:\n 1 - Ajuster le niveau de confiance moyen \n      initial de la population\n 2 - Cliquer sur \"Initialiser\"\n 3 - Cliquer sur \"Simuler\"\n\n
 12
 15.0
 1
 
 BUTTON
 11
-54
+157
 140
-91
+194
 Initialiser
 setup
 NIL
@@ -1090,9 +1090,9 @@ NIL
 
 BUTTON
 154
-54
+157
 283
-91
+194
 Simuler
 go
 T
@@ -1171,9 +1171,9 @@ PENS
 
 SLIDER
 11
-10
+113
 283
-43
+146
 niveau-de-confiance-initial
 niveau-de-confiance-initial
 0.1
@@ -1186,20 +1186,20 @@ HORIZONTAL
 
 TEXTBOX
 14
-201
-180
-305
-Légende des couleurs :\n- bleu = susceptible\n- jaune = infecté\n- gris = asymptomatique\n- rouge = hospitalisé\n- vert = guéri\n- noir = décédé
+223
+283
+343
+Légende des couleurs :\n- bleu    = susceptible\n- jaune  = infecté\n- gris     = asymptomatique\n- rouge = hospitalisé\n- vert     = guéri\n- noir     = décédé
 12
 15.0
 1
 
 TEXTBOX
 14
-334
-164
-379
-Légende des formes :\n- rond = non-vacciné\n- triangle = vacciné
+356
+283
+401
+Légende des formes :\n- rond      = non-vacciné\n- triangle = vacciné
 12
 15.0
 1
