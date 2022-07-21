@@ -312,14 +312,14 @@ to setup-population
 end
 
 
-;; initialisation of agents' trust level
+;; initialisation of each agent's trust level
 to setup-population-trust-level
   ;; number of currently initialised agents' trust
   let current-trust-average-count 0
   ask turtles
   [
     (ifelse
-      ;; if current average of population trust is below initial trust level
+      ;; if current population's average trust is below initial trust level
       ;; set trust level between X and 1
       ;; X = opposite number to current average of population trust based on initial trust level
       current-trust-average < initial-trust-level
@@ -331,7 +331,7 @@ to setup-population-trust-level
         ]
         set trust-level trust-average-adjuster + (random-float (1 - trust-average-adjuster))
       ]
-      ;; if current average of population trust is above initial trust level
+      ;; if current population's average trust is above initial trust level
       ;; set trust level between 0 and X
       ;; X = opposite number to current average of population trust based on initial trust level
       current-trust-average > initial-trust-level
