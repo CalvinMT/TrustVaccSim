@@ -1,0 +1,279 @@
+\documentclass[12pt, a4paper]{memoir} % for a short document
+\usepackage[french,english]{babel}
+
+\usepackage [vscale=0.76, includehead]{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+%\geometry{a4paper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\OnehalfSpacing
+% \setSingleSpace{1.05}
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+
+%===================================== packages
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{mathptmx} % font = times
+\usepackage{helvet} % font sf = helvetica
+\usepackage[utf8]{inputenc}
+\usepackage{relsize}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{textcomp}%textquotesingle
+\usepackage{multirow}
+\usepackage{pgfplots}
+%\usepackage{url}
+\usepackage{xurl}
+\usepackage{footnote}
+\usepackage{csquotes}
+\usepackage{indentfirst}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{caption}
+%============================================
+\usepackage[defernumbers=true]{biblatex}
+\addbibresource{bibfile.bib}
+%============================================
+\usetikzlibrary{arrows,shapes,positioning,shadows,trees,automata}
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
+%==============================================
+\newcounter{nalg}[chapter] % defines algorithm counter for chapter-level
+\renewcommand{\thenalg}{\thechapter .\arabic{nalg}} %defines appearance of the algorithm counter
+\DeclareCaptionLabelFormat{algocaption}{Algorithm \thenalg} % defines a new caption label as Algorithm x.y
+%==============================================
+\newenvironment{nolabelnoindent}
+  {\begin{list}
+    {}
+    {\setlength{\labelwidth}{0em}
+     \setlength{\labelsep}{0em}
+     \setlength{\leftmargin}{0cm}
+     \setlength{\itemindent}{0em}
+     \setlength{\itemsep}{3pt}
+    }
+  }{\end{list}}
+%==============================================
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+%Style des têtes de section, headings, chapitre
+\headstyles{komalike}
+\nouppercaseheads
+\chapterstyle{dash}
+\makeevenhead{headings}{\sffamily\thepage}{}{\sffamily\leftmark} 
+\makeoddhead{headings}{\sffamily\rightmark}{}{\sffamily\thepage}
+\makeoddfoot{plain}{}{}{} % Pages chapitre. 
+\makeheadrule{headings}{\textwidth}{\normalrulethickness}
+%\renewcommand{\leftmark}{\thechapter ---}
+\renewcommand{\chaptername}{\relax}
+\renewcommand{\chaptitlefont}{ \sffamily\bfseries \LARGE}
+\renewcommand{\chapnumfont}{ \sffamily\bfseries \LARGE}
+\setsecnumdepth{subsection}
+
+
+% Title page formatting -- do not change!
+%\pretitle{\HUGE\sffamily \bfseries \centering}  % \begin{center}
+%\posttitle{\end{center}}
+%\preauthor{\LARGE  \sffamily \bfseries \centering}
+%\postauthor{\par\end{center}}
+\newcommand{\jury}[1]{% 
+\gdef\juryB{#1}} 
+\newcommand{\juryB}{} 
+\newcommand{\session}[1]{% 
+\gdef\sessionB{#1}} 
+\newcommand{\sessionB}{} 
+\newcommand{\option}[1]{% 
+\gdef\optionB{#1}} 
+\newcommand{\optionB} {}
+
+
+\newcommand{\carole}[1]{\footnote{\textcolor{red}{Carole:#1}}}
+\newcommand{\didier}[1]{\footnote{\textcolor{blue}{Didier:#1}}}
+
+\renewcommand{\maketitlehookd}{% 
+\vfill{}  \large\par\noindent  
+\begin{center}\juryB \bigskip\sessionB\end{center}
+\vspace{-1.5cm}}
+\renewcommand{\maketitlehooka}{% 
+\vspace{-1.5cm}\noindent\includegraphics[height=10ex]{pics/logos/Logo_Université_Grenoble_Alpes_2020.svg.png}\hfill\includegraphics[height=10ex]{pics/logos/logo_Grenoble_INP.png}\hfill\includegraphics[height=10ex]{pics/logos/logo_cnrs.png}\hfill\includegraphics[height=10ex]{pics/logos/Logo_LIG.png}\hfill\includegraphics[height=10ex]{pics/logos/Logo_GIPSA-lab_Grenoble.jpg}\\
+\bigskip
+\begin{center} \large
+Master of Science in Informatics at Grenoble \\
+Master Informatique \\ 
+Specialisation \optionB  \end{center}\vfill}
+% =======================End of title page formatting
+
+\option{Data Science and Artificial Intelligence} 
+\title{\HUGE\sffamily \bfseries \centering Trust and misinterpretation influence\\over vaccination using an\\educational agent-based simulation} %\\\vspace{-1ex}\rule{10ex}{0.5pt} \\sub-title} 
+\author{\LARGE \sffamily \bfseries \centering Calvin Massonnet}
+\date{September, 2022} % Delete this line to display the current date
+\jury{
+Research project performed at Laboratoire d'Informatique de Grenoble\\
+and funded by the Centre National de la Recherche Scientifique\\\medskip
+Under the supervision of:\\
+Carole ADAM, Associate Professor at the Université Grenoble Alpes\\
+Didier GEORGES, Professor at the Grenoble INP/Université Grenoble Alpes\\\medskip
+Defended before a jury composed of:\\
+Georges QUENOT, Senior Researcher at the Centre National de la Recherche Scientifique\\
+Danielle ZIEBELIN, Professor at the Université Grenoble Alpes\\
+Clémentine PRIEUR, Professor at the Université Grenoble Alpes\\
+}
+\session{September \hfill 2022}
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+\pgfplotsset{compat=1.18}
+
+
+%%% BEGIN DOCUMENT
+\begin{document}
+\selectlanguage{English} % french si rapport en français
+\frontmatter
+\begin{titlingpage}
+\maketitle
+\end{titlingpage}
+
+%\small
+\setlength{\parskip}{-1pt plus 1pt}
+
+\renewcommand{\abstracttextfont}{\normalfont}
+\abstractintoc
+\begin{abstract} 
+\textbf{Introduction:} Vaccine controversies has been an ongoing threat preventing the population from gaining trust in vaccination. Misinformation and disinformation, such as Wakefield's claim of vaccine-autism connection, inevitably leads to an increase in the number of deaths accredited to the vaccine's targeted disease. A population's trust has a major effect on an epidemic's outcome, but this factor is not part of common knowledge. Thus, the goal is to educate the population on this aspect and to make institutions aware of their responsibility in the precision of their information.
+
+\textbf{Methods:} After some research over existing works and agent-based models of epidemics, vaccination, and trust, it was decided to create a NetLogo agent-based simulation in which each agent's epidemiological state follows an SIAHRD state model. Additionally, agents possess a vaccination status attribute and a trust level float attribute. The latter is updated through three influence methods: interpersonal, observational, and institutional. The institutional influence informs the population on the ongoing epidemic, for which half of the population will be misinterpreting.
+
+\textbf{Results:} A design of experiments was run on the single input parameter that lets the user decide of the population's initial average trust level (from 0.1 to 0.9 with steps of 0.1). For each input steps, the simulation ran 100 times and the results were averaged out. It is possible to observe that there is a higher death rate among agents that incorrectly interpret institutional information. In addition, a high population's initial average trust level inhibits the effect of misinterpretation on vaccination, thus lowering the death rate.
+
+\textbf{Conclusion:} Although some additional user experiments are required to validate the simulation's output interpretations, it is possible to notice that a population's average trust level at the start of an epidemic has a significant effect on its outcome.
+\end{abstract}
+\abstractintoc
+
+\newpage
+
+\renewcommand\abstractname{Acknowledgement}
+\begin{abstract}
+Sincere gratitude is expressed to the following participants of the internship, without whom it could not have taken place:
+\begin{nolabelnoindent}
+    \item Carole ADAM, Associate Professor at the Université Grenoble Alpes, for her project proposal, supervision of the internship and review of the report, as well as for the trust and patience she showed during the production of the present work.
+    
+    \item Didier GEORGES, Professor at the Grenoble INP/Université Grenoble Alpes, for his partnership in supervising the internship and for his review of the report. The expression of his encouragements in the ability to finalise this work made it possible to achieve its goal.
+    
+    \item Pierrick TRANOUEZ, computer scientist and research engineer at the University of Rouen Normandie, for his time at participating in all weekly reunions as an external speaker, which was more than helpful and very much appreciated. In addition, special thanks are given for his future presentation of the current work during the GRETSI'22 symposium in Nancy.
+    
+    \item The French National Centre for Scientific Research (CNRS) for funding this internship as part of its MODCOV19 project.
+\end{nolabelnoindent}
+
+\vskip\baselineskip
+Additional special thanks are given to:
+\begin{nolabelnoindent}
+    \item The STeamer team from the Laboratoire d'Informatique de Grenoble (LIG) and all of its members for its reception.
+    
+    \item Massih-Reza AMINI, Professor at the Université Grenoble Alpes and Director of the MoSIG M2, for his availability, time, help and advice during difficult times.
+    
+    \item Matthieu VIRY, research engineer at the Université Grenoble Alpes and desk neighbour, for his help and moral support, as well as for his answers to many questions.
+    
+    \item Nicu VRABII, for his friendship and for his support during trying times.
+    
+    \item Hugo BANTIGNIES, for his assistance.
+    
+    \item Ivan DERYABIN, for his company during breaks.
+    
+    \item Théo NOMAY, for his presence.
+    
+    \item Arthur VAN SCHENDEL, for his British fellowship.
+\end{nolabelnoindent}
+\end{abstract}
+
+\newpage
+
+\renewcommand\abstractname{R\'esum\'e}
+\begin{abstract} \selectlanguage{French}
+\textbf{Introduction :} Les controverses sur les vaccins sont une menace constante qui empêche la population de faire confiance à la vaccination. La mésinformation et la désinformation, telles que l'affirmation de Wakefield sur le lien vaccin-autisme, conduisent inévitablement à une augmentation du nombre de décès attribués à la maladie ciblée par le vaccin. La confiance d'une population a un effet majeur sur l'issue d'une épidémie, mais ce facteur ne fait pas partie des connaissances communes. Ainsi, le but est de sensibiliser la population sur cet aspect et de responsabiliser les institutions dans la précision de leurs informations.
+
+\textbf{Méthodes :} Après quelques recherches sur les travaux existants et les modèles basés sur agents d'épidémies, de vaccination et de confiance, il a été décidé de créer un simulateur NetLogo basée sur agents dans lequel l'état épidémiologique de chaque agent suit un modèle d'état SIAHRD. De plus, les agents possèdent un attribut de leur statut vaccinal et un attribut flottant de leur niveau de confiance. Ce dernier est mis à jour à travers trois modes d'influence : interpersonnelle, observationnelle et institutionnelle. L'influence institutionnelle informe la population sur l'épidémie en cours, dont la moitié de la population interprétera incorrectement.
+
+\textbf{Résultats :} Un plan d'expériences a été exécuté sur l'unique paramètre d'entrée qui permet à l'utilisateur de décider du niveau de confiance moyen initial de la population (de 0,1 à 0,9 avec des pas de 0,1). Pour chaque étape d'entrée, la simulation a été exécutée 100 fois et les résultats ont été moyennés. Il est possible d'observer un taux de mortalité plus élevé parmi les agents interprètant mal les informations institutionnelles. De plus, le niveau de confiance moyen initial d'une population élevée inhibe l'effet d'une mauvaise interprétation sur la vaccination, réduisant ainsi le taux de mortalité.
+
+\textbf{Conclusion :} Bien que des expériences utilisateur supplémentaires soient nécessaires pour valider les interprétations des résultats de la simulation, il est possible de remarquer que le niveau de confiance moyen d'une population au début d'une épidémie a un effet significatif sur son issue.
+\end{abstract}
+\selectlanguage{English}
+
+\cleardoublepage
+
+\tableofcontents* % the asterisk means that the table of contents itself isn't put into the ToC
+\normalsize
+
+\mainmatter
+\SingleSpace
+%========================================================
+% https://tex.stackexchange.com/questions/111116/what-is-the-best-looking-pseudo-code-package
+\lstnewenvironment{algorithm}[1][] % defines the algorithm listing environment
+{   
+    \refstepcounter{nalg} % increments algorithm number
+    \captionsetup{labelformat=algocaption, labelsep=colon} % defines the caption setup for: it uses label format as the declared caption label above and makes label and caption text to be separated by a ':'
+    \lstdefinestyle{custom_style}{
+        frame=tB,
+        aboveskip=3mm,
+        belowskip=3mm,
+        mathescape=true,
+        commentstyle=\color{gray},
+        keywordstyle=\color{black}\bfseries\em,
+        numberstyle=\tiny,
+        basicstyle=\scriptsize,
+        breakatwhitespace=false,         
+        breaklines=true,                 
+        captionpos=b,                    
+        keepspaces=true,                 
+        numbers=left,                    
+        numbersep=5pt,                  
+        showspaces=false,                
+        showstringspaces=false,
+        showtabs=false,                  
+        tabsize=2,
+        literate={\ \ }{{\ }}1,
+        xleftmargin=.04\textwidth,
+        #1 % adds specific settings to a usage of this environment (e.g., caption, reference label)
+    }
+    \lstdefinelanguage{NetLogo}{
+        alsoletter={-},
+        morekeywords={if, ifelse, let, set, to, ask, with, random, random-float},
+        sensitive=false, % keywords are not case-sensitive
+        morecomment=[l]{;;}, % l is for line comment
+        morestring=[b]" % defines that strings are enclosed in double quotes
+    }
+    \lstdefinelanguage{Pseudocode}{
+        morekeywords={begin, end, if, then, else, for, each, while, do, in, to, random, not, and, or, true, false},
+        sensitive=false, % keywords are not case-sensitive
+        morecomment=[l]{//}, % l is for line comment
+        morecomment=[s]{/*}{*/}, % s is for start and end delimiter
+        morestring=[b]" % defines that strings are enclosed in double quotes
+    }
+    \lstset{style=custom_style}
+}{}
+
+%==============================CHAPTERS==================
+\include{./chapters/1_Introduction}
+\include{./chapters/2_Background}
+\include{./chapters/3_State_of_the_art}
+\include{./chapters/4_Conceptual_model}
+\include{./chapters/5_Implementation}
+\include{./chapters/6_Results}
+\include{./chapters/7_Discussion}
+\include{./chapters/8_Appendix}
+%=========================================================
+
+
+%=========================================================
+\backmatter
+
+%\bibliographystyle{plain} % plain-fr si rapport en français
+%\bibliography{bibfile.bib}
+\printbibliography[title={Articles}, type=article]
+\printbibliography[title={Other sources}, nottype=article]
+
+%\cleardoublepage % Goes to an odd page
+%\pagestyle{empty} % no page number
+%~\newpage % goes to a new even page
+
+\end{document}

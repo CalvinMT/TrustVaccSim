@@ -1,0 +1,86 @@
+\chapter{State-of-the-art}
+
+According to Barry Bloom, "the most important ingredient in all vaccines is trust" \cite{pilichowski2021enhancing, writer_build_trust_covid_vaccine_2020}. Additionally and previously stated in section \ref{trust}, trust has an important role in interpersonal relations and in people's choice of compliance to policies, especially restrictive ones \cite{devine_trust_2021}.
+Trust is thus an important human factor to add to an agent-based simulation trying to demonstrate vaccine intake during an epidemic or a pandemic.
+
+As a flow of misinformation and disinformation on vaccines is sweeping the population, this same population is experiencing the harsh lifestyle of going through a pandemic. The spread of these false information, may it be with bad intent or not, participates in lowering people's trust in institutions and in vaccines, despite the chance given to roll them out quicker than anticipated.
+In order to educate people on how misrepresented information about vaccines can affect the lives of a population during a pandemic, it has been decided to look into how a simulation could teach on this influence.
+
+
+
+\section{Simulation models}
+
+Simulations are abstract and simplified representations of real existing systems or phenomena. They serve multiple purposes and are used in countless domains, one of them being education \cite{axelrod_advancing_1997}. Simulations use models, which can be mathematical and logical concepts designed to simulate real world systems. Two main approaches exist to implement an epidemic. Models can either be mathematical models or agent-based models, although the combination of both is practised \cite{bobashev_hybrid_2007}.
+
+\subsection{Mathematical models}
+\label{mathematical_models}
+
+Mathematical models, or equation-based models, are used for the simulation predictions or decision-making by applying homogeneous equations. These types of models are useful to provide the evolution of states over time, thus describing a phenomenon.
+An example of a mathematical model would make use of an epidemiological compartmental model by specifying the relations between each class with partial differential equations on a macroscopic scale.
+
+In epidemiology, compartmental models classify a population in separate epidemiological classes. Through the means of differential equations, each subpopulation in each class is calculated over time. The most basic compartmental model in epidemiology is the SIR model in which the population is divided into three distinct classes: Susceptible, Infectious and Recovered \cite{hethcote_mathematics_2000, wiratsudakul_dynamics_2018}.
+
+\begin{itemize}
+    \item Susceptible (S): class in which the subpopulation is free of the disease, but can at any given moment catch it.
+    \item Infectious (I): class in which the subpopulation is carrying the disease and can, usually, transmit the disease to the subpopulations nor infected, nor protected against it. Sometimes referred to as the Symptomatic class.
+    \item Recovered (R): class in which the subpopulation previously caught the disease and have fully recovered from it. May confer immunity to the subpopulation.
+\end{itemize}
+
+In a typical simulation using an SIR model, the entire population is usually initialised as part of the Susceptible class. During the course of the simulation, the population gets divided into all other classes based on the subpopulation number of their linked classes and other variables. The subpopulation in the Recovered class is considered fully immune to infections. But some models, such as SIS and SIRS models, remove the immunity by making infected or recovered subpopulations again part of the Susceptible class \cite{hethcote_sis_1995, van_den_driessche_simple_2000}.
+
+Other models add further precision and complexity with the addition of more classes \cite{dunham2005, almeida_epidemiological_2019, arenas_mathematical_2020, hove-musekwa_dynamics_2009}:
+\begin{itemize}
+    \item Asymptomatic (A): class in which the subpopulation caught the disease, but does not display any signs of having it. The subpopulation in this class are usually infectious.
+    \item Hospitalised (H): class in which the subpopulation caught the disease and is experiencing severe symptoms, thus taken into a medical institution.
+    \item Deceased (D): class in which the subpopulation previously caught the disease and succumbed from it.
+\end{itemize}
+
+Depending on the needs, models may integrate classes not presented in the above list. Some additional classes may either be completely new or may divide an existing class by adding a parameter to it. It is therefore possible to find various forms of models using different combinations of classes \cite{guan_transport_2020, oliver_spatialized_2022}.
+
+This modelling method was used, for instance, in order to demonstrate the propagation of SARS-CoV-2 between the different regions of France while testing the population and differentiating age groups \cite{guan_transport_2020}, or to visualise the increase of hospitalised patients in a department of France during the COVID-19 pandemic \cite{oliver_spatialized_2022}.
+
+\vskip\baselineskip
+The present work would make good use of these classes to model an epidemic. But adding human factors such as trust and creating a relation between trust, vaccination, misrepresented information and the number of subpopulation in each class would create too many subclasses, almost to the point of having one class per individual.
+This kind of heterogeneity is best practised with the help of agent-based models.
+
+\subsection{Agent-based models}
+
+Agent-based models focus on the autonomy of agents interacting with their environment, including other agents. Agents are entities that, with sufficient autonomy, interact with their environment. For example, an agent may be a person, a bird, or a self-driving car \cite{reynolds_flocks_1987, fagnant_travel_2014}. These types of models are useful when the simulation needs detailing transmissions between agents, as a group or society, and their interactions on a micro-individual level. Agent-based models thus allow for heterogeneity between agents, unlike mathematical models.
+
+VigiFlood \cite{adam_vigiflood_2020}, for instance, a serious game on crisis management during flash floods, is an agent-based simulation in which agents all possess the same attributes, but show diversification through their values. These differences in attribute values make agents interact with their environment in different ways. One of the attributes is trust in vigilance messages. In the case where the warning of a flood is announced, agents with a higher trust level will believe the announcement and quickly take action, while agents with a lower trust level will not be convinced until it is possibly too late.
+This serious game is a necessary example allowing to show that notions of trust can be modelled into an education simulation, despite the challenges of implementing human factors into simulations modelling human interactions \cite{kennedy_modelling_2012}.
+
+\vskip\baselineskip
+The goal of the present work is to design a simulation with education purposes on the influence of trust in vaccination during a pandemic. As agent-based models allow users to observe the evolution of heterogeneous entities and their interactions with their environment --- thus making the simulation visually easier to understand --- as well as to model human behaviours, this work will follow an agent-based modelling approach.
+
+
+
+\section{Agent-based COVID-19 simulations}
+
+COMOKIT \cite{gaudou_comokit_2020} is a computer model ordered by the Vietnamese government to help them tackle the COVID-19 pandemic. Although it has a wide spread of available parameters to model different scenarios, its design was focused on the goal to predict, and not to educate. Having various people of the public unaccustomed to the use of GAMA \cite{taillandier_building_2019}, a widely renowned modelling environment, would not make the present work easily accessed and ready-to-use.
+
+Other works \cite{martin_covid19_2020, adam:hal-03613433, covprehension_question_17_2020} make use of a modelling platform named NetLogo \cite{wilensky_netlogo_1999} in order to model the COVID-19 epidemic. In its own words, NetLogo is a multi-agent modelling environment. It has the positive feature to easily integrate created simulations in a web page without requiring the installation of a software. This makes NetLogo an ideal tool in the context of this work, as anyone with a web-browser and a link may view and interact with the simulation.
+
+A review of articles on available COVID-19 agent-based social simulations aims at presenting the differences and commonalities between them \cite{lorig_agent-based_2021}. Although this review does not make the difference between compartmental model classes in epidemiology and epidemiological states of agents, it enables to see that it is possible to use epidemiological compartmental classes as an agent's epidemiological list of states.
+Additionally, this review shows the potential of modelling an epidemic with agent-based models including human factors, as it allows investigating how autonomous individuals with heterogeneous behaviours can influence an epidemic due to their human-like properties.
+
+
+
+\section{Information, vaccination and human factors}
+
+Since the first vaccine to prevent COVID-19 symptoms got emergency approval for early deployment to the public \cite{who_first_covid-19_vaccine_2020}, waves of misinformation and disinformation keep on emerging, lowering trust among citizens towards vaccination and authorities \cite{enria2021trust, organisation2020transparency}.
+It has been established that relying solely on social media as the main source of information has caused a higher death rate during the COVID-19 pandemic \cite{nieves2021infodemic}.
+This shows that emotions, trust and biases are all important human factors which need to be integrated in models to help understand epidemics or pandemics such as the COVID-19 pandemic. Initiatives have been taken to do as such on various platforms \cite{bourgais2018emotion}.
+
+Agent-based models were found to implement vaccination for different reasons and in different ways. Some make vaccines more efficient through the intake of multiple doses \cite{romero-brufau_public_2021}. This may enable the study of effectiveness from a second vaccine injection after delaying it over various periods of time. Others implemented age groups along with their differences in willingness towards vaccination \cite{jahn_targeted_2021}.
+Overall, implementation of vaccination in a model takes two different approaches. Either vaccination gives full immunity against any future infection \cite{jahn_targeted_2021, truszkowska_high-resolution_2021, alagoz_impact_2021}, or vaccination reduces the probability to get from one epidemiological state to another \cite{romero-brufau_public_2021, faucher_agent-based_2022}.
+
+Adding human factor attributes is no easy task, as it is not obvious how to normalise a personality trait or an emotion. Most of the time, these attributes are normalised floating points empirically adjusted either between -1 and 1, or between 0 and 1.
+Some articles manage to explain and to show how human factors affect our beliefs and motivations using agent-based models \cite{adam_vigiflood_2020, sobkowicz2018, vaccines9080809}.
+For example, one of these applications \cite{sobkowicz2018} demonstrates how confirmation bias filters out information and how points of view furthest from an information get less influenced by it. This application also shows how memory can play a role in combination with confirmation bias through the broadening of beliefs due to imperfect memory. However, as the objective is to deliver a simulation with educational purposes, there is no need to add too much complexity into the model. In such, relying on simple human factors such as confirmation bias alone, without additional parameters (e.g. imperfect memory), is sufficient to meet the fixed goal.
+
+
+
+\section{Modelling trust in vaccination}
+
+It was presented that an agent-based model is best suited for the modelling of an epidemic including human factors. An epidemiological model representing the different epidemiological states an agent can go through will then be implemented. Agents, as well as infecting themselves, will be able to interact between themselves, exchanging information, and will possess biases that will alter the perception of received information. Trust will then serve as basis to those biases.

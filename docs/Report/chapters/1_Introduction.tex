@@ -1,0 +1,108 @@
+\chapter{Introduction}
+
+\textit{This chapter provides a summary of the essential contents of the research project. The target audience is members of the jury who do not have time to completely read all reports, as well as academic members of other juries who wish to compare this work to other works. If you are interested in reading the entire paper, please feel free to ignore section \ref{content_summary} which provides a detailed summary of each chapter found in this report.}
+
+
+
+\section{Technological context}
+
+Agent-based models are a stochastic type of simulation model focused on the interaction of autonomous entities, called agents, over their environment. Agent-based modelling enables a representation of phenomenon on a micro-scale, unlike mathematical modelling. This representation is useful when modelling social behaviours as it makes it possible for different agents to show differences through their attributes, rendering them unique.
+Agent-based modelling has often been used to represent epidemics, commonly as an education interface. Users would interact with inputs of a simulation and observe the resulting outputs. The goal is to help them understand a specific outcome reflecting a specific event harder to notice in the real world.
+\\CoVprehension\footnote{CoVprehension's website: \url{https://covprehension.org/en/}} is a collective of researchers with this exact goal, aiming at explaining the epidemic of COVID-19. The following work was supervised by two members of its consortium and is intended as a sequel to the work achieved by CoVprehension.
+
+
+
+\section{Problem statement}
+
+Granting the fact that a lot of agent-based models exist to simulate an epidemic or a vaccination campaign, they may lack some human factor attributes such as emotions or beliefs in order to get a clear understanding of how some aspects of human beings can have an effect on an epidemic. Adding such attributes is no easy task, as one cannot simply evaluate a human emotion or belief to implement it.
+Additionally, there is a need to know how many epidemiological states are needed to be implemented, as well as if the vaccination status should be implemented as a state or as an attribute.
+Some research had to be done to find similar examples from previous works to understand the reasoning behind their implementation.
+
+
+
+\section{Scientific approach, investigative method and results}
+
+Firstly, a search for previous works of agent-based models on epidemics was done. Understanding that models were implemented in different ways in order to serve the goal they were built for helped in deciding on the implementation of the model for the present work.
+
+Secondly, finding agent-based models implementing vaccination confirmed that two approaches exist: one recognising vaccination as an epidemiological state and the other considering it as an agent's attribute. The former approach gives a final state that does not allow a vaccinated agent catching an infection, nor transmitting a disease. As this approach is way too far from representing how COVID-19 vaccines actually work, the latter was chosen to implement vaccination in the present work's model.
+
+Finally, reading notions on trust to discover how it can be influenced and how it assists in decision-making helped in deciding which influences to implement. In addition, looking at previous agent-based models on trust gave indication on how to design trust and its influences.
+
+This research helped to produce an epidemic education simulation from an agent-based model with vaccination and trust influences that sufficiently imitates observations from the natural world to give results that would help its users understanding the effect of trust and misinterpretation on the outcome of an epidemics.
+
+
+
+\section{Content summary}
+\label{content_summary}
+
+\subsection{Background}
+
+Vaccines started being used two centuries ago and are still in use today to protect living beings from different pathogens of various origins. The development of a vaccine undergoes multiple development and testing stages alongside scientific evaluations. This strict procedure does not protect vaccines from false claims and accusations. Controversies such as Wakefield's vaccine-autism connection of measles, mumps and rubella vaccination build doubt and distrust in the population.
+
+The SARS-CoV-2 virus first got attention in China in late 2019 because of its illness, the COVID-19. Expressed concerns from the WHO and the rapid spread of the virus made governments around the world apply measures such as quarantines and lockdowns, which did not go without social and economic impacts.
+Around a year later, the first dose of COVID-19 vaccine was administered to the public. This fast vaccine development --- although explained by the amount of trials made available through the rapid spread of the virus ---, along with the fact that some vaccines used a technique which was previously not commercially distributed for human application --- although clinical trials with this technique already took place since 2008 --- made unaware populations question vaccination recommendations. Misleading information over the vaccine's development spread fear and distrust among the population, thinking the development was rushed.
+
+Trust is the feeling of integrity in the action and speech of others. Trust can be influenced through personal contacts, through systems such as governments, or through observation of the surrounding environment.
+During the COVID-19 pandemic, trust decreased because of the prolongation of pushed measures, as well as for the inconsistency and lack of clarity in information shared to the public.
+This decrease of trust from the population made people hesitant towards COVID-19 vaccines, and studies show that trust is highly linked to vaccination rates. Although this is true, information aimed to simply express the current state of a situation ends up unavoidably misinterpreted.
+This constant misrepresentation of information shows that not enough people question the information given to them, and this is the reason that motivated the present work to take place.
+The goals of the current work are:
+\begin{enumerate}
+    \item to raise awareness in media and personalities in their responsibility to be as precise as possible in their speech and writing when giving out information;
+    \item to educate people in the importance to question gathered information in order to avoid misinterpretation and its outcome: concerning the present work, avoidable deaths.
+\end{enumerate}
+
+\subsection{State-of-the-art}
+
+Simulations are abstract simplified representations of existing systems or phenomena, and serve multiple purposes in countless domains, one of them being education. An epidemic can be modelled using either a mathematical model or an agent-based model. As agent-based models allow users to observe the evolution of heterogeneous entities and their interactions with their environment --— thus making the simulation visually easier to understand —-- as well as to model human behaviours, which mathematical models do not support, this work will follow an agent-based modelling approach.
+
+Among the many works available presenting an agent-based model COVID-19 simulation, some of them made use of NetLogo, a multi-agent modelling environment, which has the feature to easily integrate simulations in a web page, making the simulation easily accessible to anyone with a web-browser. Additionally, although agent-based models were found to implement vaccination for different reasons and in different ways, two approaches were distinguished. Either vaccination gave full immunity against any future infection, or vaccination reduced the probability to get from one epidemiological state to another.
+
+Adding human factor attributes is usually done using normalised floating points empirically adjusted either between -1 and 1, or between 0 and 1. Some articles manage to explain and to show how human factors affect our beliefs and motivations using agent-based models. As the objective of the present work is to deliver a simulation with educational purposes, relying on simple human factors such as confirmation bias alone, without additional attributes or parameters than trust, is sufficient to meet the fixed goal.
+
+It was presented that an agent-based model is best suited for the modelling of an epidemic including human factors. An epidemiological model representing the different epidemiological states an agent can go through will then be implemented. Agents, as well as infecting themselves, will be able to interact between themselves, exchanging information, and will possess biases that will alter the perception of received information. Trust will then serve as basis to those biases.
+
+\pagebreak
+
+\subsection{Conceptual model}
+
+The chosen epidemiological model to implement in the simulation contains six states: Susceptible, Symptomatic, Asymptomatic, Hospitalised, Recovered and Deceased (SIAHRD). The Susceptible, Symptomatic and Recovered states were chosen as one cannot model an epidemic without them. The Asymptomatic state was chosen as vaccines give a higher chance to get asymptomatic once infected. As vaccines are intended to protect against harmful diseases, the Hospitalised state was added to represent infected agents highly suffering from their diseases. If an agent does not recover from a Hospitalised state, then it has passed away, thus the existence of the Deceased state. The epidemiological state of an agent goes from one state to another following the epidemiological model's probabilities and transition rates.
+
+In addition to an epidemiological state following the epidemiological model, agents possess a vaccination status attribute. This attribute influences the probability to get from one state of the epidemiological model to another. Following institutions’ and medical organisations’ guidelines and recommendations, only agents in the Susceptible and Asymptomatic states can get vaccinated, if they are "willing" to --- the willingness of an agent is entirely based on their trust level. Vaccination has a limited duration which, once the duration limit reached, makes agents lose their vaccination status. Although they are now unvaccinated and follow the compartmental model as if never vaccinated before, they may again get vaccinated.
+
+Agents have an extra attribute representing their trust level as a real number normalised between 0 and 1 and initialised following, ideally, a skew normal distribution. An agent expresses trust if its trust level is above 0.5 and expresses distrust below 0.5. This trust level can get updated though three different means: interpersonal influence, observational influence, and institutional influence. Interpersonal influence happens when two agents come into contact and influence each other's trust level. Observational influence is the update of an agent's trust level based on its surroundings. Finally, institutional influence updates each agent's trust level by informing them of the epidemic's current situation. In order to serve the goal of the current work, it was chosen to separate the population into two, making one half of the population correctly interpreting the institutional influence's information, and the other half incorrectly interpreting (misinterpreting) the same information.
+
+\subsection{Implementation}
+
+The implementation of the present work is based on a previous simulation, which purpose is to show how handling an epidemic through the use of different testing strategies can give different outcomes. Some changes were made to this previous simulation in order to serve the current goal. The source code can be found on GitHub.
+
+The environment of the simulation consists of 256 NetLogo patches and of a population of 2000 agents. Each agent starts in the Susceptible state, with exception to one randomly chosen agent initialised with the Symptomatic state. Agents move around freely and can get infected if in a similar patch than an infected agent. If in a Hospitalised state, agents are taken to a hospitalised area, in which ten other randomly chosen agents will visit without risks of being infected. An agent’s colour informs the user of the simulation on its epidemiological state, while its shape notifies on its vaccination status.
+
+For simplicity of the educational purpose of the simulation, users may modify a single of the model's entry parameter. This modifiable parameter, identified as a slider ranging from 0.1 to 0.9, is the initial average trust of the population. A population with an average trust of 0.1 is considered representative of a highly distrusting population, while a population considered highly trusting would have an average trust of 0.9. Following a custom distribution algorithm, approximating a skew normal distribution, each agent's trust level is initialised to obtain a population's average trust equal to the user defined population's initial average trust parameter.
+
+The user can visualise the environment in which agents wander around, as well as the evolution of various parameters through graphs: an epidemic dynamic, the level of trust per interpretation status, and the number of deaths per vaccination and interpretation statuses. These outputs were specifically chosen to enable the user to make multiple key observations aiming at the goal of the present work.
+
+\subsection{Results}
+
+Because agent-based models are stochastic and that random functions are used in the simulation model’s implemented algorithms, NetLogo's design of experiments framework was used to compute multiple simulations. Outputs were averaged out using a Python script.
+
+Focusing on the level of trust per interpretation status graph, it is possible to see that:
+\begin{enumerate}
+    \item The average trust of the part of the population that interprets correctly the information given to them increases faster than for the part of the population that interprets incorrectly the same information.
+    \item The higher the population's initial average trust is, the faster the increase in trust is and the less difference in trust there is between the part of the population that interprets correctly the information with the part that interprets it incorrectly.
+\end{enumerate}
+
+While looking at the deaths per vaccination and interpretation statuses graph allows observing that:
+\begin{enumerate}
+    \item Reported agents with a Deceased state are mainly unvaccinated agent, as vaccinated agents are almost always reported to be 0. This is due to the choice to configure the model's vaccine as a highly effective vaccine.
+    \item There is a distinct gap between both unvaccinated groups of now deceased agents when the population's initial average trust is low, even average (from 0.1 to 0.5 included). This gap tends to shrink as the population's initial average trust gets higher. It is clear that unvaccinated agents misinterpreting information given to them have a higher death rate than those having a correct interpretation of the same information when the average trust of the population is low. In other words, a high population's initial average trust tends to negate the effect of misinterpretation.
+\end{enumerate}
+
+\subsection{Discussion}
+
+To build an educational simulation with an agent-based model of an epidemic with vaccination and trust, a lot of knowledge had to be gathered through research within various disciplines. Doing so allowed the implementation of an SIAHRD epidemiological model and helped with the application of a vaccination status, as well as with the addition of a trust human behaviour attribute and its methods.
+
+Although the results look concluding, logical and close enough to realistic for a educational simulation, it is hard to find any data that could validate them. One way that the results could be validated would be to have them examined by epidemiologists and psychologists.
+Additionally, various observations can be made. Thus, there is a need to run a proper experimentation with participants in order to see if the different expected observations are understood by various members of the public.
+
+Not everything thought of during the time taken to focus on the present work could be implemented. One could consider making the environment of the simulation a town or a city with households. Incorporating age groups would allow implementing family influence over trust. Extending the model with different information source types (government documents, medical recommendations, or social media) could influence the trust level of agents in more diverse ways.
